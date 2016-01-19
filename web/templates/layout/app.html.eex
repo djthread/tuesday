@@ -23,15 +23,6 @@
     <script>require("web/static/js/app")</script>
     <div class="clearer">&nbsp;</div>
     <footer>
-      <!--
-      <div class="bit">
-        Made possible by
-        <ul>
-          <li><a href="http://nginx.org/nginx">nginx</a>, <a href="https://github.com/arut/nginx-rtmp-module">nginx-rtmp-module</a></li>
-          <li><a href="http://www.erlang.org/">erlang</a>, <a href="http://elixir-lang.org/">elixir</a></li>
-        </ul>
-      </div>
-      -->
       <div class="right bit">
         Special thanks to
         <ul>
@@ -39,6 +30,14 @@
           <li><a href="https://rocketfiber.com/">Rocket Fiber</a></li>
         </ul>
       </div>
+      <div class="right bit">
+        Made possible by
+        <ul>
+          <li><a href="https://github.com/arut/nginx-rtmp-module">nginx-rtmp-module</a>, <a href="http://nginx.org/nginx">nginx</a></li>
+          <li><a href="http://www.phoenixframework.org/">Phoenix</a>, <a href="http://elixir-lang.org/">elixir</a></li>
+        </ul>
+      </div>
+      Techno Tuesday is a Thread production.
       <div class="clearer">&nbsp;</div>
     </footer>
   </body>

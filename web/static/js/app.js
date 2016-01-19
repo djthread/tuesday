@@ -106,7 +106,7 @@ class App {
 
     setInterval(() => {
       this.updateInfo($info)
-    }, 15000)
+    }, 10000)
 
     this.updateInfo($info)
   }
@@ -115,7 +115,8 @@ class App {
     $.ajax({
       url: "/info.json",
       success: function(info) {
-        $info.html("<span>" + info["count"] + "</span> viewers")
+        $info.html("<span>" + info["count"] + "</span> viewer"
+            + (info["count"] == "1" ? "" : "s"))
       }
     });
   }
