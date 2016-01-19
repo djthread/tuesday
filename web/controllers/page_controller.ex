@@ -13,7 +13,7 @@ defmodule Tuesday.PageController do
         body |> extract_count
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         "unknown"
-      {:error, %HTTPoison.Error{reason: reason}} ->
+      {:error, %HTTPoison.Error{reason: _reason}} ->
         "unknown"
     end
 
