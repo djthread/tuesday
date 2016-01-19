@@ -6,6 +6,7 @@
     <div id="player_a" class="projekktor">
       <noscript><p>No JavaScript support.</p></noscript>
     </div>
+    <div id="info" class="info">&nbsp;</div>
     <div class="schedule">
       <p>Techno Tuesday, January 19:</p>
       <p>
@@ -17,12 +18,10 @@
     </div>
   </div>
   <div class="rightside">
-    <div id="messages" class="container">
-    </div>
-      <span>@</span>
-      <input id="username" type="text" class="form-control"
-        placeholder="username" size="12">
-      <input id="message-input" class="form-control" size="50" />
-    </div>
+    <div id="messages" class="container"></div>
+    <span>@</span>
+    <input id="username" type="text" class="form-control"
+      placeholder="username" size="12">
+    <input id="message-input" class="form-control" size="50" />
   </div>
 </div>

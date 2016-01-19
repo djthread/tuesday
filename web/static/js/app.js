@@ -27,6 +27,7 @@ class App {
   static init() {
     this.startChat()
     this.startProjekktor()
+    this.startInfoUpdater()
   }
 
   static startProjekktor() {
@@ -40,7 +41,7 @@ class App {
       platforms: ['browser', 'flash', 'vlc'],
       //platforms: ['browser', 'android', 'ios', 'native', 'flash', 'vlc'],
       playlist: [ { 0: {
-        src: 'rtmp://tuesday.threadbox.net/live/techno', streamType:'rtmp', type:'video/flv'
+        src: 'rtmp://techtues.net/live/techno', streamType:'rtmp', type:'video/flv'
       } } ]
     }, function(player) {
         window.p = player;
@@ -98,6 +99,25 @@ class App {
     let body     = this.sanitize(msg.body)
 
     return(`<p><a href='#'>[${username}]</a>&nbsp; ${body}</p>`)
+  }
+
+  static startInfoUpdater() {
+    var $info = $("#info")
+
+    setInterval(() => {
+      this.updateInfo($info)
+    }, 15000)
+
+    this.updateInfo($info)
+  }
+
+  static updateInfo($info) {
+    $.ajax({
+      url: "/info.json",
+      success: function(info) {
+        $info.html("<span>" + info["count"] + "</span> viewers")
+      }
+    });
   }
 
 }
