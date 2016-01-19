@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Techno Tuesday, Detroit</title>
+		<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Where electronic music meets coffee in Detroit">
+    <meta name="author" content="Thread">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+		<link rel="stylesheet" href="/projekktor/themes/maccaco/projekktor.style.css"
+      type="text/css" media="screen" />
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link href='https://fonts.googleapis.com/css?family=Jura:400,600' rel='stylesheet'
+      type='text/css'>
+		<!-- <script type="text/javascript" src="js/projekktor/projekktor-1.3.09.js"></script>
+    -->
+    <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="/projekktor/projekktor-1.3.09.min.js"></script>
+  </head>
+  <body>
+    <%= render @view_module, @view_template, assigns %>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script>require("web/static/js/app")</script>
+    <div class="clearer">&nbsp;</div>
+    <footer>
+      <!--
+      <div class="bit">
+        Made possible by
+        <ul>
+          <li><a href="http://nginx.org/nginx">nginx</a>, <a href="https://github.com/arut/nginx-rtmp-module">nginx-rtmp-module</a></li>
+          <li><a href="http://www.erlang.org/">erlang</a>, <a href="http://elixir-lang.org/">elixir</a></li>
+        </ul>
+      </div>
+      -->
+      <div class="bit right">
+        Special thanks to
+        <ul>
+          <li><a href="https://twitter.com/urbanbeanco">Urban Bean Co.</a></li>
+          <li><a href="https://rocketfiber.com/">Rocket Fiber</a></li>
+        </ul>
+      </div>
+      <div class="clearer">&nbsp;</div>
+    </footer>
+  </body>
+</html>
