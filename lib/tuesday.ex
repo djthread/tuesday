@@ -11,6 +11,7 @@ defmodule Tuesday do
       supervisor(Tuesday.Endpoint, []),
       # Start the Ecto repository
       supervisor(Tuesday.Repo, []),
+      supervisor(Tuesday.ChatLog, []),
       # Here you could define other workers and supervisors as children
       # worker(Tuesday.Worker, [arg1, arg2, arg3]),
     ]

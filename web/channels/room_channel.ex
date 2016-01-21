@@ -1,6 +1,7 @@
 defmodule Tuesday.RoomChannel do
   use Phoenix.Channel
   require Logger
+  import Tuesday.ChatLog, only: [lines: 1, append: 1]
 
   @doc """
   Authorize socket to subscribe and broadcast events on this channel & topic

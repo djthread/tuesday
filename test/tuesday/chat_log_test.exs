@@ -2,7 +2,7 @@ defmodule Tuesday.ChatLogTest do
   use ExUnit.Case, async: true
 
   test "stores a line of chat" do
-    {:ok, agent} = Tuesday.ChatLog.start_link
+    {:ok, agent} = Tuesday.ChatLog.start_link_multi
     assert Tuesday.ChatLog.lines(agent, 3) == []
 
     Tuesday.ChatLog.append(agent, "What up, dude?")
@@ -12,7 +12,7 @@ defmodule Tuesday.ChatLogTest do
   end
 
   test "stores three lines of chat" do
-    {:ok, agent} = Tuesday.ChatLog.start_link
+    {:ok, agent} = Tuesday.ChatLog.start_link_multi
     assert Tuesday.ChatLog.lines(agent, 3) == []
 
     Tuesday.ChatLog.append(agent, "one")
