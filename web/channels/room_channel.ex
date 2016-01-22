@@ -1,7 +1,7 @@
 defmodule Tuesday.RoomChannel do
   use Phoenix.Channel
   require Logger
-  import Tuesday.ChatLog, only: [lines: 1, append: 1]
+  alias Tuesday.ChatLog, as: Log
 
   @doc """
   Authorize socket to subscribe and broadcast events on this channel & topic
@@ -23,22 +23,24 @@ defmodule Tuesday.RoomChannel do
   end
 
   def handle_info({:after_join, msg}, socket) do
-    broadcast! socket, "user:entered", %{user: msg["user"]}
+    [event, data] = ["user:entered", %{user: msg["user"]}]
+    broadcast! socket, event, data
     push socket, "join", %{status: "connected"}
-    {:noreply, socket}
-  end
-  def handle_info(:ping, socket) do
-    push socket, "new:msg", %{user: "SYSTEM", body: "ping"}
+    Log.lines(10)
+    |> Enum.each(&push socket, &1[:event], &1[:data])
+    Log.append event: event, data: data
     {:noreply, socket}
   end
 
   def terminate(reason, _socket) do
-    Logger.debug"> leave #{inspect reason}"
+    Logger.debug "> leave #{inspect reason}"
     :ok
   end
 
   def handle_in("new:msg", msg, socket) do
-    broadcast! socket, "new:msg", %{user: msg["user"], body: msg["body"]}
+    [event, data] = ["new:msg", %{user: msg["user"], body: msg["body"]}]
+    broadcast! socket, event, data
+    Log.append event: event, data: data
     {:reply, {:ok, %{msg: msg["body"]}}, assign(socket, :user, msg["user"])}
   end
 end

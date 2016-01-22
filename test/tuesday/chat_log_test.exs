@@ -5,9 +5,9 @@ defmodule Tuesday.ChatLogTest do
     {:ok, agent} = Tuesday.ChatLog.start_link_multi
     assert Tuesday.ChatLog.lines(agent, 3) == []
 
-    Tuesday.ChatLog.append(agent, "What up, dude?")
+    Tuesday.ChatLog.append(agent, [event: "new:msg", data: "What up, dude?"])
     assert Tuesday.ChatLog.lines(agent, 3) == [
-      "What up, dude?"
+      [event: "new:msg", data: "What up, dude?"]
     ]
   end
 
@@ -15,11 +15,13 @@ defmodule Tuesday.ChatLogTest do
     {:ok, agent} = Tuesday.ChatLog.start_link_multi
     assert Tuesday.ChatLog.lines(agent, 3) == []
 
-    Tuesday.ChatLog.append(agent, "one")
-    Tuesday.ChatLog.append(agent, "two")
-    Tuesday.ChatLog.append(agent, "three")
+    Tuesday.ChatLog.append(agent, [event: "new:msg", data: "one"])
+    Tuesday.ChatLog.append(agent, [event: "new:msg", data: "two"])
+    Tuesday.ChatLog.append(agent, [event: "new:msg", data: "three"])
     assert Tuesday.ChatLog.lines(agent, 3) == [
-      "one", "two", "three"
+      [event: "new:msg", data: "one"],
+      [event: "new:msg", data: "two"],
+      [event: "new:msg", data: "three"]
     ]
   end
 end

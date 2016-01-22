@@ -9,7 +9,7 @@ defmodule Tuesday.ChatLog do
   @doc """
   Start a new chat log
   """
-  def start_link_multiple(opts \\ []) do
+  def start_link_multi(opts \\ []) do
     Agent.start_link fn -> [] end, opts
   end
 
@@ -25,7 +25,7 @@ defmodule Tuesday.ChatLog do
   Get `num` of the last lines in the log
   """
   def lines(num) when is_integer(num) do lines(@name, num) end
-  def lines(agent, num) when is_pid(agent) and is_integer(num) do
+  def lines(agent, num) when is_integer(num) do
     Agent.get agent, fn(list) ->
       list
       |> Enum.take(num)
@@ -36,8 +36,8 @@ defmodule Tuesday.ChatLog do
   @doc """
   Add a `line` to the log
   """
-  def append(line) when is_binary(line) do append(@name, line) end
-  def append(agent, line) when is_pid(agent) and is_binary(line) do
+  def append(line) when is_list(line) do append(@name, line) end
+  def append(agent, line) when is_list(line) do
     Agent.update agent, fn(log) -> [line | log] end
   end
 end
