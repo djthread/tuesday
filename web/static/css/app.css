@@ -1,15 +1,22 @@
 body { color: #ccc; margin: 0;
     font-family: 'Jura', sans-serif;
 background: black url("/images/bean.jpg") repeat fixed center; }
-a { color: #ffc; }
+a { color: #cc9; }
 .main { padding: 2em; }
 h1 { margin: 0; }
 h2.chattitle { position: absolute; top: 1.6em; left: 650px; width: 100%;
     border-bottom: 2px solid #666; }
+h3 { color: white; }
 p.slug { margin: 0; color: #999; }
-.leftside { float: left; }
+.leftside { float: left; width: 600px; }
 .right { float: right; }
 .main .rightside { margin-left: 620px; }
+.listing { clear: both; margin-bottom: 0.5em; }
+.listing .top { padding-top: 8px; }
+.listing .time { float: left; width: 3em; padding-top: 0.38em; }
+.listing .artist { color: white; margin-right: 0.2em; font-size: 150%; }
+.listing .meta { font-style: italic; }
+.listing .moar { margin-left: 5em; font-size: 80%; }
 div#messages { height: 24em; overflow: scroll; }
 div#messages a { color: #999; }
 .projekktor { margin-top: 1em; }
@@ -193,3 +200,6 @@ div.au-stagger {
     opacity: 1;
   }
 }
+
+
+/*# sourceMappingURL=app.css.map*/
