@@ -19,7 +19,7 @@ p.slug { margin: 0; color: #999; }
 .listing .artist { color: white; margin-right: 0.2em; font-size: 150%; }
 .listing .meta { font-style: italic; }
 .listing .moar { margin-left: 5em; font-size: 80%; }
-div#messages { height: 24em; overflow: scroll;
+div#messages { height: 24em; overflow: scroll; margin-bottom: 0.3em;
     border: 2px solid rgba(99,99,99,0.5); padding: 0 1em;
     background-color: rgba(0,0,0,0.33);
 }
