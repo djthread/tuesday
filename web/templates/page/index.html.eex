@@ -8,13 +8,46 @@
     </div>
     <div id="info" class="info">&nbsp;</div>
     <div class="schedule">
-      <p>Techno Tuesday, January 19:</p>
-      <p>
-      7-8 <strong>Phatty</strong> (liquid, tech funk; Service Tech)<br>
-      8-9 <strong>K Louis</strong> (jump up, jungle; DUB DOWN)<br>
-      9-10 <strong>Dekglo</strong> (dubstep; DUB DOWN)
-      </p>
+      <h3>Techno Tuesday, January 26</h3>
+
+      <div class="listings">
+        <div class="listing">
+          <div class="top time">7-8</div>
+          <span class="top artist">Thread</span>
+          <span class="top meta">(dnb; dnbradio.com, Konkrete Jungle Detroit, Detroit Deep Sessions)</span>
+        </div>
+
+        <div class="listing">
+          <div class="top time">8-9</div>
+          <span class="top artist">Raz</span>
+          <span class="top meta">(Detroit Drum and Bass)</span>
+          <div class="moar">
+            <a href="https://soundcloud.com/ramon-ramirez-3">https://soundcloud.com/ramon-ramirez-3</a><br>
+          </div>
+        </div>
+
+        <div class="listing">
+          <div class="top time">9-10</div>
+          <span class="top artist">Isaac Prieto</span>
+          <span class="top meta">(A u x e t ic / Detroit Vinyl Room / OCTOV)</span>
+          <div class="moar">
+            <a href="https://soundcloud.com/djisaacprieto">https://soundcloud.com/djisaacprieto</a><br>
+            <a href="https://soundcloud.com/detroit-vinyl-room">https://soundcloud.com/detroit-vinyl-room</a>
+          </div>
+        </div>
+      </div>
+      <h3>Subscribe to the Podcast!</h3>
       <p>Download any episode or subscribe to <a href="http://threadbox.net/show">the podcast</a>.</p>
+      <h3>What is Techno Tuesday?</h3>
+      <p>Techno Tuesday is good choons and good peoples. We lean toward drum &amp; bass, techno, and
+         house, but we are open-minded. We are carrying the torch after past Techno Tuesdays, hosted
+         by friends at other locations, fell out of practice.
+      </p>
+      <p>Urban Bean Co has warmly welcomed our show since January 2015. The small coffee shop has been
+         a fantastic venue for us.</p>
+      <h3>I'd Like to Throw Down!</h3>
+      <p>Great! Contact <a href="https://www.facebook.com/djthread">Adam</a> and share a favorite mix.
+      </p>
     </div>
   </div>
   <div class="rightside">

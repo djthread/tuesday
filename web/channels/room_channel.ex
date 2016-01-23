@@ -26,7 +26,7 @@ defmodule Tuesday.RoomChannel do
     [event, data] = ["user:entered", %{user: msg["user"]}]
     broadcast! socket, event, data
     push socket, "join", %{status: "connected"}
-    Log.lines(10)
+    Log.lines(40)
     |> Enum.each(&push socket, &1[:event], &1[:data])
     Log.append event: event, data: data
     {:noreply, socket}
