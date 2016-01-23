@@ -23,12 +23,12 @@ defmodule Tuesday.RoomChannel do
   end
 
   def handle_info({:after_join, msg}, socket) do
-    [event, data] = ["user:entered", %{user: msg["user"]}]
-    broadcast! socket, event, data
+    # [event, data] = ["user:entered", %{user: msg["user"]}]
+    # broadcast! socket, event, data
     push socket, "join", %{status: "connected"}
     Log.lines(40)
     |> Enum.each(&push socket, &1[:event], &1[:data])
-    Log.append event: event, data: data
+    # Log.append event: event, data: data
     {:noreply, socket}
   end
 

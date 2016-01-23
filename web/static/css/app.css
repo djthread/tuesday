@@ -11,6 +11,8 @@ p.slug { margin: 0; color: #999; }
 .leftside { float: left; width: 600px; }
 .right { float: right; }
 .main .rightside { margin-left: 620px; }
+.listings { border: 2px solid rgba(99,99,99,0.5); padding: 1em;
+    background-color: rgba(0,0,0,0.33); }
 .listing { clear: both; margin-bottom: 0.5em; }
 .listing .top { padding-top: 8px; }
 .listing .time { float: left; width: 3em; padding-top: 0.38em; }
