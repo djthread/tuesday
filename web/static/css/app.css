@@ -4,13 +4,13 @@ background: black url("/images/bean.jpg") repeat fixed center; }
 a { color: #cc9; }
 .main { padding: 2em; }
 h1 { margin: 0; }
-h2.chattitle { position: absolute; top: 1.6em; left: 650px; width: 100%;
-    border-bottom: 2px solid #666; }
+h2.chattitle { }
 h3 { color: white; }
 p.slug { margin: 0; color: #999; }
 .leftside { float: left; width: 600px; }
-.right { float: right; }
-.main .rightside { margin-left: 620px; }
+/* .right { float: right; } */
+.main {}
+.rightside { margin-left: 620px; }
 .listings { border: 2px solid rgba(99,99,99,0.5); padding: 1em;
     background-color: rgba(0,0,0,0.33); }
 .listing { clear: both; margin-bottom: 0.5em; }
@@ -19,8 +19,15 @@ p.slug { margin: 0; color: #999; }
 .listing .artist { color: white; margin-right: 0.2em; font-size: 150%; }
 .listing .meta { font-style: italic; }
 .listing .moar { margin-left: 5em; font-size: 80%; }
-div#messages { height: 24em; overflow: scroll; }
+div#messages { height: 24em; overflow: scroll;
+    border: 2px solid rgba(99,99,99,0.5); padding: 0 1em;
+    background-color: rgba(0,0,0,0.33);
+}
 div#messages a { color: #999; }
+input.form-control { background-color: rgba(99,99,99,0.5); padding: 0.3em;
+    border: none; font-size: 100%; color: #eee; }
+input#username { width: 12%; }
+input#message-input { width: 83%; float: right; }
 .projekktor { margin-top: 1em; }
 .info { height: 1em; float: right; }
 .info span { font-weight: bold; color: white; }

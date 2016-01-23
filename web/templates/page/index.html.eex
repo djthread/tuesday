@@ -1,8 +1,7 @@
 <div class="main">
-  <h1>Techno Tuesday</h1>
-  <p class="slug">Hosted LIVE Each and Every Tuesday from Urban Bean Co in Detroit!</p>
-  <h2 class="chattitle">Live Chat</h2>
   <div class="leftside">
+    <h1>Techno Tuesday</h1>
+    <p class="slug">Hosted LIVE Each and Every Tuesday from Urban Bean Co in Detroit!</p>
     <div id="player_a" class="projekktor">
       <noscript><p>No JavaScript support.</p></noscript>
     </div>
@@ -51,10 +50,10 @@
     </div>
   </div>
   <div class="rightside">
+    <h2 class="chattitle">Live Chat</h2>
     <div id="messages" class="container"></div>
-    <span>@</span>
     <input id="username" type="text" class="form-control"
-      placeholder="username" size="12">
-    <input id="message-input" class="form-control" size="50" />
+      placeholder="username">
+    <input id="message-input" class="form-control" />
   </div>
 </div>
