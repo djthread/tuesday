@@ -19,7 +19,7 @@ defmodule Tuesday.Mixfile do
   def application do
     [mod: {Tuesday, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :httpoison]]
+                    :phoenix_ecto, :postgrex, :httpoison, :tzdata]]
   end
 
   # Specifies which paths to compile per environment.
@@ -38,7 +38,8 @@ defmodule Tuesday.Mixfile do
       {:gettext, "~> 0.9"},
       {:cowboy, "~> 1.0"},
       {:httpoison, "~> 0.8.0"},
-      {:exrm, "~> 0.18.1"}
+      {:exrm, "~> 0.18.1"},
+      {:timex, "~> 1.0"}
    ]
 
   end

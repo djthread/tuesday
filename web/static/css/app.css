@@ -19,10 +19,12 @@ p.slug { margin: 0; color: #999; }
 .listing .artist { color: white; margin-right: 0.2em; font-size: 150%; }
 .listing .meta { font-style: italic; }
 .listing .moar { margin-left: 5em; font-size: 80%; }
-div#messages { height: 24em; overflow: scroll; margin-bottom: 0.3em;
+.messages { height: 24em; overflow: scroll; margin-bottom: 0.3em;
     border: 2px solid rgba(99,99,99,0.5); padding: 0 1em;
     background-color: rgba(0,0,0,0.33);
 }
+.messages .stamp { font-size: x-small; float: right; }
+.messages .username { color: #999; font-weight: bold; }
 div#messages a { color: #999; }
 input.form-control { background-color: rgba(99,99,99,0.5); padding: 0.3em;
     border: none; font-size: 100%; color: #eee; }

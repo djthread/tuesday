@@ -1,5 +1,6 @@
 defmodule Tuesday.RoomChannel do
   use Phoenix.Channel
+  use Timex
   require Logger
   alias Tuesday.ChatLog, as: Log
 
@@ -22,25 +23,32 @@ defmodule Tuesday.RoomChannel do
     {:error, %{reason: "unauthorized"}}
   end
 
-  def handle_info({:after_join, msg}, socket) do
-    # [event, data] = ["user:entered", %{user: msg["user"]}]
-    # broadcast! socket, event, data
+  def handle_info({:after_join, _msg}, socket) do
     push socket, "join", %{status: "connected"}
-    Log.lines(40)
-    |> Enum.each(&push socket, &1[:event], &1[:data])
-    # Log.append event: event, data: data
+    40 |> Log.lines |> Enum.each(&push socket, &1[:event], &1[:data])
+
     {:noreply, socket}
   end
 
   def terminate(reason, _socket) do
     Logger.debug "> leave #{inspect reason}"
+
     :ok
   end
 
   def handle_in("new:msg", msg, socket) do
-    [event, data] = ["new:msg", %{user: msg["user"], body: msg["body"]}]
+    {:ok, stamp} = Date.now("America/Detroit") |> DateFormat.format("{ISOz}")
+
+    [event, data] = ["new:msg", %{
+      user:  msg["user"],
+      body:  msg["body"],
+      stamp: stamp
+    }]
+
     broadcast! socket, event, data
     Log.append event: event, data: data
-    {:reply, {:ok, %{msg: msg["body"]}}, assign(socket, :user, msg["user"])}
+
+    # socket = socket |> assign(:user, msg["user"])
+    {:reply, {:ok, %{msg: msg["body"]}}, socket}
   end
 end

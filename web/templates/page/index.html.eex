@@ -51,7 +51,7 @@
   </div>
   <div class="rightside">
     <h2 class="chattitle">Live Chat</h2>
-    <div id="messages" class="container"></div>
+    <div id="messages" class="container messages"></div>
     <input id="username" type="text" class="form-control"
       placeholder="username">
     <input id="message-input" class="form-control" />

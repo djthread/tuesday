@@ -25,6 +25,8 @@ import {Socket, LongPoller} from "phoenix"
 class App {
 
   static init() {
+    this.lastStamp = null  // The last timestamp shown.
+
     this.startChat()
     this.startProjekktor()
     this.startInfoUpdater()
@@ -61,7 +63,11 @@ class App {
     var $input     = $("#message-input")
     var $username  = $("#username")
 
-    socket.onOpen( ev => console.log("OPEN", ev) )
+    socket.onOpen(ev => {
+        console.log("OPEN", ev)
+        $messages.html("")
+    })
+
     socket.onError( ev => console.log("ERROR", ev) )
     socket.onClose( e => console.log("CLOSE", e))
 
@@ -81,6 +87,7 @@ class App {
     })
 
     chan.on("new:msg", msg => {
+      console.log('Msg! ', msg);
       $messages.append(this.messageTemplate(msg))
       // scrollTo(0, document.body.scrollHeight)
 			$messages.animate({scrollTop: $messages[0].scrollHeight}, 1000)
@@ -95,10 +102,32 @@ class App {
   static sanitize(html) { return $("<div/>").text(html).html() }
 
   static messageTemplate(msg) {
-    let username = this.sanitize(msg.user || "anonymous")
-    let body     = this.sanitize(msg.body)
+    let username  = this.sanitize(msg.user || "anonymous")
+    let body      = this.sanitize(msg.body)
+    let date      = new Date(this.sanitize(msg.stamp))
 
-    return(`<p><a href='#'>[${username}]</a>&nbsp; ${body}</p>`)
+    let ampm, hours, stampHtml = ''
+
+    if (date.getHours() >= 12) {
+      hours = date.getHours() - 12
+      ampm  = 'p'
+    } else {
+      hours = date.getHours()
+      ampm  = 'a'
+    }
+
+    hours = hours || '12'
+
+    let stamp     = hours+":"+date.getMinutes()+ampm
+    let fullStamp = (date.getMonth()+1)+"/"+date.getDate()+" "+stamp
+
+    if (this.lastStamp !== fullStamp) {
+      stampHtml = '<span class="stamp" title="'+fullStamp+'">'+stamp+'</span>'
+    }
+
+    this.lastStamp = fullStamp
+
+    return(`<p>${stampHtml}<span class="username">[${username}]</span>&nbsp; <span class="body">${body}</span></p>`)
   }
 
   static startInfoUpdater() {
