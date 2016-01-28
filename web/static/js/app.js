@@ -118,7 +118,8 @@ class App {
 
     hours = hours || '12'
 
-    let stamp     = hours+":"+date.getMinutes()+ampm
+    let minutes   = (date.getMinutes() < 10 ? "0" : "")+date.getMinutes()
+    let stamp     = hours+":"+minutes+ampm
     let fullStamp = (date.getMonth()+1)+"/"+date.getDate()+" "+stamp
 
     if (this.lastStamp !== fullStamp) {

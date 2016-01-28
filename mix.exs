@@ -19,7 +19,7 @@ defmodule Tuesday.Mixfile do
   def application do
     [mod: {Tuesday, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :httpoison, :tzdata]]
+                    :phoenix_ecto, :postgrex, :httpoison, :timex]]
   end
 
   # Specifies which paths to compile per environment.
