@@ -43,7 +43,8 @@ defmodule Tuesday.Mixfile do
       {:gettext, "~> 0.9"},
       {:cowboy, "~> 1.0"},
       {:httpoison, "~> 0.8.0"},
-      {:exrm, "~> 0.18.1"},
+      {:exrm, git: "http://github.com/bitwalker/exrm", tag: "1.0.0-rc7"},
+      # {:exrm, "~> 0.18.1"},
       {:timex, "~> 1.0"}
    ]
 
