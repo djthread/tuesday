@@ -7,8 +7,32 @@
     </div>
     <div id="info" class="info">&nbsp;</div>
     <div class="schedule">
-      <h3>Techno Tuesday, January 26:</h3>
+      <h3>Techno Tuesday, February 2:</h3>
 
+      <div class="listings">
+
+        <p>7-10 B2B2B! That's <strong>three</strong> B's!</p>
+
+        <div class="listing">
+          <div class="top time"></div>
+          <span class="top artist">DJ Larry Bird</span>
+          <span class="top meta">(dnb)</span>
+        </div>
+
+        <div class="listing">
+          <div class="top time"></div>
+          <span class="top artist">Sinister Dosage</span>
+          <span class="top meta">(dnb; Strange Luv Productions, Detroit DnB)</span>
+        </div>
+
+        <div class="listing">
+          <div class="top time"></div>
+          <span class="top artist">Thread</span>
+          <span class="top meta">(dnb; dnbradio.com, Konkrete Jungle Detroit)</span>
+        </div>
+      </div>
+
+      <!--
       <div class="listings">
         <div class="listing">
           <div class="top time">7-8</div>
@@ -35,17 +59,31 @@
           </div>
         </div>
       </div>
-      <h3>Subscribe to the Podcast!</h3>
-      <p>Download any episode or subscribe to <a href="http://threadbox.net/show">the podcast</a>.</p>
+      -->
       <h3>What is Techno Tuesday?</h3>
-      <p>Techno Tuesday is good choons and good peoples. We lean toward drum &amp; bass, techno, and
-         house, but we are open-minded. We are carrying the torch after past Techno Tuesdays, hosted
-         by friends at other locations, fell out of practice.
+      <p>
+        Techno Tuesday is good choons and good peoples. We lean toward drum &amp; bass, techno, and
+        house, but we are open-minded. We are carrying the torch after past Techno Tuesdays, hosted
+        by friends at other locations, fell out of practice.
       </p>
-      <p>Urban Bean Co has warmly welcomed our show since January 2015. The small coffee shop has been
-         a fantastic venue for us.</p>
+      <p>
+        Urban Bean Co has warmly welcomed our show since January 2015. The small coffee shop has been
+        a fantastic venue for us.
+      </p>
+      <h3>DNBRadio?</h3>
+      <p>
+        Adam has held a <a href="http://dnbradio.com/">DNBRadio.com</a> slot since 2006 and his show,
+        <em>The Unraveling</em>, is now a part of Techno Tuesday. At minimum, the 7-8 time slot will
+        be drum &amp; bass, streamed to dnbradio.com. For the time being (with some empty space on
+        the schedule) all dnb will also be streamed at dnbradio.com.
+      </p>
+      <h3>Subscribe to the Podcast!</h3>
+      <p>
+        Download any episode or subscribe to <a href="http://threadbox.net/show">the podcast</a>.
+      </p>
       <h3>I'd Like to Throw Down!</h3>
-      <p>Great! Contact <a href="https://www.facebook.com/djthread">Adam</a> and share a favorite mix.
+      <p>
+        Great! Contact <a href="https://www.facebook.com/djthread">Adam</a> and share a favorite mix.
       </p>
     </div>
   </div>
@@ -53,7 +91,7 @@
     <h2 class="chattitle">Live Chat</h2>
     <div id="messages" class="container messages"></div>
     <input id="username" type="text" class="form-control"
-      placeholder="username">
+      placeholder="name">
     <input id="message-input" class="form-control" />
   </div>
 </div>
