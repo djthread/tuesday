@@ -7,32 +7,30 @@
     </div>
     <div id="info" class="info">&nbsp;</div>
     <div class="schedule">
-      <h3>Techno Tuesday, February 2 .. .</h3>
+      <h3>Techno Tuesday, February 9</h3>
 
       <div class="listings">
-
-        <p>7-10 B2B2B! That's <strong>three</strong> B's!</p>
-
         <div class="listing">
-          <div class="top time"></div>
-          <span class="top artist">DJ Larry Bird</span>
-          <span class="top meta">(dnb)</span>
+          <div class="top time">7-8</div>
+          <span class="top artist">Dj RCU</span>
+          <span class="top meta">(Sub:lVl Audio)</span>
         </div>
 
         <div class="listing">
-          <div class="top time"></div>
-          <span class="top artist">Sinister Dosage</span>
-          <span class="top meta">(dnb; Strange Luv Productions, Detroit DnB)</span>
+          <div class="top time">8-9</div>
+          <span class="top artist">Diasporah</span>
+          <span class="top meta">(Sub:lvl Audio/Schedule One/Section 8 Recs)</span>
         </div>
 
         <div class="listing">
-          <div class="top time"></div>
-          <span class="top artist">Thread</span>
-          <span class="top meta">(dnb; dnbradio.com, Konkrete Jungle Detroit)</span>
+          <div class="top time">9-10</div>
+          <span class="top artist">æther</span>
+          <span class="top meta">(Sublvl Audio)</span>
         </div>
       </div>
 
       <!--
+      <p>7-10 B2B2B! That's <strong>three</strong> B's!</p>
       <div class="listings">
         <div class="listing">
           <div class="top time">7-8</div>
@@ -88,7 +86,7 @@
     </div>
   </div>
   <div class="rightside">
-    <h2 class="chattitle">Live Chat</h2>
+    <h2 class="chattitle">Shoutbox</h2>
     <div id="messages" class="container messages"></div>
     <input id="username" type="text" class="form-control"
       placeholder="name">

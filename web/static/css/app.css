@@ -27,9 +27,9 @@ p.slug { margin: 0; color: #999; }
 .messages .stamp { font-size: x-small; float: right; }
 .messages .username { color: #999; font-weight: bold; }
 div#messages a { color: #999; }
-input.form-control { background-color: rgba(99,99,99,0.5); padding: 1.5%;
+input.form-control { background-color: rgba(99,99,99,0.5); padding: 1%;
     border: none; font-size: 100%; color: #eee; }
-input#username { width: 11%; }
+input#username { width: 13%; }
 input#message-input { width: 82%; float: right; }
 .projekktor { margin-top: 1em; }
 .info { height: 1em; float: right; }
@@ -39,8 +39,9 @@ footer { clear: both; margin-top: 4em; padding: 20px 40px;
     background: rgba(0, 0, 0, .50); }
 footer .bit { float: left; }
 footer .lg { width: 40%; }
+footer .lg .bit p { }
 footer .sm { width: 30%; }
-footer .bit p { margin: 0; }
+footer .sm .bit p { margin: 0; }
 strong { color: white; }
 .clearer { clear: both; line-height: 0; }
 

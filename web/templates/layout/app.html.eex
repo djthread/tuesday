@@ -19,12 +19,13 @@
   </head>
   <body>
     <%= render @view_module, @view_template, assigns %>
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-    <script>require("web/static/js/app")</script>
     <div class="clearer">&nbsp;</div>
     <footer>
       <div class="right bit lg">
         <p>Techno Tuesday is a Thread production.</p>
+        <p>Urban Bean Co.<br>
+        200 Grand River Ave<br>
+        Detroit, MI 48226</p>
       </div>
       <div class="right bit sm">
         <p>Made possible by</p>
@@ -42,5 +43,7 @@
       </div>
       <div class="clearer">&nbsp;</div>
     </footer>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script>require("web/static/js/app")</script>
   </body>
 </html>
