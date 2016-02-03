@@ -1,0 +1,8 @@
+---
+app_name: tuesday
+domains: ["techtues.net"]
+repo_url: "http://github.com/djthread/tuesday.git"
+app_port: 4090
+deploy_type: upgrade
+app_alert_emails: ["thethread@gmail.com"]
+nginx_alert_emails: ["thethread@gmail.com"]
