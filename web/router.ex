@@ -18,7 +18,7 @@ defmodule Tuesday.Router do
 
     get "/", PageController, :index
 
-    get "/info.json", PageController, :info
+    resources "/episodes", EpisodeController, except: [:new, :edit]
   end
 
   # Other scopes may use custom stacks.
