@@ -1,7 +1,9 @@
 defmodule Tuesday.RoomChannel do
   use Phoenix.Channel
-  use Timex
+  use Calendar
+
   require Logger
+
   alias Tuesday.ChatLog, as: Log
   alias Tuesday.StatWorker
 
@@ -61,12 +63,10 @@ defmodule Tuesday.RoomChannel do
   end
 
   def handle_in("new:msg", msg, socket) do
-    {:ok, stamp} = Date.now("America/Detroit") |> DateFormat.format("{ISOz}")
-
     [event, data] = ["new:msg", %{
       user:  msg["user"],
       body:  msg["body"],
-      stamp: stamp
+      stamp: DateTime.now_utc |> DateTime.Format.rfc3339
     }]
 
     broadcast! socket, event, data

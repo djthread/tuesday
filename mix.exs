@@ -24,7 +24,7 @@ defmodule Tuesday.Mixfile do
   def application do
     [mod: {Tuesday, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :httpoison, :timex]]
+                    :phoenix_ecto, :postgrex, :httpoison, :calendar]]
   end
 
   # Specifies which paths to compile per environment.
@@ -45,7 +45,8 @@ defmodule Tuesday.Mixfile do
       {:httpoison, "~> 0.8.0"},
       {:exrm, git: "http://github.com/bitwalker/exrm", tag: "1.0.0-rc7"},
       # {:exrm, "~> 0.18.1"},
-      {:timex, "~> 1.0"}
+      {:calecto, "~> 0.5.1"},
+      {:calendar, "~> 0.12.4"}
    ]
 
   end
