@@ -5,12 +5,13 @@ defmodule Tuesday.User do
     field :name, :string
     field :email, :string
     field :pwhash, :string
-    field :show_id, :integer
+
+    many_to_many :shows, Show, join_through: "shows_users"
 
     timestamps
   end
 
-  @required_fields ~w(name email pwhash show_id)
+  @required_fields ~w(name email pwhash)
   @optional_fields ~w()
 
   @doc """

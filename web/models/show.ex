@@ -4,6 +4,8 @@ defmodule Tuesday.Show do
   schema "shows" do
     field :name, :string
 
+    many_to_many :users, User, join_through: "shows_users"
+
     timestamps
   end
 
