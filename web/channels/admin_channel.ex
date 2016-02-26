@@ -1,11 +1,10 @@
-defmodule Tuesday.RoomChannel do
+defmodule Tuesday.AdminChannel do
   use Phoenix.Channel
-  use Calendar
+  # use Calendar
 
-  require Logger
+  # require Logger
 
   alias Tuesday.ChatLog, as: Log
-  alias Tuesday.StatWorker
 
   @lobbyroom "rooms:lobby"
   @statroom  "rooms:stat"
