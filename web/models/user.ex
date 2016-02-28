@@ -1,12 +1,14 @@
 defmodule Tuesday.User do
   use Tuesday.Web, :model
 
+  @derive {Poison.Encoder, only: [:id, :name, :email]}
+
   schema "users" do
     field :name, :string
     field :email, :string
     field :pwhash, :string
 
-    many_to_many :shows, Show, join_through: "shows_users"
+    many_to_many :shows, Tuesday.Show, join_through: "shows_users"
 
     timestamps
   end
@@ -23,5 +25,6 @@ defmodule Tuesday.User do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> unique_constraint(:name)
   end
 end

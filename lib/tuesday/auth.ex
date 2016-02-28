@@ -1,12 +1,13 @@
 defmodule Tuesday.Auth do
   use Calendar
 
+  @expire_minutes 60
   @secret Application.get_env(:tuesday, Tuesday.Endpoint)
           |> Keyword.get(:auth_secret)
 
-  def authenticate({user, pass}) do
-
-  end
+  # def authenticate({user, pass}) do
+  #
+  # end
 
   def generate_token(user_id, now \\ get_now, secret \\ @secret) do
     user_id_s = user_id |> to_string

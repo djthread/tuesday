@@ -1,10 +1,14 @@
 defmodule Tuesday.Show do
   use Tuesday.Web, :model
 
+  @derive {Poison.Encoder, only: [:id, :name]}
+
   schema "shows" do
     field :name, :string
 
-    many_to_many :users, User, join_through: "shows_users"
+    has_many :episodes, Tuesday.Episode
+
+    many_to_many :users, Tuesday.User, join_through: "shows_users"
 
     timestamps
   end

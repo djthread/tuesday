@@ -1,12 +1,19 @@
 defmodule Tuesday.Episode do
   use Tuesday.Web, :model
 
+  @derive {Poison.Encoder, only: [
+    :id, :number, :title, :record_date, :filename, :description, :show
+  ]}
+
   schema "episodes" do
     field :number, :integer
     field :title, :string
     field :record_date, Ecto.Date
     field :filename, :string
     field :description, :string
+
+    belongs_to :user, Tuesday.User
+    belongs_to :show, Tuesday.Show
 
     timestamps
   end
@@ -23,5 +30,7 @@ defmodule Tuesday.Episode do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> assoc_constraint(:user)
+    |> assoc_constraint(:show)
   end
 end

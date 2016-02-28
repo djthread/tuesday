@@ -99,7 +99,7 @@ defmodule Tuesday.StatWorker do
   end
 
   defp maybe_broadcast_state(old_state, old_state), do: nil
-  defp maybe_broadcast_state(old_state, new_state) do
+  defp maybe_broadcast_state(_old_state, new_state) do
     # PubSub.publish(new_state.update_topic, new_state)
     Logger.info "New state: #{new_state |> inspect}"
     Tuesday.Endpoint.broadcast! "rooms:stat", "update", new_state

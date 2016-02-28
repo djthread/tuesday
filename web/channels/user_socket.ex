@@ -3,6 +3,8 @@ defmodule Tuesday.UserSocket do
 
   ## Channels
   channel "rooms:*", Tuesday.RoomChannel
+  channel "episode", Tuesday.EpisodeChannel
+  channel "admin", Tuesday.AdminChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

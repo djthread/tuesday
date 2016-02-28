@@ -6,10 +6,10 @@ defmodule Tuesday.Repo.Migrations.CreateUser do
       add :name, :string
       add :email, :string
       add :pwhash, :string
-      add :show_id, :integer
 
       timestamps
     end
 
+    create index(:users, [:name])
   end
 end

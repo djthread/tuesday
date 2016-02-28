@@ -1,10 +1,7 @@
 defmodule Tuesday.RoomChannel do
-  use Phoenix.Channel
-  use Calendar
+  use Tuesday.Web, :channel
 
-  require Logger
-
-  alias Tuesday.ChatLog, as: Log
+  alias Tuesday.ChatLog
   alias Tuesday.StatWorker
 
   @lobbyroom "rooms:lobby"
@@ -42,7 +39,8 @@ defmodule Tuesday.RoomChannel do
 
   def handle_info({:after_join, _msg}, socket) do
     push socket, "join", %{status: "connected"}
-    40 |> Log.lines |> Enum.each(&push socket, &1[:event], &1[:data])
+    ChatLog.lines(40)
+    |> Enum.each(&push socket, &1[:event], &1[:data])
 
     {:noreply, socket}
   end
@@ -70,7 +68,7 @@ defmodule Tuesday.RoomChannel do
     }]
 
     broadcast! socket, event, data
-    Log.append event: event, data: data
+    ChatLog.append event: event, data: data
 
     # socket = socket |> assign(:user, msg["user"])
     {:reply, {:ok, %{msg: msg["body"]}}, socket}
