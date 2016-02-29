@@ -1,10 +1,11 @@
 defmodule Tuesday.Show do
   use Tuesday.Web, :model
 
-  @derive {Poison.Encoder, only: [:id, :name]}
+  @derive {Poison.Encoder, only: [:id, :name, :slug]}
 
   schema "shows" do
     field :name, :string
+    field :slug, :string
 
     has_many :episodes, Tuesday.Episode
 
@@ -13,7 +14,7 @@ defmodule Tuesday.Show do
     timestamps
   end
 
-  @required_fields ~w(name)
+  @required_fields ~w(name slug)
   @optional_fields ~w()
 
   @doc """

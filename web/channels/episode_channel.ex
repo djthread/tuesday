@@ -14,17 +14,12 @@ defmodule Tuesday.EpisodeChannel do
     {:reply, {:ok, %{shows: shows}}, socket}
   end
 
-  def handle_in("episodes", %{"show_id" => show_id}, socket) do
+  def handle_in("episodes", %{"slug" => slug, "page" => pageno}, socket) do
     q = from e in Episode,
         join:    s in Show,
+        where:   s.slug == ^slug,
         preload: [show: s]
 
     {:reply, {:ok, %{episodes: q |> Repo.all}}, socket}
-  end
-
-  def handle_in("episodes", _msg, socket) do
-    episodes = Repo.all(Episode)
-
-    {:reply, {:ok, %{episodes: episodes}}, socket}
   end
 end

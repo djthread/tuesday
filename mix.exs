@@ -48,6 +48,7 @@ defmodule Tuesday.Mixfile do
       {:calecto, "~> 0.5.1"},
       {:calendar, "~> 0.12.4"},
       # {:scrivener, "~> 1.1", override: true}
+      {:earmark, "~> 0.2.0"}
    ]
 
   end
