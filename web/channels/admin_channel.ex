@@ -1,24 +1,22 @@
 defmodule Tuesday.AdminChannel do
   use Tuesday.Web, :channel
 
-  def join("admin", params, socket) do
-    Logger.info inspect(params)
-    {:ok, socket}
-  end
-
-  def handle_in(
-    "admin:auth",
-    [name: name, pwhash: pass],
-    socket)
-  do
-    user = where(User, name: ^name, pwhash: ^hash(pass))
-           |> Repo.first
+  def join("admin", %{"name" => name, "pass" => pass}, socket) do
+    user =
+      where(User, name: ^name, pwhash: ^hash(pass))
+      |> Repo.first
+      |> Repo.preload(:shows)
 
     case user do
       %User{} ->
-        {:reply, :ok, socket |> assign(:user, user)}
+        {:ok, socket |> assign(:user, user)}
       _ ->
-        {:reply, :error, socket}
+        {:error, %{reason: "unauthorized"}}
     end
   end
+
+  def handle_in("whoami", _msg, socket) do
+    {:reply, {:ok, socket.assigns[:user]}, socket}
+  end
+
 end

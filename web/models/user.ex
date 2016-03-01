@@ -1,7 +1,7 @@
 defmodule Tuesday.User do
   use Tuesday.Web, :model
 
-  @derive {Poison.Encoder, only: [:id, :name, :email]}
+  @derive {Poison.Encoder, only: [:id, :name, :email, :shows]}
 
   schema "users" do
     field :name, :string
