@@ -10,6 +10,6 @@ defmodule Tuesday.Repo.Migrations.CreateUser do
       timestamps
     end
 
-    create index(:users, [:name])
+    create index(:users, [:name], unique: true)
   end
 end
