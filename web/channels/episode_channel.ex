@@ -7,9 +7,7 @@ defmodule Tuesday.EpisodeChannel do
   end
 
   def handle_in("shows", _msg, socket) do
-    shows =
-      Show
-      |> Repo.all
+    shows = Show |> Repo.all
 
     {:reply, {:ok, %{shows: shows}}, socket}
   end

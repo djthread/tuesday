@@ -2,7 +2,8 @@ defmodule Tuesday.Episode do
   use Tuesday.Web, :model
 
   @derive {Poison.Encoder, only: [
-    :id, :number, :title, :record_date, :filename, :description, :show
+    :id, :number, :title, :record_date, :filename,
+    :description, :show, :user
   ]}
 
   schema "episodes" do
@@ -18,8 +19,8 @@ defmodule Tuesday.Episode do
     timestamps
   end
 
-  @required_fields ~w(number title record_date filename description)
-  @optional_fields ~w()
+  @required_fields ~w(number title record_date filename description)a
+  @optional_fields ~w()a
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -27,9 +28,10 @@ defmodule Tuesday.Episode do
   If no params are provided, an invalid changeset is returned
   with no validation performed.
   """
-  def changeset(model, params \\ :empty) do
-    model
-    |> cast(params, @required_fields, @optional_fields)
+  def changeset(episode, params \\ :invalid) do
+    episode
+    |> cast(params, @optional_fields)
+    |> validate_required(@required_fields)
     |> assoc_constraint(:user)
     |> assoc_constraint(:show)
   end
