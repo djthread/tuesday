@@ -2,7 +2,7 @@ defmodule Tuesday.Show do
   use Tuesday.Web, :model
 
   @derive {Poison.Encoder, only: [
-    :id, :name, :slug, :users, :episodes]}
+    :id, :name, :slug]}
 
   schema "shows" do
     field :name, :string
@@ -29,4 +29,23 @@ defmodule Tuesday.Show do
     |> cast(params, @optional_fields)
     |> validate_required(@required_fields)
   end
+
+  # iex(16)> u |> Tuesday.User.changeset(%{}) |> Ecto.Changeset.put_assoc(:shows, [s]) |> Tuesday.Repo.update!
+  #
+  # def create_show(params, user_name) do
+  #   import Ecto.Query
+  #   user = Tuesday.User |> where(name: ^user_name) |> Tuesday.Repo.one
+  #
+  #   Repo.insert!(%Tuesday.Show{name: "Techno Tuesday", slug: "techno-tuesday"})
+  #   |> put_assoc
+  #   # changeset(%Tuesday.Show{}, params)
+  #   # |> put_assoc(:users, [user])
+  #
+  #   # import Ecto.Query
+  #   # user = Tuesday.User |> where(name: ^user_name) |> Tuesday.Repo.one
+  #   #
+  #   # %Tuesday.Show{name: name, slug: slug}
+  #   # |> put_assoc(:users, [user])
+  #   # |> Tuesday.Repo.insert!
+  # end
 end
