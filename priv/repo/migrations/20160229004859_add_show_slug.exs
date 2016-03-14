@@ -1,4 +1,4 @@
-efmodule Tuesday.Repo.Migrations.AddShowSlug do
+defmodule Tuesday.Repo.Migrations.AddShowSlug do
   use Ecto.Migration
 
   def change do
