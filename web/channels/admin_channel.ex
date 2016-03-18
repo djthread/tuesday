@@ -23,32 +23,40 @@ defmodule Tuesday.AdminChannel do
   def handle_in("show", %{"id" => show_id}, socket)
   when is_integer(show_id)
   do
-    show =
-      Show
-      |> where(id: ^show_id)
-      |> Repo.one
-      |> Repo.preload(:episodes)
-
-    {:reply, {:ok, %{show: show, episodes: show.episodes}}, socket}
+    Show
+    |> where(id: ^show_id)
+    |> Repo.one
+    |> Repo.preload(:episodes)
+    |> (fn(sh) ->
+         Phoenix.View.render(
+           Tuesday.ShowView, "show_episodes.json", show: sh)
+       end).()
+    |> (fn(show) ->
+         {:reply, {:ok, %{show: show}}, socket}
+       end).()
   end
 
   def handle_in("save_episode", %{"episode" => ep, "show_id" => show_id}, socket) do
     Logger.info "got ep: " <> inspect(ep)
 
     episode = 
-      with show = %Show{} <- Show
-                             |> where(id: ^show_id)
-                             |> Repo.one,
-                  episode <- %Episode{
-                               title: ep["title"]
-                             }
-                             |> Episode.changeset(%{})
-                             |> IO.inspect
-                             |> Ecto.Changeset.put_assoc(:show, show),
+      with show =
+        %Show{} <- Show
+                   |> where(id: ^show_id)
+                   |> Repo.one,
+        episode <- %Episode{
+                     title: ep["title"]
+                   }
+                   |> Episode.changeset(%{})
+                   |> IO.inspect
+                   |> Ecto.Changeset.put_assoc(:show, show),
         do: episode
 
-    Logger.info "save_episode " <> inspect(episode)
-    {:reply, {:ok, episode}, socket}
+    rendered = Phoenix.View.render(
+      Tuesday.ShowView, "episode.json", episode: episode)
+
+    Logger.info "save_episode " <> inspect(rendered)
+    {:reply, {:ok, %{episode: rendered}}, socket}
   end
 
   # def handle_id("episodes", %{"show_id" => show_id}, socket)
