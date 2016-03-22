@@ -16,7 +16,7 @@ defmodule Tuesday.User do
   end
 
   @required_fields ~w(name email pwhash)a
-  @optional_fields ~w()a
+  @optional_fields ~w(name email pwhash is_admin)a
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -30,4 +30,24 @@ defmodule Tuesday.User do
     |> validate_required(@required_fields)
     |> unique_constraint(:name)
   end
+
+  def create(name, pass, email, admin? \\ false) do
+    changeset = changeset(%Tuesday.User{}, %{
+      "name"     => name,
+      "pwhash"   => Tuesday.Auth.hash(pass),
+      "email"    => email,
+      "is_admin" => admin?
+    })
+
+    Tuesday.Repo.insert(changeset)
+  end
+
+  # u |> Ecto.build_assoc(:shows)
+  #   |> Ecto.Changeset.cast(%{"name" => "", "slug" => ""}, req)
+  #   |> Tuesday.Repo.insert
+
+  # u |> Repo.preload(:shows)
+  #   |> Ecto.Changeset.cast(%{}, [])
+  #   |> Ecto.Changeset.put_assoc(:shows, [s])
+  #   |> Repo.update
 end

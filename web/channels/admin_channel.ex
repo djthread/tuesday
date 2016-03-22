@@ -40,16 +40,11 @@ defmodule Tuesday.AdminChannel do
     Logger.info "got ep: " <> inspect(ep)
 
     episode = 
-      with show =
-        %Show{} <- Show
-                   |> where(id: ^show_id)
-                   |> Repo.one,
-        episode <- %Episode{
-                     title: ep["title"]
-                   }
-                   |> Episode.changeset(%{})
-                   |> IO.inspect
-                   |> Ecto.Changeset.put_assoc(:show, show),
+      with show = %Show{} <- Show |> where(id: ^show_id) |> Repo.one,
+           episode        <- %Episode{title: ep["title"]}
+                             |> Episode.changeset(%{})
+                             |> IO.inspect
+                             |> Ecto.Changeset.put_assoc(:show, show),
         do: episode
 
     rendered = Phoenix.View.render(

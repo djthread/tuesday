@@ -15,8 +15,8 @@ defmodule Tuesday.Show do
     timestamps
   end
 
-  @required_fields ~w(name slug)a
-  @optional_fields ~w()a
+  @required_fields ~w(name slug)
+  @optional_fields ~w()
 
   @doc """
   Creates a changeset based on the `model` and `params`.
