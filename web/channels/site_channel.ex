@@ -1,21 +1,32 @@
-defmodule Tuesday.AdminChannel do
+defmodule Tuesday.SiteChannel do
   use Tuesday.Web, :channel
   require Logger
 
-  def join("admin", %{"name" => name, "pass" => pass}, socket) do
-    user =
-      User
-      |> where(name: ^name, pwhash: ^hash(pass))
-      |> Repo.one
-
-    case user do
-      %User{} ->
-        {:ok, assign(socket, :user, user |> Repo.preload(:shows))}
-      _ ->
-        {:error, %{reason: "unauthorized"}}
-    end
+  def join("site", _params, socket) do
+    {:ok, socket}
   end
 
+  def join("episode", _, socket) do
+    Logger.info "joined episode"
+    {:ok, socket}
+  end
+
+  def handle_in("shows", _msg, socket) do
+    shows = Show |> Repo.all
+
+    {:reply, {:ok, %{shows: shows}}, socket}
+  end
+
+  def handle_in("episodes", %{"slug" => slug, "page" => pageno}, socket) do
+    q = from e in Episode,
+        join:    s in Show,
+        where:   s.slug == ^slug,
+        preload: [show: s]
+
+    {:reply, {:ok, %{episodes: q |> Repo.all}}, socket}
+  end
+
+  @crap """
   def handle_in("whoami", _msg, socket) do
     {:reply, {:ok, socket.assigns[:user]}, socket}
   end
@@ -68,4 +79,5 @@ defmodule Tuesday.AdminChannel do
   #     Episode
   #     |> where(show
   # end
+  """
 end

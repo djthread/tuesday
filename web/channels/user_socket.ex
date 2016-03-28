@@ -3,6 +3,7 @@ defmodule Tuesday.UserSocket do
 
   ## Channels
   channel "rooms:*", Tuesday.RoomChannel
+  channel "site", Tuesday.SiteChannel
   channel "episode", Tuesday.EpisodeChannel
   channel "admin", Tuesday.AdminChannel
 

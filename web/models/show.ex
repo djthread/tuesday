@@ -2,11 +2,17 @@ defmodule Tuesday.Show do
   use Tuesday.Web, :model
 
   @derive {Poison.Encoder, only: [
-    :id, :name, :slug]}
+    :id, :name, :slug, :hosted_by, :recurring_note,
+    :tiny_info, :short_info]}
 
   schema "shows" do
     field :name, :string
     field :slug, :string
+    field :hosted_by, :string
+    field :recurring_note, :string
+    field :tiny_info, :string
+    field :short_info, :string
+    field :full_info, :string
 
     has_many :episodes, Tuesday.Episode
 
