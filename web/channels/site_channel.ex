@@ -17,14 +17,27 @@ defmodule Tuesday.SiteChannel do
     {:reply, {:ok, %{shows: shows}}, socket}
   end
 
-  def handle_in("episodes", %{"slug" => slug, "page" => pageno}, socket) do
-    q = from e in Episode,
-        join:    s in Show,
-        where:   s.slug == ^slug,
-        preload: [show: s]
+  def handle_in("show", %{"slug" => slug}, socket) do
+    show =
+      Show
+      |> where(slug: ^slug)
+      |> Repo.one
+      |> Repo.preload(:episodes)
 
-    {:reply, {:ok, %{episodes: q |> Repo.all}}, socket}
+    rendered = Phoenix.View.render(
+      Tuesday.ShowView, "show.json", show: show)
+
+      {:reply, {:ok, rendered}, socket}
   end
+
+  # def handle_in("episodes", %{"slug" => slug, "page" => pageno}, socket) do
+  #   q = from e in Episode,
+  #       join:    s in Show,
+  #       where:   s.slug == ^slug,
+  #       preload: [show: s]
+  #
+  #   {:reply, {:ok, %{episodes: q |> Repo.all}}, socket}
+  # end
 
   @crap """
   def handle_in("whoami", _msg, socket) do

@@ -58,7 +58,7 @@ defmodule Tuesday.AdminChannel do
       Tuesday.EpisodeView, "show.json", episode: episode)
 
     Logger.info "save_episode " <> inspect(rendered)
-    {:reply, {:ok, %{episode: rendered}}, socket}
+    {:reply, {:ok, rendered}, socket}
   end
 
   # def handle_id("episodes", %{"show_id" => show_id}, socket)

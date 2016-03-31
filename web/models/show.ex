@@ -2,17 +2,17 @@ defmodule Tuesday.Show do
   use Tuesday.Web, :model
 
   @derive {Poison.Encoder, only: [
-    :id, :name, :slug, :hosted_by, :recurring_note,
+    :id, :name, :slug, :hosted_by,
     :tiny_info, :short_info]}
 
   schema "shows" do
-    field :name, :string
-    field :slug, :string
-    field :hosted_by, :string
+    field :name,           :string
+    field :slug,           :string
+    field :hosted_by,      :string
     field :recurring_note, :string
-    field :tiny_info, :string
-    field :short_info, :string
-    field :full_info, :string
+    field :tiny_info,      :string
+    field :short_info,     :string
+    field :full_info,      :string
 
     has_many :episodes, Tuesday.Episode
 
@@ -22,7 +22,7 @@ defmodule Tuesday.Show do
   end
 
   @required_fields ~w(name slug)
-  @optional_fields ~w()
+  @optional_fields ~w(name slug hosted_by recurring_note tiny_info short_info full_info)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

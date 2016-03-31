@@ -12,13 +12,15 @@ defmodule Tuesday.EpisodeView do
 
   def render("show.json", %{episode: episode}) do
     Logger.info "ep.json: " <> inspect(episode)
-    %{id:          episode.id,
-      number:      episode.number,
-      title:       episode.title,
-      record_date: episode.record_date,
-      filename:    episode.filename,
-      description: episode.description,
-      show_id:     episode.show_id
+    %{episode:
+      %{id:          episode.id,
+        number:      episode.number,
+        title:       episode.title,
+        record_date: episode.record_date,
+        filename:    episode.filename,
+        description: episode.description,
+        show_id:     episode.show_id
+      }
     }
   end
 end
