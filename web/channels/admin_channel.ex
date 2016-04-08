@@ -43,8 +43,8 @@ defmodule Tuesday.AdminChannel do
         {:reply, {:error, "Not Authorized"}, socket}
       show ->
         Episode
+        |> where(show_id: ^show.id)
         |> Repo.get!(id)
-        |> fn(e) -> show.id == e.show_id; e end.()
         |> Episode.changeset(ep)
         |> Repo.update
         |> handle_save_episode_result(socket)
@@ -60,7 +60,7 @@ defmodule Tuesday.AdminChannel do
       show ->
         %Episode{}
         |> Episode.changeset(ep)
-        |> fn(e) -> show.id == e.show_id; e end.()
+        |> fn(e) -> sid = show.id; ^sid = e.show_id; e end.()
         |> Ecto.Changeset.put_assoc(:show, show)
         |> Repo.insert
         |> handle_save_episode_result(socket)
