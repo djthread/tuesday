@@ -28,8 +28,7 @@ defmodule Tuesday.AdminChannel do
     |> Repo.one
     |> Repo.preload(:episodes)
     |> (fn(sh) ->
-         Phoenix.View.render(
-           Tuesday.ShowView, "show_episodes.json", show: sh)
+         Phoenix.View.render(Tuesday.ShowView, "show.json", show: sh)
        end).()
     |> (fn(show) ->
          {:reply, {:ok, show}, socket}
@@ -37,28 +36,52 @@ defmodule Tuesday.AdminChannel do
   end
 
   def handle_in("save_episode",
+    %{"episode" => ep = %{"id" => id, "show_id" => show_id}}, socket)
+  do
+    case show_owned_by_user(show_id, socket.assigns[:user].id) do
+      nil ->
+        {:reply, {:error, "Not Authorized"}, socket}
+      show ->
+        Episode
+        |> Repo.get!(id)
+        |> fn(e) -> show.id == e.show_id; e end.()
+        |> Episode.changeset(ep)
+        |> Repo.update
+        |> handle_save_episode_result(socket)
+    end
+  end
+
+  def handle_in("save_episode",
     %{"episode" => ep = %{"show_id" => show_id}}, socket)
   do
-    Logger.info "got ep: " <> inspect(ep)
+    case show = show_owned_by_user(show_id, socket.assigns[:user].id) do
+      nil ->
+        {:reply, {:error, "Not Authorized"}, socket}
+      show ->
+        %Episode{}
+        |> Episode.changeset(ep)
+        |> fn(e) -> show.id == e.show_id; e end.()
+        |> Ecto.Changeset.put_assoc(:show, show)
+        |> Repo.insert
+        |> handle_save_episode_result(socket)
+    end
+  end
 
-    episode = 
-      with          show <- Show |> where(id: ^show_id) |> Repo.one,
-               changeset <- %Episode{}
-                            |> Episode.changeset(ep)
-                            |> Ecto.Changeset.put_assoc(:show, show),
-          {:ok, episode} <- fn(cs) ->
-                              case ep["id"] do
-                                nil -> cs |> Repo.insert
-                                _   -> cs |> Repo.update!
-                              end
-                            end.(changeset),
-        do: episode
+  def handle_save_episode_result({:ok, episode}, socket) do
+    Tuesday.EpisodeView
+    |> Phoenix.View.render("show.json", episode: episode)
+    |> fn(json) -> {:reply, {:ok, json}, socket} end.()
+  end
 
-    rendered = Phoenix.View.render(
-      Tuesday.EpisodeView, "show.json", episode: episode)
+  def handle_save_episode_result({:error, changeset}, socket) do
+    Tuesday.ChangesetView
+    |> Phoenix.View.render("error.json", changeset: changeset)
+    |> fn(json) -> {:reply, {:error, json}, socket} end.()
+  end
 
-    Logger.info "save_episode " <> inspect(rendered)
-    {:reply, {:ok, rendered}, socket}
+  defp show_owned_by_user(show_id, user_id) do
+    show = Show |> where(id: ^show_id) |> Repo.one |> Repo.preload(:users)
+    Enum.find(show.users, &(&1.id == user_id))
   end
 
   # def handle_id("episodes", %{"show_id" => show_id}, socket)

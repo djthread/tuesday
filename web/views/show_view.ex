@@ -3,7 +3,6 @@ defmodule Tuesday.ShowView do
     require Logger
 
   def render("show.json", %{show: show}) do
-    Logger.info "ShowView:show.json: " <> inspect(show.episodes)
     %{show:
       %{id:         show.id,
         name:       show.name,

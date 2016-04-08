@@ -19,7 +19,7 @@ defmodule Tuesday.Episode do
     timestamps
   end
 
-  @required_fields ~w(number title record_date filename description)a
+  @required_fields ~w(number title record_date filename)a
   @optional_fields ~w(number title record_date filename description)a
 
   @doc """
