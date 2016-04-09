@@ -58,7 +58,7 @@ defmodule Tuesday.AdminChannel do
       nil ->
         {:reply, {:error, "Not Authorized"}, socket}
       show ->
-        sid = show.id; ^sid = show_id  # make sure episode belongs to show
+        ^show_id = show.id  # make sure episode belongs to show
         %Episode{}
         |> Episode.changeset(ep)
         |> Ecto.Changeset.put_assoc(:show, show)

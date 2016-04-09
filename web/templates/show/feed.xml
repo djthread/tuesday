@@ -13,8 +13,8 @@
     <%= for ep <- show.episodes do %>
     <item>
         <title><%= ep.number %>. <%= ep.title %></title>
-        <link>https://impulsedetroit.net/shows/<%= show.slug %>/episodes/<%= ep.number %></link>
-        <guid>https://impulsedetroit.net/shows/<%= show.slug %>/download/<%= ep.filename %></guid>
+        <link>https://impulsedetroit.net/#/shows/<%= show.slug %>/episodes/<%= ep.number %></link>
+        <guid>https://impulsedetroit.net/download/<%= show.slug %>/<%= ep.filename %></guid>
         <description>
             Recorded <%= ep.record_date %>
 
@@ -25,7 +25,5 @@
         <pubDate><%= ep.timestamp %></pubDate>
     </item>
     <% end %>
-
   </channel>
-
 </rss>
