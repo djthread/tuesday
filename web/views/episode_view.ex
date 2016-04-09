@@ -11,13 +11,14 @@ defmodule Tuesday.EpisodeView do
   # end
 
   def render("show.json", %{episode: episode}) do
-    %{id:          episode.id,
-      number:      episode.number,
-      title:       episode.title,
-      record_date: episode.record_date,
-      filename:    episode.filename,
-      description: episode.description,
-      show_id:     episode.show_id
+    %{id:           episode.id,
+      number:       episode.number,
+      title:        episode.title,
+      record_date:  episode.record_date,
+      inserted_at:  episode.inserted_at,
+      filename:     episode.filename,
+      description:  episode.description,
+      show_id:      episode.show_id,
     }
   end
 end
