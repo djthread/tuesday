@@ -1,8 +1,15 @@
 defmodule Tuesday.Util do
   use Calendar
 
-  @secret Application.get_env(:tuesday, Tuesday.Endpoint)
+  @secret :tuesday
+          |> Application.get_env(Tuesday.Endpoint)
           |> Keyword.get(:auth_secret)
+
+  def podcast_path_by_slug(slug) do
+    case slug do
+      "techno-tuesday" -> "/srv/http/threadbox/dnbcast"
+    end
+  end
 
   def get_now do
     DateTime.now_utc |> DateTime.Format.unix
@@ -24,5 +31,20 @@ defmodule Tuesday.Util do
       assigns:   [],
       transport: Phoenix.Transports.WebSocket
     }
+  end
+
+  def update_podcast_feed(show) do
+    Tuesday.ShowView
+    |> Phoenix.View.render("feed.xml", show: show)
+    |> IO.inspect
+  end
+
+  def bytes_by_slug_and_filename(show, filename) do
+    path = podcast_path_by_slug(show.slug)
+
+    case path |> Path.join(filename) |> File.stat do
+      {:ok, %File.Stat{size: size}} -> size
+      _                             -> nil
+    end
   end
 end

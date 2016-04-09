@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title><%= show.name %> - Impulse Detroit</title>
+    <description>Choonage</description>
+    <link>https://impulsedetroit.net/shows/<%= show.slug %></link>
+    <language>en-us</language>
+    <copyright>Copyright 2016</copyright>
+    <lastBuildDate><%= timestamp %></lastBuildDate>
+    <pubDate><%= timestamp %></pubDate>
+    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+    <webMaster>thethread@gmail.com</webMaster>
+    <%= for ep <- show.episodes do %>
+    <item>
+        <title><%= ep.number %>. <%= ep.title %></title>
+        <link>https://impulsedetroit.net/shows/<%= show.slug %>/episodes/<%= ep.number %></link>
+        <guid>https://impulsedetroit.net/shows/<%= show.slug %>/download/<%= ep.filename %></guid>
+        <description>
+            Recorded <%= ep.record_date %>
+
+            <%= ep.description %>
+        </description>
+        <enclosure url="https://impulsedetroit.net/shows/<%= show.slug %>/download/<%= ep.filename %>25.mp3" length="<%= ep.bytes %>" type="audio/mpeg"/>
+        <category>Podcasts</category>
+        <pubDate><%= ep.timestamp %></pubDate>
+    </item>
+    <% end %>
+
+  </channel>
+
+</rss>
