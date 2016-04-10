@@ -72,6 +72,7 @@ defmodule Tuesday.Web do
       alias Tuesday.User
       alias Tuesday.Show
       alias Tuesday.Episode
+      alias Tuesday.Event
       alias Tuesday.Repo
 
       import Ecto

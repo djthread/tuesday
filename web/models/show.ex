@@ -15,6 +15,7 @@ defmodule Tuesday.Show do
     field :full_info,      :string
 
     has_many :episodes, Tuesday.Episode
+    has_many :events,   Tuesday.Event
 
     many_to_many :users, Tuesday.User, join_through: "shows_users"
 
