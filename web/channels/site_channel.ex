@@ -22,13 +22,14 @@ defmodule Tuesday.SiteChannel do
       Show
       |> where(slug: ^slug)
       |> Repo.one
-      |> Repo.preload(:episodes)
+      |> Show.preload_episodes_and_events
 
     rendered = Phoenix.View.render(
       Tuesday.ShowView, "show.json", show: show)
 
       {:reply, {:ok, rendered}, socket}
   end
+
 
   # def handle_in("episodes", %{"slug" => slug, "page" => pageno}, socket) do
   #   q = from e in Episode,
