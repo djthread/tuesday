@@ -2,7 +2,10 @@ defmodule Tuesday.ShowView do
   use Tuesday.Web, :view
   alias Calendar.DateTime
 
-  def render("show.json", %{show: show}) do
+  @doc """
+  Use param `full: true` to include short_info and full_info
+  """
+  def render("show.json", params = %{show: show}) do
     episodes =
       Enum.map show.episodes, fn(ep) ->
         Tuesday.EpisodeView
@@ -15,17 +18,22 @@ defmodule Tuesday.ShowView do
         |> render("show.json", event: ev, show: show)
       end
 
-    %{show:
-      %{id:         show.id,
-        name:       show.name,
-        slug:       show.slug,
-        tiny_info:  show.tiny_info,
-        short_info: show.short_info,
-        full_info:  show.full_info,
-        episodes:   episodes,
-        events:     events
-      }
+    %{id:         show.id,
+      name:       show.name,
+      slug:       show.slug,
+      tiny_info:  show.tiny_info,
+      episodes:   episodes,
+      events:     events
     }
+    |> Map.merge(
+         case params[:full] do
+           true -> %{
+             short_info: show.short_info,
+             full_info:  show.full_info
+           }
+           _ -> %{}
+         end
+       )
   end
 
   def render("feed.xml", %{show: show}) do

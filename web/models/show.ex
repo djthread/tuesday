@@ -44,6 +44,19 @@ defmodule Tuesday.Show do
     |> validate_required(~w(tiny_info short_info full_info)a)
   end
 
+  def preload_a_month_of_episodes_and_events(show) do
+    show
+    |> Repo.preload(episodes: from(ep in Episode,
+        where:    ep.record_date > ago(1, "month"),
+        order_by: [desc: ep.number],
+       ))
+    |> Repo.preload(events: from(ev in Event,
+        where:    ev.happens_on > ago(2, "day")
+                    and ev.happens_on < from_now(1, "month"),
+        order_by: ev.happens_on
+       ))
+  end
+
   def preload_episodes_and_events(show) do
     show
     |> Repo.preload(episodes: from(ep in Episode, order_by: [desc: ep.number]))
@@ -52,6 +65,7 @@ defmodule Tuesday.Show do
         order_by: ev.happens_on
        ))
   end
+
 
   # iex(16)> u |> Tuesday.User.changeset(%{}) |> Ecto.Changeset.put_assoc(:shows, [s]) |> Tuesday.Repo.update!
   #

@@ -27,12 +27,12 @@ defmodule Tuesday.AdminChannel do
     |> where(id: ^show_id)
     |> Repo.one
     |> Show.preload_episodes_and_events
-    |> (fn(sh) ->
+    |> fn(sh) ->
          Phoenix.View.render(Tuesday.ShowView, "show.json", show: sh)
-       end).()
-    |> (fn(show) ->
+       end.()
+    |> fn(show) ->
          {:reply, {:ok, show}, socket}
-       end).()
+       end.()
   end
 
   def handle_in("save_episode",
