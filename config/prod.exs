@@ -14,6 +14,10 @@ use Mix.Config
 config :tuesday, Tuesday.Endpoint,
   http: [port: System.get_env("PORT") || 4090],
   url: [host: "techtues.net", port: 80],
+  check_origin: [
+    "https://impulsedetroit.net",
+    "https://techtues.net"
+  ],
   cache_static_manifest: "priv/static/manifest.json",
   server: true
 
