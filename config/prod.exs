@@ -16,6 +16,7 @@ config :tuesday, Tuesday.Endpoint,
   url: [host: "techtues.net", port: 80],
   check_origin: [
     "https://impulsedetroit.net",
+    "https://backstage.impulsedetroit.net",
     "https://techtues.net"
   ],
   cache_static_manifest: "priv/static/manifest.json",
