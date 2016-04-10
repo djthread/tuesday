@@ -1,5 +1,7 @@
 defmodule Tuesday.AdminChannel do
   use Tuesday.Web, :channel
+  import Phoenix.View, only: [render: 3]
+  alias Tuesday.ShowView
   require Logger
 
   def join("admin", %{"name" => name, "pass" => pass}, socket) do
@@ -27,8 +29,8 @@ defmodule Tuesday.AdminChannel do
     |> where(id: ^show_id)
     |> Repo.one
     |> Show.preload_episodes_and_events
-    |> fn(sh) ->
-         Phoenix.View.render(Tuesday.ShowView, "show.json", show: sh)
+    |> fn(show) ->
+         render(ShowView, "show.json", show: show, full: true)
        end.()
     |> fn(show) ->
          {:reply, {:ok, show}, socket}
