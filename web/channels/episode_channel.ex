@@ -12,7 +12,7 @@ defmodule Tuesday.EpisodeChannel do
     {:reply, {:ok, %{shows: shows}}, socket}
   end
 
-  def handle_in("episodes", %{"slug" => slug, "page" => pageno}, socket) do
+  def handle_in("episodes", %{"slug" => slug, "page" => _pageno}, socket) do
     q = from e in Episode,
         join:    s in Show,
         where:   s.slug == ^slug,

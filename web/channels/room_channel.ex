@@ -26,7 +26,7 @@ defmodule Tuesday.RoomChannel do
     {:ok, socket}
   end
 
-  def join(@statroom, message, socket) do
+  def join(@statroom, _message, socket) do
     Process.flag(:trap_exit, true)
     send(self, :after_stat_join)
 

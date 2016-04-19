@@ -1,5 +1,5 @@
 defmodule Tuesday.Stats do
-  defstruct viewers: nil, online: 0
+  defstruct viewers: nil, listeners: nil, online: 0
 end
 
 defmodule Tuesday.StatWorker do
@@ -13,9 +13,11 @@ defmodule Tuesday.StatWorker do
 
   alias Tuesday.Stats
 
-  @url             Application.get_env :tuesday, :stat_url
+  @rtmp_url        Application.get_env :tuesday, :rtmp_stat_url
+  @icecast_url     Application.get_env :tuesday, :icecast_stat_url
   @name            __MODULE__
   @refresh_seconds 4
+  @unknown         "unknown"
 
   def start_link() do
     opts = []
@@ -73,28 +75,42 @@ defmodule Tuesday.StatWorker do
   end
 
   defp do_refresh(state = %Stats{}) do
-    viewers = case HTTPoison.get(@url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        body |> extract_count
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
-        "unknown"
-      {:error, %HTTPoison.Error{reason: _reason}} ->
-        "unknown"
-    end
+    viewers =
+      case HTTPoison.get(@rtmp_url) do
+        {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+          body |> rtmp_extract_count
+        _ ->
+          @unknown
+      end
 
-    new_state = %Stats{state | viewers: viewers}
+    listeners =
+      case HTTPoison.get(@icecast_url) do
+        {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+          body |> icecast_extract_count
+        _ ->
+          @unknown
+      end
+
+    new_state = %Stats{state | viewers: viewers, listeners: listeners}
 
     maybe_broadcast_state(state, new_state)
 
     new_state
   end
 
-  defp extract_count(body) do
+  defp rtmp_extract_count(body) do
     [_, count | _] = Regex.run(~r|<nclients>(\d+)</nclients>|, body)
 
     case count == "0" or count == "1" do
       true  -> 0
       false -> count |> Integer.parse |> elem(0) |> :erlang.-(1)
+    end
+  end
+
+  defp icecast_extract_count(body) do
+    case Regex.run(~r|"listeners":(\d+)|, body) do
+      [_, count | _] -> count |> Integer.parse |> elem(0)
+      _              -> 0
     end
   end
 

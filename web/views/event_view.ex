@@ -1,8 +1,7 @@
 defmodule Tuesday.EventView do
   use Tuesday.Web, :view
-  import Tuesday.Util
 
-  def render("show.json", %{event: event, show: show}) do
+  def render("show.json", %{event: event}) do
     %{id:          event.id,
       title:       event.title,
       info_json:   event.info_json,

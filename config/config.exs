@@ -14,7 +14,8 @@ config :tuesday, Tuesday.Endpoint,
   pubsub: [name: Tuesday.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
-config :tuesday, :stat_url, "https://techtues.net/stat"
+config :tuesday, :rtmp_stat_url,    "https://impulsedetroit.net/stat"
+config :tuesday, :icecast_stat_url, "http://impulsedetroit.net:8000/status-json.xsl"
 
 # Configures Elixir's Logger
 config :logger, :console,

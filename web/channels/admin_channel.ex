@@ -126,7 +126,7 @@ defmodule Tuesday.AdminChannel do
 
   def handle_save_result({:ok, event = %Tuesday.Event{}}, show, socket) do
     Tuesday.EventView
-    |> Phoenix.View.render("show.json", event: event, show: show)
+    |> Phoenix.View.render("show.json", event: event)
     |> fn(json) -> {:reply, {:ok, json}, socket} end.()
   end
 
