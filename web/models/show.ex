@@ -41,7 +41,7 @@ defmodule Tuesday.Show do
   def info_changeset(show, params \\ :invalid) do
     show
     |> cast(params, ~w(hosted_by recurring_note tiny_info short_info full_info)a)
-    |> validate_required(~w(tiny_info short_info full_info)a)
+    |> validate_required(~w(tiny_info short_info)a)
   end
 
   def preload_a_month_of_episodes_and_events(show) do
