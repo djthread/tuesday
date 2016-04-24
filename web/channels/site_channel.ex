@@ -1,7 +1,7 @@
 defmodule Tuesday.SiteChannel do
   use Tuesday.Web, :channel
   import Phoenix.View, only: [render: 3]
-  alias Tuesday.ShowView
+  alias Tuesday.{ShowView,EpisodeView}
   require Logger
 
   def join("site", _params, socket) do
@@ -37,6 +37,21 @@ defmodule Tuesday.SiteChannel do
        end.()
     |> fn(show) ->
          {:reply, {:ok, %{show: show}}, socket}
+       end.()
+  end
+
+  def handle_in("episode", %{"slug" => slug, "num" => num}, socket)
+  when is_number(num)
+  do
+    Show
+    |> where(slug: ^slug)
+    |> Repo.one
+    |> Repo.preload(episodes: from(ep in Episode, where: ep.number == ^num))
+    |> fn(show = %Show{episodes: [ep | _]}) ->
+         render(EpisodeView, "show.json", episode: ep, show: show)
+       end.()
+    |> fn(ep) ->
+         {:reply, {:ok, %{episode: ep}}, socket}
        end.()
   end
 

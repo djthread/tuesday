@@ -44,8 +44,8 @@ defmodule Tuesday.Show do
     |> validate_required(~w(tiny_info short_info)a)
   end
 
-  def preload_a_month_of_episodes_and_events(show) do
-    show
+  def preload_a_month_of_episodes_and_events(shows) do
+    shows
     |> Repo.preload(episodes: from(ep in Episode,
         where:    ep.record_date > ago(1, "month"),
         order_by: [desc: ep.number],
@@ -57,8 +57,8 @@ defmodule Tuesday.Show do
        ))
   end
 
-  def preload_episodes_and_events(show) do
-    show
+  def preload_episodes_and_events(shows) do
+    shows
     |> Repo.preload(episodes: from(ep in Episode, order_by: [desc: ep.number]))
     |> Repo.preload(events:   from(ev in Event,
         where:    ev.happens_on > ago(2, "day"),
