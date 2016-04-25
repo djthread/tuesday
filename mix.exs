@@ -46,7 +46,8 @@ defmodule Tuesday.Mixfile do
       {:exrm, git: "http://github.com/bitwalker/exrm", tag: "1.0.0-rc7"},
       # {:exrm, "~> 0.18.1"},
       {:calecto, "~> 0.5.1"},
-      {:calendar, "~> 0.12.4"}
+      {:calendar, "~> 0.12.4"},
+      {:mogrify, "~> 0.2"}
       # {:scrivener, "~> 1.1", override: true}
    ]
 

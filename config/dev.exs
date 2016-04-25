@@ -41,3 +41,8 @@ config :tuesday, Tuesday.Repo,
   database: "tuesday_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :tuesday, :image_output_dir,
+  "/Users/thread/Desktop/imgdrop/output"
+config :tuesday, :image_dirs,
+  thread: "/Users/thread/Desktop/imgdrop"
