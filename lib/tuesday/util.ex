@@ -6,9 +6,7 @@ defmodule Tuesday.Util do
           |> Keyword.get(:auth_secret)
 
   def podcast_path_by_slug(slug) do
-    case slug do
-      "techno-tuesday" -> "/srv/http/threadbox/dnbcast"
-    end
+    "/srv/http/impulse/impulse-app/download/" <> slug
   end
 
   def get_now do
