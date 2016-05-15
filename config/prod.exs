@@ -26,10 +26,9 @@ config :tuesday, Tuesday.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
-prefix = "/mnt/music_drive/impulse-detroit-episodes/"
 config :tuesday, :podcast_paths, %{
   "techno-tuesday"   => "/mnt/music_drive/music/Thread/show",
-  "wobblehead-radio" =>  prefix <> "wobblehead-radio"
+  "wobblehead-radio" => "/mnt/music_drive/owncloud_data/larry/files/wobblehead-radio-episodes"
 }
 
 # ## SSL Support
