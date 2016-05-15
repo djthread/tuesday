@@ -1,7 +1,7 @@
 #!/bin/sh
-mix run -e 'IO.puts Mix.Project.config[:version]'
+mix run --no-start -e 'IO.puts Mix.Project.config[:version]'
 
-export VERSION=$(mix run -e 'IO.puts Mix.Project.config[:version]')
+export VERSION=$(mix run --no-start -e 'IO.puts Mix.Project.config[:version]')
 export MIX_ENV=prod
 export PORT=4090
 export LC_ALL=en_US.UTF-8
@@ -22,11 +22,11 @@ echo "=> mix release"         &&
 mix release
 
 echo "=> Extracting release [$VERSION]" &&
-sudo -u nobody /usr/bin/tar zxf \
+sudo -u owncloud /usr/bin/tar zxf \
     rel/tuesday/releases/$VERSION/tuesday.tar.gz \
         -C /app/tuesday &&
 
 echo "=> Upgrading [$VERSION]" &&
-# sudo -u nobody /app/tuesday/bin/tuesday upgrade "$VERSION"
+# sudo -u owncloud /app/tuesday/bin/tuesday upgrade "$VERSION"
 
 sudo systemctl restart ex-tuesday.service
