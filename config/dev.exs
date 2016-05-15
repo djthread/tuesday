@@ -41,3 +41,7 @@ config :tuesday, Tuesday.Repo,
   database: "tuesday_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :tuesday, :podcast_paths, %{
+  "techno-tuesday" => "/Users/thread/Desktop/impulse/thread-episodes"
+}

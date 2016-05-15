@@ -1,6 +1,7 @@
 defmodule Tuesday.AdminChannel do
   use Tuesday.Web, :channel
   import Phoenix.View, only: [render: 3]
+  alias Tuesday.{MP3, Util}
   alias Tuesday.ShowView
   require Logger
 
@@ -41,15 +42,14 @@ defmodule Tuesday.AdminChannel do
     %{"episode" => ep = %{"id" => id, "show_id" => show_id}}, socket)
   do
     case show_owned_by_user(show_id, socket.assigns[:user].id) do
-      nil ->
-        {:reply, {:error, "Not Authorized"}, socket}
-      show ->
+      nil -> not_authorized(socket)
+      dbshow ->
         Episode
-        |> where(show_id: ^show.id)
+        |> where(show_id: ^dbshow.id)
         |> Repo.get!(id)
         |> Episode.changeset(ep)
         |> Repo.update
-        |> handle_save_result(show, socket)
+        |> handle_save_result(dbshow, socket)
     end
   end
 
@@ -57,15 +57,14 @@ defmodule Tuesday.AdminChannel do
     %{"episode" => ep = %{"show_id" => show_id}}, socket)
   do
     case show_owned_by_user(show_id, socket.assigns[:user].id) do
-      nil ->
-        {:reply, {:error, "Not Authorized"}, socket}
-      show ->
-        ^show_id = show.id  # make sure episode belongs to show
+      nil -> not_authorized(socket)
+      dbshow ->
+        ^show_id = dbshow.id  # make sure episode belongs to show
         %Episode{}
         |> Episode.changeset(ep)
-        |> Ecto.Changeset.put_assoc(:show, show)
+        |> Ecto.Changeset.put_assoc(:show, dbshow)
         |> Repo.insert
-        |> handle_save_result(show, socket)
+        |> handle_save_result(dbshow, socket)
     end
   end
 
@@ -74,15 +73,14 @@ defmodule Tuesday.AdminChannel do
     %{"event" => ep = %{"id" => id, "show_id" => show_id}}, socket)
   do
     case show_owned_by_user(show_id, socket.assigns[:user].id) do
-      nil ->
-        {:reply, {:error, "Not Authorized"}, socket}
-      show ->
+      nil -> not_authorized(socket)
+      dbshow ->
         Event
-        |> where(show_id: ^show.id)
+        |> where(show_id: ^dbshow.id)
         |> Repo.get!(id)
         |> Event.changeset(ep)
         |> Repo.update
-        |> handle_save_result(show, socket)
+        |> handle_save_result(dbshow, socket)
     end
   end
 
@@ -90,15 +88,14 @@ defmodule Tuesday.AdminChannel do
     %{"event" => ep = %{"show_id" => show_id}}, socket)
   do
     case show_owned_by_user(show_id, socket.assigns[:user].id) do
-      nil ->
-        {:reply, {:error, "Not Authorized"}, socket}
-      show ->
-        ^show_id = show.id  # make sure event belongs to show
+      nil -> not_authorized(socket)
+      dbshow ->
+        ^show_id = dbshow.id  # make sure event belongs to show
         %Event{}
         |> Event.changeset(ep)
-        |> Ecto.Changeset.put_assoc(:show, show)
+        |> Ecto.Changeset.put_assoc(:show, dbshow)
         |> Repo.insert
-        |> handle_save_result(show, socket)
+        |> handle_save_result(dbshow, socket)
     end
   end
 
@@ -106,8 +103,7 @@ defmodule Tuesday.AdminChannel do
     %{"show" => show = %{"id" => id}}, socket)
   do
     case show_owned_by_user(id, socket.assigns[:user].id) do
-      nil ->
-        {:reply, {:error, "Not Authorized"}, socket}
+      nil -> not_authorized(socket)
       dbshow ->
         ^id = dbshow.id  # make sure event belongs to show
         dbshow
@@ -117,30 +113,62 @@ defmodule Tuesday.AdminChannel do
     end
   end
 
-
-  def handle_save_result({:ok, episode = %Tuesday.Episode{}}, show, socket) do
-    Tuesday.EpisodeView
-    |> Phoenix.View.render("show.json", episode: episode, show: show)
-    |> fn(json) -> {:reply, {:ok, json}, socket} end.()
+  def handle_in("read_tags", %{"id" => show_id, "filename" => filename}, socket)
+  do
+    case show_owned_by_user(show_id, socket.assigns[:user].id) do
+      nil -> not_authorized(socket)
+      %{slug: slug} ->
+        slug
+        |> Util.podcast_path_by_slug
+        |> fn(path) -> MP3.get_meta(path <> "/" <> filename) end.()
+        |> fn(meta) -> {:reply, {:ok, meta}, socket} end.()
+    end
   end
 
-  def handle_save_result({:ok, event = %Tuesday.Event{}}, show, socket) do
-    Tuesday.EventView
-    |> Phoenix.View.render("show.json", event: event)
-    |> fn(json) -> {:reply, {:ok, json}, socket} end.()
+
+  defp handle_save_result({:ok, episode = %Tuesday.Episode{}}, show, socket) do
+    # Tuesday.EpisodeView
+    # |> Phoenix.View.render("show.json", episode: episode, show: show)
+    # |> fn(json) -> {:reply, {:ok, json}, socket} end.()
+    do_handle_save_result(
+      Tuesday.EpisodeView, "show.json", :ok, socket, episode: episode, show: show)
   end
 
-  def handle_save_result({:ok, show = %Tuesday.Show{}}, _show, socket) do
+  defp handle_save_result({:ok, event = %Tuesday.Event{}}, show, socket) do
+    # Tuesday.EventView
+    # |> Phoenix.View.render("show.json", event: event)
+    # |> fn(json) -> {:reply, {:ok, json}, socket} end.()
+    do_handle_save_result(
+      Tuesday.EventView, "show.json", :ok, socket, event: event)
+  end
+
+  defp handle_save_result({:ok, show = %Tuesday.Show{}}, _show, socket) do
     show = show |> Show.preload_episodes_and_events
-    Tuesday.ShowView
-    |> Phoenix.View.render("show.json", show: show)
-    |> fn(json) -> {:reply, {:ok, json}, socket} end.()
+    # Tuesday.ShowView
+    # |> Phoenix.View.render("show.json", show: show)
+    # |> fn(json) -> {:reply, {:ok, json}, socket} end.()
+    do_handle_save_result(
+      Tuesday.ShowView, "show.json", :ok, socket, show: show)
   end
 
-  def handle_save_result({:error, changeset}, _show, socket) do
-    Tuesday.ChangesetView
-    |> Phoenix.View.render("error.json", changeset: changeset)
-    |> fn(json) -> {:reply, {:error, json}, socket} end.()
+  defp handle_save_result({:error, changeset}, _show, socket) do
+    # Tuesday.ChangesetView
+    # |> Phoenix.View.render("error.json", changeset: changeset)
+    # |> fn(json) -> {:reply, {:error, json}, socket} end.()
+    do_handle_save_result(
+      Tuesday.ChangesetView, "error.json", :error, socket, changeset: changeset)
+  end
+
+
+  defp do_handle_save_result(view, name, reply_atom, socket, vars) do
+    view
+    |> Phoenix.View.render(name, vars)
+    |> fn(json) -> {:reply, {reply_atom, json}, socket} end.()
+  end
+
+
+  defp not_authorized(socket) do
+    {:reply, {:error, "Not Authorized"}, socket}
   end
 
 

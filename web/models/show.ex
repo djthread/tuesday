@@ -14,6 +14,8 @@ defmodule Tuesday.Show do
     field :tiny_info,      :string
     field :short_info,     :string
     field :full_info,      :string
+    field :genre,          :string
+    field :podcast_name,   :string
 
     has_many :events,   Event
     has_many :episodes, Episode
@@ -24,7 +26,9 @@ defmodule Tuesday.Show do
   end
 
   @required_fields ~w(name slug)
-  @optional_fields ~w(name slug hosted_by recurring_note tiny_info short_info full_info)
+  @optional_fields ~w(name slug  hosted_by     recurring_note
+                      tiny_info  short_info    full_info
+                      genre      podcast_name  )
 
   @doc """
   Creates a changeset based on the `model` and `params`.

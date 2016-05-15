@@ -5,17 +5,22 @@ defmodule Tuesday.Util do
           |> Application.get_env(Tuesday.Endpoint)
           |> Keyword.get(:auth_secret)
 
+  @doc "Get the dir of episode mp3s, given a slug"
   def podcast_path_by_slug(slug) do
-    "/srv/http/impulse/impulse-app/download/" <> slug
+    # "/srv/http/impulse/impulse-app/download/" <> slug
+    :tuesday
+    |> Application.get_env(:podcast_paths)
+    |> Map.get(slug)
+    # case slug do
+    #   "techno-tuesday" -> "/srv/http/threadbox/dnbcast"
+    # end
   end
 
   def get_now do
     DateTime.now_utc |> DateTime.Format.unix
   end
 
-  @doc """
-  Hash a string, with salt.
-  """
+  @doc "Hash a string, with salt."
   def hash(str) when is_binary(str) do
     :crypto.hash(:sha256, str <> @secret)
     |> Base.encode64
