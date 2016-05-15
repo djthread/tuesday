@@ -17,6 +17,8 @@ config :tuesday, Tuesday.Endpoint,
 config :tuesday, :rtmp_stat_url,    "https://impulsedetroit.net/stat"
 config :tuesday, :icecast_stat_url, "http://impulsedetroit.net:8000/status-json.xsl"
 
+config :tuesday, ecto_repos: [Tuesday.Repo]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

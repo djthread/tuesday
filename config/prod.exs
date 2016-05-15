@@ -26,6 +26,12 @@ config :tuesday, Tuesday.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+prefix = "/mnt/music_drive/impulse-detroit-episodes/"
+config :tuesday, :podcast_paths, %{
+  "techno-tuesday"   => "/mnt/music_drive/music/Thread/show",
+  "wobblehead-radio" =>  prefix <> "wobblehead-radio"
+}
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
