@@ -31,6 +31,22 @@ defmodule Tuesday.MP3 do
 
     case full_filename |> File.exists? do
       true ->
+
+        ["--no-color", "--to-v2.4",
+          "-a", ep.title || "",
+          "-A", show.podcast_name || "",
+          "-t", "#{ep.number}. #{show.name} [#{ep.record_date}]",
+          "-G", show.genre || "",
+          "-Y", ep.record_date
+                |> Ecto.Date.cast!
+                |> Calendar.Strftime.strftime("%Y")
+                |> elem(1),
+          "--recording-date", ep.record_date |> Ecto.Date.to_iso8601,
+          "--add-comment", ep.description || "",
+          full_filename]
+        |> inspect
+        |> Logger.info
+
         Sh.eyeD3("--no-color", "--to-v2.4",
           "-a", ep.title || "",
           "-A", show.podcast_name || "",
