@@ -1,10 +1,11 @@
 defmodule Tuesday.MP3 do
   alias Tuesday.MP3
+  alias Tuesday.{Show, Episode, Util}
 
   defstruct filename: nil, size_mb: nil,      time: nil, codec: nil, kbps: nil,
             hz: nil,       stereo: nil,       id3v: nil, title: nil, artist: nil,
             album: nil,    album_artist: nil, date: nil, track: nil,
-            genre: nil
+            genre: nil,    recording_date: nil
 
   def get_meta(full_filename) do
     [filename] = Regex.run(~r/[^\/]+$/, full_filename)
@@ -18,6 +19,34 @@ defmodule Tuesday.MP3 do
         parse(%MP3{filename: filename}, lines)
       _ ->
         %{msg: filename <> " could not be found."}
+    end
+  end
+
+  def write_tags_if_file_exists(ep = %Episode{}, show = %Show{}) do
+    require Logger
+
+    full_filename =
+      show.slug
+      |> Util.podcast_path_by_slug(ep.filename)
+
+    case full_filename |> File.exists? do
+      true ->
+        Sh.eyeD3("--no-color", "--to-v2.4",
+          "-a", ep.title || "",
+          "-A", show.podcast_name || "",
+          "-t", "#{ep.number}. #{show.name} [#{ep.record_date}]",
+          "-G", show.genre || "",
+          "-Y", ep.record_date
+                |> Ecto.Date.cast!
+                |> Calendar.Strftime.strftime("%Y")
+                |> elem(1),
+          "--recording-date", ep.record_date |> Ecto.Date.to_iso8601,
+          "--add-comment", ep.description || "",
+          full_filename)
+        |> Logger.info
+        true
+      _ ->
+        false
     end
   end
 
@@ -57,6 +86,10 @@ defmodule Tuesday.MP3 do
 
   defp parse(meta = %MP3{}, ["album artist: " <> album_artist | tail]) do
     parse(%{meta | album_artist: album_artist}, tail)
+  end
+
+  defp parse(meta = %MP3{}, ["recording date: " <> date | tail]) do
+    parse(%{meta | recording_date: date}, tail)
   end
 
   defp parse(meta = %MP3{}, ["release date: " <> date | tail]) do

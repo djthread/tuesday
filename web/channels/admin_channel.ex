@@ -19,10 +19,12 @@ defmodule Tuesday.AdminChannel do
     end
   end
 
+  @doc "Allow the client to get their own user data"
   def handle_in("whoami", _msg, socket) do
     {:reply, {:ok, socket.assigns[:user]}, socket}
   end
 
+  @doc "Get show json"
   def handle_in("show", %{"id" => show_id}, socket)
   when is_integer(show_id)
   do
@@ -38,6 +40,7 @@ defmodule Tuesday.AdminChannel do
        end.()
   end
 
+  @doc "Save existing episode"
   def handle_in("save_episode",
     %{"episode" => ep = %{"id" => id, "show_id" => show_id}}, socket)
   do
@@ -49,10 +52,12 @@ defmodule Tuesday.AdminChannel do
         |> Repo.get!(id)
         |> Episode.changeset(ep)
         |> Repo.update
+        |> passthru_and_maybe_write_tags(dbshow)
         |> handle_save_result(dbshow, socket)
     end
   end
 
+  @doc "Save new episode"
   def handle_in("save_episode",
     %{"episode" => ep = %{"show_id" => show_id}}, socket)
   do
@@ -64,11 +69,13 @@ defmodule Tuesday.AdminChannel do
         |> Episode.changeset(ep)
         |> Ecto.Changeset.put_assoc(:show, dbshow)
         |> Repo.insert
+        |> passthru_and_maybe_write_tags(dbshow)
         |> handle_save_result(dbshow, socket)
     end
   end
 
 
+  @doc "Save existing event"
   def handle_in("save_event",
     %{"event" => ep = %{"id" => id, "show_id" => show_id}}, socket)
   do
@@ -84,6 +91,7 @@ defmodule Tuesday.AdminChannel do
     end
   end
 
+  @doc "Save new event"
   def handle_in("save_event",
     %{"event" => ep = %{"show_id" => show_id}}, socket)
   do
@@ -99,6 +107,7 @@ defmodule Tuesday.AdminChannel do
     end
   end
 
+  @doc "Save show info texts"
   def handle_in("save_info",
     %{"show" => show = %{"id" => id}}, socket)
   do
@@ -113,48 +122,44 @@ defmodule Tuesday.AdminChannel do
     end
   end
 
+  @doc "Get ID3 json"
   def handle_in("read_tags", %{"id" => show_id, "filename" => filename}, socket)
   do
     case show_owned_by_user(show_id, socket.assigns[:user].id) do
       nil -> not_authorized(socket)
       %{slug: slug} ->
         slug
-        |> Util.podcast_path_by_slug
-        |> fn(path) -> MP3.get_meta(path <> "/" <> filename) end.()
-        |> fn(meta) -> {:reply, {:ok, meta}, socket} end.()
+        |> Util.podcast_path_by_slug(filename)
+        |> fn(full_filename) -> full_filename |> MP3.get_meta end.()
+        |> fn(meta)          -> {:reply, {:ok, meta}, socket} end.()
     end
   end
 
 
+  defp passthru_and_maybe_write_tags({:ok, event}, show) do
+    MP3.write_tags_if_file_exists(event, show)
+    {:ok, event}
+  end
+  defp passthru_and_maybe_write_tags(result, _show), do: result
+
+
   defp handle_save_result({:ok, episode = %Tuesday.Episode{}}, show, socket) do
-    # Tuesday.EpisodeView
-    # |> Phoenix.View.render("show.json", episode: episode, show: show)
-    # |> fn(json) -> {:reply, {:ok, json}, socket} end.()
     do_handle_save_result(
       Tuesday.EpisodeView, "show.json", :ok, socket, episode: episode, show: show)
   end
 
-  defp handle_save_result({:ok, event = %Tuesday.Event{}}, show, socket) do
-    # Tuesday.EventView
-    # |> Phoenix.View.render("show.json", event: event)
-    # |> fn(json) -> {:reply, {:ok, json}, socket} end.()
+  defp handle_save_result({:ok, event = %Tuesday.Event{}}, _show, socket) do
     do_handle_save_result(
       Tuesday.EventView, "show.json", :ok, socket, event: event)
   end
 
   defp handle_save_result({:ok, show = %Tuesday.Show{}}, _show, socket) do
     show = show |> Show.preload_episodes_and_events
-    # Tuesday.ShowView
-    # |> Phoenix.View.render("show.json", show: show)
-    # |> fn(json) -> {:reply, {:ok, json}, socket} end.()
     do_handle_save_result(
       Tuesday.ShowView, "show.json", :ok, socket, show: show)
   end
 
   defp handle_save_result({:error, changeset}, _show, socket) do
-    # Tuesday.ChangesetView
-    # |> Phoenix.View.render("error.json", changeset: changeset)
-    # |> fn(json) -> {:reply, {:error, json}, socket} end.()
     do_handle_save_result(
       Tuesday.ChangesetView, "error.json", :error, socket, changeset: changeset)
   end

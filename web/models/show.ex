@@ -25,10 +25,10 @@ defmodule Tuesday.Show do
     timestamps
   end
 
-  @required_fields ~w(name slug)
+  @required_fields ~w(name slug)a
   @optional_fields ~w(name slug  hosted_by     recurring_note
                       tiny_info  short_info    full_info
-                      genre      podcast_name  )
+                      genre      podcast_name  )a
 
   @doc """
   Creates a changeset based on the `model` and `params`.

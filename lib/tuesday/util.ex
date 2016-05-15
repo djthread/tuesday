@@ -6,11 +6,19 @@ defmodule Tuesday.Util do
           |> Keyword.get(:auth_secret)
 
   @doc "Get the dir of episode mp3s, given a slug"
-  def podcast_path_by_slug(slug) do
+  def podcast_path_by_slug(slug, filename \\ nil) do
     # "/srv/http/impulse/impulse-app/download/" <> slug
     :tuesday
     |> Application.get_env(:podcast_paths)
     |> Map.get(slug)
+    |> fn(path) ->
+      case filename do
+        nil ->
+          path
+        file -> 
+          [path, filename] |> Path.join
+      end
+    end.()
     # case slug do
     #   "techno-tuesday" -> "/srv/http/threadbox/dnbcast"
     # end

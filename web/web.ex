@@ -65,7 +65,6 @@ defmodule Tuesday.Web do
   def channel do
     quote do
       use Phoenix.Channel
-      use Calendar
 
       require Logger
 
