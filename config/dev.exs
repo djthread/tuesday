@@ -43,7 +43,8 @@ config :phoenix, :stacktrace_depth, 20
 #   pool_size: 10
 
 config :tuesday, :podcast_paths, %{
-  "techno-tuesday" => "/Users/thread/Desktop/impulse/thread-episodes"
+  "wobblehead-radio" => "/Users/thread/Desktop/impulse/thread-episodes",
+  "techno-tuesday"   => "/Users/thread/Desktop/impulse/thread-episodes"
 }
 
 import_config "dev.secret.exs"

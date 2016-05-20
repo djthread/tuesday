@@ -66,18 +66,19 @@ defmodule Tuesday.Web do
     quote do
       use Phoenix.Channel
 
-      require Logger
+      import Ecto
+      import Ecto.Query, only: [from: 1, from: 2, where: 2]
+      import Tuesday.Gettext
+      import Tuesday.Util
 
+      alias Calendar.DateTime
       alias Tuesday.User
       alias Tuesday.Show
       alias Tuesday.Episode
       alias Tuesday.Event
       alias Tuesday.Repo
 
-      import Ecto
-      import Ecto.Query, only: [from: 1, from: 2, where: 2]
-      import Tuesday.Gettext
-      import Tuesday.Util
+      require Logger
     end
   end
 
