@@ -33,37 +33,50 @@ defmodule Tuesday.MP3 do
       true ->
 
         ["--no-color", "--to-v2.4",
-          "-a", ep.title || "",
-          "-A", show.podcast_name || "",
-          "-t", "#{ep.number}. #{show.name} [#{ep.record_date}]",
-          "-G", show.genre || "",
+          "-a", fix(ep.title) || "",
+          "-A", fix(show.podcast_name) || "",
+          "-t", "#{fix(ep.number)}. #{fix(show.name)} [#{fix(ep.record_date)}]",
+          "-G", fix(show.genre) || "",
           "-Y", ep.record_date
+                |> fix
                 |> Ecto.Date.cast!
                 |> Calendar.Strftime.strftime("%Y")
                 |> elem(1),
-          "--recording-date", ep.record_date |> Ecto.Date.to_iso8601,
-          "--add-comment", ep.description || "",
+          "--recording-date", ep.record_date |> fix |> Ecto.Date.to_iso8601,
+          "--remove-all-comments",
+          "--add-comment", fix(ep.description) || "",
           full_filename]
         |> inspect
         |> Logger.info
 
         Sh.eyeD3("--no-color", "--to-v2.4",
-          "-a", ep.title || "",
-          "-A", show.podcast_name || "",
-          "-t", "#{ep.number}. #{show.name} [#{ep.record_date}]",
-          "-G", show.genre || "",
+          "-a", fix(ep.title) || "",
+          "-A", fix(show.podcast_name) || "",
+          "-t", "#{fix(ep.number)}. #{fix(show.name)} [#{fix(ep.record_date)}]",
+          "-G", fix(show.genre) || "",
           "-Y", ep.record_date
+                |> fix
                 |> Ecto.Date.cast!
                 |> Calendar.Strftime.strftime("%Y")
                 |> elem(1),
-          "--recording-date", ep.record_date |> Ecto.Date.to_iso8601,
-          "--add-comment", ep.description || "",
+          "--recording-date", ep.record_date |> fix |> Ecto.Date.to_iso8601,
+          "--remove-all-comments",
+          "--add-comment", fix(ep.description) || "",
           full_filename)
         |> Logger.info
+
         true
+
       _ ->
         false
+
     end
+  end
+
+  # Normalize a string for eyeD3
+  defp fix(str) do
+    str
+    |> String.replace(~r/[^\x00-\x7F]+/, "")  # strip non-ascii characters
   end
 
   defp parse([
