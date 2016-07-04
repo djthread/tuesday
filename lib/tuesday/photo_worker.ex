@@ -1,7 +1,3 @@
-defmodule Tuesday.Photo do
-  defstruct url: nil, width: nil, height: nil, full_url: nil
-end
-
 defmodule Tuesday.PhotoWorker do
   @moduledoc """
   Holds info about the last few photos in the Piwigo gallery
@@ -17,6 +13,9 @@ defmodule Tuesday.PhotoWorker do
   @feed_url Application.get_env :tuesday, :piwigo_feed_url
   @name     __MODULE__
 
+  def photos,  do: GenServer.call(@name, :photos)
+  def refresh, do: GenServer.call(@name, :refresh)
+
   def start_link() do
     opts = []
     |> Keyword.put_new(:name, @name)
@@ -24,15 +23,8 @@ defmodule Tuesday.PhotoWorker do
     GenServer.start_link(@name, [], opts)
   end
 
-  def photos do
-    GenServer.call(@name, :photos)
-  end
-
-  def refresh do
-    GenServer.call(@name, :refresh)
-  end
-
   def init([]) do
+    Tuesday.PhotoWatcher.start
     {:ok, MapSet.new |> do_refresh}
   end
 
@@ -45,34 +37,6 @@ defmodule Tuesday.PhotoWorker do
     {:reply, state, state}
   end
 
-  # def handle_call(:user_joined_lobby, _from, state) do
-  #   if state.online == 0 do
-  #     state = do_refresh(state)
-  #     schedule_refresh()
-  #   end
-  #   new_state = Map.put(state, :online, state.online + 1)
-  #   Tuesday.Endpoint.broadcast! "rooms:stat", "update", new_state
-  #   {:reply, new_state, new_state}
-  # end
-  #
-  # def handle_call(:user_left_lobby, _from, state) do
-  #   new_state = Map.put(state, :online, state.online - 1)
-  #   Tuesday.Endpoint.broadcast! "rooms:stat", "update", new_state
-  #   {:reply, new_state, new_state}
-  # end
-  #
-  # def handle_info(:refresh, state = %Stats{}) do
-  #   state = do_refresh(state)
-  #   if state.online > 0 do
-  #     schedule_refresh()
-  #   end
-  #   {:noreply, state}
-  # end
-  #
-  # defp schedule_refresh do
-  #   Process.send_after(self(), :refresh, @refresh_seconds * 1000)
-  # end
-  #
   def do_refresh(old_mapset) do
     new_mapset =
       case HTTPoison.get(@feed_url) do
@@ -88,16 +52,31 @@ defmodule Tuesday.PhotoWorker do
   end
 
   defp parse_photos(body) do
-    # Floki isn't letting me find("_2small") for some reason,
+    # I can't Floki.find("_2small") for some reason,
     # so i'll just rewrite those nodes
+    body = String.replace(body, "_2small", "mythumbnail");
+
+    urls =
+      body
+      |> Floki.find("image")
+      |> Enum.map(fn({"image", attrs, _photos}) ->
+        attrs
+        |> Enum.find(nil, fn({f, _}) -> f == "page_url" end)
+        |> elem(1)
+      end)
+
     body
-    |> String.replace("_2small>", "thisone>")
-    |> Floki.find("thisone")
-    |> Enum.map(&parse_item/1)
+    |> Floki.find("mythumbnail")
+    |> parse_items(urls)
     |> Enum.filter(fn(x) -> x != nil end)
     |> Enum.map(&fix_item/1)
     |> MapSet.new
   end
+
+  defp parse_items([i | items], [u | urls], ret \\ []) do
+    parse_items items, urls, [%Photo{parse_item(i) | gallery_url: u} | ret]
+  end
+  defp parse_items([], _, ret), do: ret
 
   defp parse_item({_size, [], [{"url", [], [url]}, {"width", [], [width]}, {"height", [], [height]}]}) do
     %Photo{url: url, width: width, height: height}

@@ -48,4 +48,10 @@ config :tuesday, :podcast_paths, %{
   "techno-tuesday"   => "/Users/thread/Desktop/impulse/thread-episodes"
 }
 
+config :tuesday, :photo_watch_dirs, [
+  "/home/thread/test"
+]
+
+# config :tuesday, :piwigo_watched_dir,
+
 import_config "dev.secret.exs"

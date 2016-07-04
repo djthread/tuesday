@@ -20,6 +20,8 @@ config :tuesday, :rtmp_stat_url,    "https://impulsedetroit.net/stat"
 config :tuesday, :icecast_stat_url, "http://impulsedetroit.net:8000/status-json.xsl"
 
 config :tuesday, :piwigo_feed_url, "https://photos.impulsedetroit.net/ws.php?format=rest&method=pwg.categories.getImages&cat_id=5&per_page=4"
+config :tuesday, :piwigo_ws, "https://photos.impulsedetroit.net/ws.php"
+config :tuesday, :piwigo_catid, "5"
 
 config :tuesday, ecto_repos: [Tuesday.Repo]
 
