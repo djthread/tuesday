@@ -1,5 +1,5 @@
 defmodule Tuesday.Auth do
-  use Calendar
+  import Tuesday.Util, only: [get_now: 0]
 
   @expire_minutes 60
   @secret Application.get_env(:tuesday, Tuesday.Endpoint)
@@ -33,10 +33,6 @@ defmodule Tuesday.Auth do
       _ ->
         false
     end
-  end
-
-  def get_now do
-    DateTime.now_utc |> DateTime.Format.unix
   end
 
   @doc """

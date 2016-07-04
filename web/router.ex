@@ -21,7 +21,9 @@ defmodule Tuesday.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Tuesday do
-  #   pipe_through :api
-  # end
+  scope "/api", Tuesday do
+    pipe_through :api
+
+    post "/poke", AdminController, :poke
+  end
 end

@@ -35,8 +35,9 @@ defmodule Tuesday.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [ {:phoenix,             "~> 1.1.4"},
-      {:phoenix_ecto,        "~> 3.0-beta"},
+    [ {:phoenix,             "~> 1.2.0"},
+      {:phoenix_pubsub,      "~> 1.0"},
+      {:phoenix_ecto,        "~> 3.0"},
       {:postgrex,            "~> 0.11.0", [optional: true, hex: :postgrex]},
       {:phoenix_html,        "~> 2.5", [optional: true, hex: :phoenix_html]},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
@@ -47,7 +48,8 @@ defmodule Tuesday.Mixfile do
       {:calecto,             "~> 0.6.0"},
       {:calendar,            "~> 0.14.0"},
       {:sh,                  "~> 1.1.0"},
-      {:hackney, "~> 1.6.0", [optional: false, hex: :hackney]}
+      {:hackney, "~> 1.6.0", [optional: false, hex: :hackney]},
+      {:floki,               "~> 0.9.0"}
       # {:exrm, "~> 0.18.1"},
       # {:scrivener, "~> 1.1", override: true}
    ]

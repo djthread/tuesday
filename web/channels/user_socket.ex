@@ -6,6 +6,7 @@ defmodule Tuesday.UserSocket do
   channel "site", Tuesday.SiteChannel
   channel "episode", Tuesday.EpisodeChannel
   channel "admin", Tuesday.AdminChannel
+  channel "photos", Tuesday.PhotosChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

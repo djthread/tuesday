@@ -1,7 +1,7 @@
 defmodule Tuesday.SiteChannel do
   use Tuesday.Web, :channel
   import Phoenix.View, only: [render: 3]
-  alias Tuesday.{ShowView,EpisodeView}
+  alias Tuesday.{ShowView, EpisodeView, PhotoWorker}
   require Logger
 
   def join("site", _params, socket) do
@@ -9,7 +9,6 @@ defmodule Tuesday.SiteChannel do
   end
 
   def join("episode", _, socket) do
-    Logger.info "joined episode"
     {:ok, socket}
   end
 
@@ -18,13 +17,13 @@ defmodule Tuesday.SiteChannel do
     |> Repo.all
     |> Show.preload_a_month_of_episodes_and_events
     |> fn(shows) ->
-         Enum.map shows, fn(show) ->
-           render(ShowView, "show.json", show: show)
-         end
-       end.()
+      Enum.map shows, fn(show) ->
+        render(ShowView, "show.json", show: show)
+      end
+    end.()
     |> fn(shows) ->
-         {:reply, {:ok, %{shows: shows}}, socket}
-       end.()
+      {:reply, {:ok, %{shows: shows}}, socket}
+    end.()
   end
 
   def handle_in("show", %{"slug" => slug}, socket) do
@@ -33,11 +32,11 @@ defmodule Tuesday.SiteChannel do
     |> Repo.one
     |> Show.preload_episodes_and_events
     |> fn(show) ->
-         render(ShowView, "show.json", show: show, full: true)
-       end.()
+      render(ShowView, "show.json", show: show, full: true)
+    end.()
     |> fn(show) ->
-         {:reply, {:ok, %{show: show}}, socket}
-       end.()
+      {:reply, {:ok, %{show: show}}, socket}
+    end.()
   end
 
   def handle_in("episode", %{"slug" => slug, "num" => num}, socket)
@@ -48,12 +47,20 @@ defmodule Tuesday.SiteChannel do
     |> Repo.one
     |> Repo.preload(episodes: from(ep in Episode, where: ep.number == ^num))
     |> fn(show = %Show{episodes: [ep | _]}) ->
-         render(EpisodeView, "show.json", episode: ep, show: show)
-       end.()
+      render(EpisodeView, "show.json", episode: ep, show: show)
+    end.()
     |> fn(ep) ->
-         {:reply, {:ok, %{episode: ep}}, socket}
-       end.()
+      {:reply, {:ok, %{episode: ep}}, socket}
+    end.()
   end
+
+  # def handle_in("photos:main", _msg, socket)
+  # do
+  #   PhotoWorker.photos
+  #   |> fn(photos) ->
+  #     {:reply, {:ok, %{photos: photos}}, socket}
+  #   end.()
+  # end
 
 
   # def handle_in("episodes", %{"slug" => slug, "page" => pageno}, socket) do

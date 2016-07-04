@@ -11,7 +11,8 @@ config :tuesday, Tuesday.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin"]],
+  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
+    cd: Path.expand("../", __DIR__)]],
   auth_secret: "U(*(LO&F$YDC>PUD$#&*(YD$#@"
 
 # Watch static and templates for browser reloading.

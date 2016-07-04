@@ -74,10 +74,11 @@ defmodule Tuesday.MP3 do
   end
 
   # Normalize a string for eyeD3
-  defp fix(str) do
+  defp fix(str) when is_binary(str) do
     str
     |> String.replace(~r/[^\x00-\x7F]+/, "")  # strip non-ascii characters
   end
+  defp fix(something_else), do: something_else
 
   defp parse([
     "-------------------------------------------------------------------------------"

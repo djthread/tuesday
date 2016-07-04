@@ -1,6 +1,4 @@
 defmodule Tuesday.Util do
-  use Calendar
-
   @secret :tuesday
           |> Application.get_env(Tuesday.Endpoint)
           |> Keyword.get(:auth_secret)
@@ -25,7 +23,8 @@ defmodule Tuesday.Util do
   end
 
   def get_now do
-    DateTime.now_utc |> DateTime.Format.unix
+    DateTime.utc_now |> DateTime.to_unix
+    # DateTime.now_utc |> DateTime.Format.unix
   end
 
   @doc "Hash a string, with salt."

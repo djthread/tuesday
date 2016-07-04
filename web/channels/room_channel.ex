@@ -46,7 +46,7 @@ defmodule Tuesday.RoomChannel do
   end
 
   def handle_info(:after_stat_join, socket) do
-    push socket, "update", StatWorker.state()
+    push socket, "update", StatWorker.state
     {:noreply, socket}
   end
 
