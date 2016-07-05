@@ -11,10 +11,8 @@ defmodule Tuesday.Util do
     |> Map.get(slug)
     |> fn(path) ->
       case filename do
-        nil ->
-          path
-        file -> 
-          [path, filename] |> Path.join
+        nil  -> path
+        file -> [path, file] |> Path.join
       end
     end.()
     # case slug do

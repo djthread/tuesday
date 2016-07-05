@@ -98,7 +98,7 @@ defmodule Tuesday.PiwigoWorker do
   end
 
   defp handle_upload_result(
-    res = %HTTPoison.Response{status_code: status},
+    %HTTPoison.Response{status_code: status},
     state, file_path, last_try)
   do
     case status do

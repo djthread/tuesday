@@ -1,7 +1,7 @@
 defmodule Tuesday.SiteChannel do
   use Tuesday.Web, :channel
   import Phoenix.View, only: [render: 3]
-  alias Tuesday.{ShowView, EpisodeView, PhotoWorker}
+  alias Tuesday.{ShowView, EpisodeView}
   require Logger
 
   def join("site", _params, socket) do
@@ -53,15 +53,6 @@ defmodule Tuesday.SiteChannel do
       {:reply, {:ok, %{episode: ep}}, socket}
     end.()
   end
-
-  # def handle_in("photos:main", _msg, socket)
-  # do
-  #   PhotoWorker.photos
-  #   |> fn(photos) ->
-  #     {:reply, {:ok, %{photos: photos}}, socket}
-  #   end.()
-  # end
-
 
   # def handle_in("episodes", %{"slug" => slug, "page" => pageno}, socket) do
   #   q = from e in Episode,

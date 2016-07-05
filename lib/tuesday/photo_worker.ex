@@ -73,7 +73,8 @@ defmodule Tuesday.PhotoWorker do
     |> MapSet.new
   end
 
-  defp parse_items([i | items], [u | urls], ret \\ []) do
+  defp parse_items(items, urls, ret \\ [])
+  defp parse_items([i | items], [u | urls], ret) do
     parse_items items, urls, [%Photo{parse_item(i) | gallery_url: u} | ret]
   end
   defp parse_items([], _, ret), do: ret

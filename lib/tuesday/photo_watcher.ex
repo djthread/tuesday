@@ -19,7 +19,7 @@ defmodule Tuesday.PhotoWatcher do
       trigger file_path
     end
   end
-  def callback(file_path, events), do: nil
+  def callback(_file_path, _events), do: nil
 
   defp trigger(file_path) do
     with [^file_path, ext] <- Regex.run(~r/.*\.(\w+)$/, file_path),
