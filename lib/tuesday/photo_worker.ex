@@ -24,7 +24,7 @@ defmodule Tuesday.PhotoWorker do
   end
 
   def init([]) do
-    Tuesday.PhotoWatcher.start
+    # Tuesday.PhotoWatcher.start
     {:ok, MapSet.new |> do_refresh}
   end
 

@@ -47,10 +47,15 @@ defmodule Tuesday.StatWorker do
   end
 
   def handle_call(:user_joined_lobby, _from, state) do
-    if state.online == 0 do
-      state = do_refresh(state)
-      schedule_refresh()
-    end
+    state =
+      case state.online do
+        0 ->
+          st = do_refresh(state)
+          schedule_refresh()
+          st
+        _ -> state
+      end
+
     new_state = Map.put(state, :online, state.online + 1)
     Tuesday.Endpoint.broadcast! "rooms:stat", "update", new_state
     {:reply, new_state, new_state}
