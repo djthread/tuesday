@@ -9,7 +9,7 @@ defmodule Tuesday.PhotoWatcher do
 
   require Logger
 
-  @limit 7_000_000
+  @limit 12_000_000
   @exts  ~w(jpg JPG jpeg JPEG png PNG gif GIF)
 
   def callback(file_path, [:modified, :closed]) do
