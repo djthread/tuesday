@@ -98,14 +98,16 @@ defmodule Tuesday.PiwigoWorker do
   end
 
   defp handle_upload_result(
-    %HTTPoison.Response{status_code: status},
+    res = %HTTPoison.Response{status_code: status},
     state, file_path, last_try)
   do
     case status do
       200 -> :ok
       _ ->
         case last_try do
-          true -> :error
+          true ->
+            Logger.warn "Upload failed: " <> inspect(res)
+            :error
           _ ->
             state = do_login(state)
             do_upload(file_path, state, true)
