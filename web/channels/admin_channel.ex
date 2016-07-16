@@ -135,6 +135,20 @@ defmodule Tuesday.AdminChannel do
     end
   end
 
+  @doc "Start Facebook stream"
+  def handle_in("to_fb", %{"url" => url}, socket) do
+    ret =
+      System.cmd "/usr/bin/sudo", [
+        "/usr/local/bin/nginx_rtmp_to_fb",
+        "--url=" <> url
+      ]
+
+    case ret do
+      {"", 0} -> {:reply, :ok, socket}
+      _       -> {:reply, :error, socket}
+    end
+  end
+
 
   defp passthru_and_maybe_write_tags({:ok, event}, show) do
     MP3.write_tags_if_file_exists(event, show)
