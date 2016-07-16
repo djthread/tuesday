@@ -144,8 +144,8 @@ defmodule Tuesday.AdminChannel do
       ]
 
     case ret do
-      {"", 0} -> {:reply, :ok, socket}
-      _       -> {:reply, :error, socket}
+      {"", 0} -> {:reply, {:ok, %{status: :ok}}, socket}
+      _       -> {:reply, {:ok, %{status: :error}}, socket}
     end
   end
 
