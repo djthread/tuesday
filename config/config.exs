@@ -16,7 +16,7 @@ config :tuesday, Tuesday.Endpoint,
 
 config :tuesday, :api_password, "test"
 
-config :tuesday, :rtmp_stat_url,    "https://impulsedetroit.net/stat"
+config :tuesday, :rtmp_stat_url,    "http://localhost.net:9077/stat"
 config :tuesday, :icecast_stat_url, "http://impulsedetroit.net:8000/status-json.xsl"
 
 config :tuesday, :piwigo_feed_url, "https://photos.impulsedetroit.net/ws.php?format=rest&method=pwg.categories.getImages&cat_id=5&per_page=4"
