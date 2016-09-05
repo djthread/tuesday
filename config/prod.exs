@@ -28,6 +28,7 @@ config :logger, level: :info
 
 config :tuesday, :podcast_paths, %{
   "techno-tuesday"   => "/mnt/music_drive/owncloud_data/thread/files/techtues-episodes",
+  "specials"         => "/mnt/music_drive/owncloud_data/thread/files/specials-episodes",
   "wobblehead-radio" => "/mnt/music_drive/owncloud_data/larry/files/wobblehead-radio-episodes"
 }
 
