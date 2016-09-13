@@ -25,7 +25,6 @@ defmodule Tuesday.Mixfile do
     [mod: {Tuesday, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :phoenix_pubsub, :postgrex, :httpoison,
-                    # :calecto, :sh, :floki]]
                     :calecto, :sh, :exfswatch, :fs, :floki]]
   end
 
@@ -40,18 +39,47 @@ defmodule Tuesday.Mixfile do
     [ {:phoenix,             "~> 1.2.0"},
       {:phoenix_pubsub,      "~> 1.0"},
       {:phoenix_ecto,        "~> 3.0"},
-      {:postgrex,            ">= 0.0.0", [optional: true, hex: :postgrex]},
+      {:postgrex,            ">= 0.0.0"},
       {:phoenix_html,        "~> 2.6.2"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext,             "~> 0.11"},
       {:cowboy,              "~> 1.0"},
       {:httpoison,           "~> 0.9.0"},
-      {:exrm,                "~> 1.0.0"}, # git: "http://github.com/bitwalker/exrm", tag: "1.0.0-rc7"},
+      {:exrm,                "~> 1.0.0"},
       {:calecto,             "~> 0.16.0"},
       {:sh,                  "~> 1.1.2"},
       # {:hackney, "~> 1.6.0", [optional: false, hex: :hackney]},
       {:floki,               "~> 0.9.0"},
       {:exfswatch,           "~> 0.2.0"}
+# <<<<<<< dfb6bd034e25e6b5f5f354d2e75c99d1461c1271
+#       {:phoenix_pubsub,      "~> 1.0"},
+#       {:phoenix_ecto,        "~> 3.0"},
+#       {:postgrex,            ">= 0.0.0", [optional: true, hex: :postgrex]},
+#       {:phoenix_html,        "~> 2.6.2"},
+#       {:phoenix_live_reload, "~> 1.0", only: :dev},
+#       {:gettext,             "~> 0.11"},
+#       {:cowboy,              "~> 1.0"},
+#       {:httpoison,           "~> 0.9.0"},
+#       {:exrm,                "~> 1.0.0"}, # git: "http://github.com/bitwalker/exrm", tag: "1.0.0-rc7"},
+#       {:calecto,             "~> 0.16.0"},
+#       {:sh,                  "~> 1.1.2"},
+#       # {:hackney, "~> 1.6.0", [optional: false, hex: :hackney]},
+#       {:floki,               "~> 0.9.0"},
+#       {:exfswatch,           "~> 0.2.0"}
+# =======
+#       {:phoenix_ecto,        "~> 3.0"},
+#       {:postgrex,            ">= 0.0.0"},
+#       {:phoenix_html,        "~> 2.6"},
+#       {:phoenix_live_reload, "~> 1.0", only: :dev},
+#       {:gettext,             "~> 0.11"},
+#       {:cowboy,              "~> 1.0"},
+#       {:httpoison,           "~> 0.8.0"},
+#       {:exrm,                git: "http://github.com/bitwalker/exrm", tag: "1.0.8"},
+#       {:calecto,             "~> 0.6.0"},
+#       {:calendar,            "~> 0.14.0"},
+#       {:sh,                  "~> 1.1.0"},
+#       {:hackney, "~> 1.6.0", [optional: false, hex: :hackney]}
+# >>>>>>> .
       # {:exrm, "~> 0.18.1"},
       # {:scrivener, "~> 1.1", override: true}
    ]

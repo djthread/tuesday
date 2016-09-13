@@ -14,9 +14,9 @@ config :tuesday, Tuesday.Endpoint,
   pubsub: [name: Tuesday.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
-config :tuesday, :api_password, "test"
+config :tuesday, :api_password, "test"  # used?
 
-config :tuesday, :rtmp_stat_url,    "http://localhost:9077/stat"
+config :tuesday, :rtmp_stat_url,    "https://localhost:9077/stat"
 config :tuesday, :icecast_stat_url, "http://impulsedetroit.net:8000/status-json.xsl"
 
 config :tuesday, :piwigo_feed_url, "https://photos.impulsedetroit.net/ws.php?format=rest&method=pwg.categories.getImages&cat_id=5&per_page=4"
