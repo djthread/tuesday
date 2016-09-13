@@ -1,4 +1,4 @@
-defmodule Tuesday.EpisodeView do
+defmodule Tuesday.AdminView do
   use Tuesday.Web, :view
   import Tuesday.Util, only: [bytes_by_slug_and_filename: 2]
   import Calendar.Date.Format, only: [iso8601: 1]
