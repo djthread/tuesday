@@ -45,12 +45,13 @@ defmodule Tuesday.Mixfile do
       {:gettext,             "~> 0.11"},
       {:cowboy,              "~> 1.0"},
       {:httpoison,           "~> 0.9.0"},
-      {:exrm,                "~> 1.0.0"},
       {:calecto,             "~> 0.16.0"},
       {:sh,                  "~> 1.1.2"},
       # {:hackney, "~> 1.6.0", [optional: false, hex: :hackney]},
       {:floki,               "~> 0.9.0"},
-      {:exfswatch,           "~> 0.2.0"}
+      {:exfswatch,           "~> 0.2.0"},
+      # {:exrm,                "~> 1.0.0"},
+      {:distillery,          "~> 0.9"},
 # <<<<<<< dfb6bd034e25e6b5f5f354d2e75c99d1461c1271
 #       {:phoenix_pubsub,      "~> 1.0"},
 #       {:phoenix_ecto,        "~> 3.0"},

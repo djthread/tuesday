@@ -13,7 +13,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :tuesday, Tuesday.Endpoint,
   http: [port: System.get_env("PORT") || 4090],
-  url: [host: "techtues.net", port: 80],
+  url: [host: "impulsedetroit.net", port: 80],
   check_origin: false,
   # [
   #   "https://impulsedetroit.net",
@@ -21,7 +21,9 @@ config :tuesday, Tuesday.Endpoint,
   #   "https://techtues.net"
   # ],
   cache_static_manifest: "priv/static/manifest.json",
-  server: true
+  server: true,
+  root: ".",
+  version: Mix.Project.config[:version]
 
 # Do not print debug messages in production
 config :logger, level: :info
