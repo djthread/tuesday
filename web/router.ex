@@ -24,6 +24,8 @@ defmodule Tuesday.Router do
   scope "/api", Tuesday do
     pipe_through :api
 
+    get "/myip", AjaxController, :myip
+
     post "/poke", AdminController, :poke
   end
 end

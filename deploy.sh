@@ -3,7 +3,7 @@ mix run --no-start -e 'IO.puts Mix.Project.config[:version]'
 
 export VERSION=$(mix run --no-start -e 'IO.puts Mix.Project.config[:version]')
 export MIX_ENV=prod
-export PORT=4095
+export PORT=4090
 export LC_ALL=en_US.UTF-8
 export PATH=/usr/bin
 

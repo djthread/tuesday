@@ -25,7 +25,7 @@ defmodule Tuesday.Mixfile do
     [mod: {Tuesday, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :phoenix_pubsub, :postgrex, :httpoison,
-                    :calecto, :sh, :exfswatch, :fs, :floki]]
+                    :calecto, :sh, :exfswatch, :fs, :floki, :cors_plug]]
   end
 
   # Specifies which paths to compile per environment.
@@ -52,6 +52,7 @@ defmodule Tuesday.Mixfile do
       {:exfswatch,           "~> 0.2.0"},
       # {:exrm,                "~> 1.0.0"},
       {:distillery,          "~> 0.9"},
+      {:cors_plug,           "~> 1.1"}
 # <<<<<<< dfb6bd034e25e6b5f5f354d2e75c99d1461c1271
 #       {:phoenix_pubsub,      "~> 1.0"},
 #       {:phoenix_ecto,        "~> 3.0"},

@@ -35,5 +35,7 @@ defmodule Tuesday.Endpoint do
     key: "_tuesday_key",
     signing_salt: "4GjPGLDx"
 
+  plug CORSPlug
+
   plug Tuesday.Router
 end
