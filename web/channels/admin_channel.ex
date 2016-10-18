@@ -136,12 +136,12 @@ defmodule Tuesday.AdminChannel do
   end
 
   @doc "Start Facebook stream"
-  def handle_in("stream_start", %{"url" => url, "ip" => ip}, socket) do
+  def handle_in("stream_start", params, socket) do
     ret =
       System.cmd "/usr/bin/sudo", [
         "/usr/local/bin/nginx_rtmp_starter",
-        "--url=" <> url,
-        "--ip=" <> ip
+        "--url=" <> to_string(params["url"]),
+        "--ip=" <> to_string(params["ip"])
       ]
 
     case ret do
