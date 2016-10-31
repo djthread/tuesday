@@ -30,3 +30,4 @@ erl_crash.dump
 /elm/elm-stuff
 /elm/priv
 assets/vendor/elm.js
+/config/key.hs512

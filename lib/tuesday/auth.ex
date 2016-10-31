@@ -1,3 +1,4 @@
+# Maybe I'll deprecate this whole module in favor of Guardian...
 defmodule Tuesday.Auth do
   import Tuesday.Web.Util, only: [get_now: 0]
 

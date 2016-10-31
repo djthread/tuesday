@@ -17,7 +17,12 @@ config :tuesday, Tuesday.Web.Endpoint,
   pubsub: [name: Tuesday.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
-config :tuesday, :api_password, "test"  # used?
+auth_keyfile = Path.join([File.cwd!, "config", "key.hs512"])
+auth_key     = auth_keyfile |> File.read! |> :erlang.binary_to_term
+
+config :tuesday, :auth_keyfile, auth_keyfile
+
+config :tuesday, :poke_password, "test"  # used?
 
 config :tuesday, :rtmp_stat_url,    "https://localhost:9077/stat"
 config :tuesday, :icecast_stat_url, "http://impulsedetroit.net:8000/status-json.xsl"
@@ -44,6 +49,15 @@ import_config "#{Mix.env}.exs"
 config :phoenix, :generators,
   migration: true,
   binary_id: false
+
+config :guardian, Guardian,
+  # allowed_algos: ["HS512"], # optional
+  # verify_module: Guardian.JWT,  # optional
+  # verify_issuer: true, # optional
+  issuer: "Tuesday",
+  ttl: { 30, :days },
+  serializer: Tuesday.GuardianSerializer,
+  secret_key: auth_key
 
 # This line was automatically added by ansible-elixir-stack setup script
 # if System.get_env("SERVER") do

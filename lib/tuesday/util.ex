@@ -25,12 +25,6 @@ defmodule Tuesday.Web.Util do
     # DateTime.now_utc |> DateTime.Format.unix
   end
 
-  @doc "Hash a string, with salt."
-  def hash(str) when is_binary(str) do
-    :crypto.hash(:sha256, str <> @secret)
-    |> Base.encode64
-  end
-
   def fake_socket(topic) do
     %Phoenix.Socket{
       # pid:       self,

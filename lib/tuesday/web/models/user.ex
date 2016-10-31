@@ -1,5 +1,8 @@
 defmodule Tuesday.User do
   use Tuesday.Web, :model
+  import Tuesday.Auth, only: [hash: 1]
+  import Ecto.Query, only: [where: 2]
+  alias Tuesday.{User, Repo}
 
   @derive {Poison.Encoder, only: [
     :id, :name, :email, :is_admin, :shows]}
@@ -34,12 +37,23 @@ defmodule Tuesday.User do
   def create(name, pass, email, admin? \\ false) do
     changeset = changeset(%Tuesday.User{}, %{
       "name"     => name,
-      "pwhash"   => Tuesday.Auth.hash(pass),
+      "pwhash"   => hash(pass),
       "email"    => email,
       "is_admin" => admin?
     })
 
     Tuesday.Repo.insert(changeset)
+  end
+
+  @type auth(String.t, String.t) :: {:ok, %Tuesday.User{}} | :error
+  def auth(name, pass) do
+    User
+    |> where(name: ^name, pwhash: ^hash(pass))
+    |> Repo.one
+    |> case do
+      user = %User{} -> {:ok, user}
+      _ -> :error
+    end
   end
 
   # u |> Ecto.build_assoc(:shows)

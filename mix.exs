@@ -40,7 +40,7 @@ defmodule Tuesday.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [ {:phoenix,             "~> 1.3.0-rc"},
+    [ {:phoenix,             "~> 1.3.0-rc", override: true},
       {:phoenix_pubsub,      "~> 1.0"},
       {:phoenix_ecto,        "~> 3.2"},
       {:postgrex,            ">= 0.0.0"},
@@ -58,8 +58,10 @@ defmodule Tuesday.Mixfile do
       # {:exfswatch,           "~> 0.2.0"},
       # {:exrm,                "~> 1.0.0"},
       {:distillery,          "~> 1.0"},
-      {:cors_plug,           "~> 1.1"}
+      {:cors_plug,           "~> 1.1"},
       # {:wallaby,             "~> 0.16.1"}
+      {:guardian,            "~> 0.14.0"}
+
 # <<<<<<< dfb6bd034e25e6b5f5f354d2e75c99d1461c1271
 #       {:phoenix_pubsub,      "~> 1.0"},
 #       {:phoenix_ecto,        "~> 3.0"},

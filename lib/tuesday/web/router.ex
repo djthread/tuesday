@@ -9,8 +9,16 @@ defmodule Tuesday.Web.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :auth do
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
+    plug Guardian.Plug.EnsureAuthenticated,
+      handler: Tuesday.Web.AdminController
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
   end
 
   scope "/", Tuesday.Web do
@@ -25,6 +33,15 @@ defmodule Tuesday.Web.Router do
 
     get "/myip", AjaxController, :myip
 
-    post "/poke", AdminController, :poke
+    post "/poke", PokeController, :poke
+
+    post "/auth", AdminController, :auth
+  end
+
+  scope "/api", Tuesday do
+    pipe_through [:api, :auth]
+
+    get "/whoami", AdminController, :whoami
+    get "/show/:id", AdminController, :show
   end
 end

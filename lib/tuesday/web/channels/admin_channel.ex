@@ -4,6 +4,8 @@ defmodule Tuesday.Web.AdminChannel do
   alias Tuesday.MP3
   alias Tuesday.Web.Util
   alias Tuesday.Web.{ShowView, EventView, EpisodeView, ChangesetView}
+  import Tuesday.Auth, only: [hash: 1]
+  alias Tuesday.ShowView
   require Logger
 
   def join("admin", %{"name" => name, "pass" => pass}, socket) do
