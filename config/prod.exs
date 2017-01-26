@@ -29,10 +29,10 @@ config :tuesday, Tuesday.Endpoint,
 config :logger, level: :info
 
 config :tuesday, :podcast_paths, %{
-  "techno-tuesday"    => "/mnt/music_drive/owncloud_data/thread/files/techtues-episodes",
-  "specials"          => "/mnt/music_drive/owncloud_data/thread/files/specials-episodes",
-  "wobblehead-radio"  => "/mnt/music_drive/owncloud_data/larry/files/wobblehead-radio-episodes",
-  "sub-therapy-radio" => "/mnt/music_drive/owncloud_data/calico/files/sub-therapy-radio-episodes"
+  "techno-tuesday"    => "/opt/owncloud_data/thread/files/techtues-episodes",
+  "specials"          => "/opt/owncloud_data/thread/files/specials-episodes",
+  "wobblehead-radio"  => "/opt/owncloud_data/larry/files/wobblehead-radio-episodes",
+  "sub-therapy-radio" => "/opt/owncloud_data/calico/files/sub-therapy-radio-episodes"
 }
 
 # ## SSL Support
