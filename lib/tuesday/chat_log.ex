@@ -1,6 +1,6 @@
 defmodule Tuesday.ChatLog do
   @name __MODULE__
-  @buffer 100
+  # @buffer 100
 
   @moduledoc """
   Holds the last @buffer lines of chat

@@ -63,7 +63,7 @@ defmodule Tuesday.SiteChannel do
   #   {:reply, {:ok, %{episodes: q |> Repo.all}}, socket}
   # end
 
-  @crap """
+  """
   def handle_in("whoami", _msg, socket) do
     {:reply, {:ok, socket.assigns[:user]}, socket}
   end

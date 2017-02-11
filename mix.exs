@@ -14,8 +14,8 @@ defmodule Tuesday.Mixfile do
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     aliases: aliases,
-     deps: deps]
+     aliases: aliases(),
+     deps: deps()]
   end
 
   # Configuration for the OTP application.
@@ -48,7 +48,7 @@ defmodule Tuesday.Mixfile do
       {:calecto,             "~> 0.16.0"},
       {:sh,                  "~> 1.1.2"},
       # {:hackney, "~> 1.6.0", [optional: false, hex: :hackney]},
-      {:floki,               "~> 0.9.0"},
+      {:floki,               "~> 0.0"},
       {:exfswatch,           "~> 0.2.0"},
       # {:exrm,                "~> 1.0.0"},
       {:distillery,          "~> 0.9"},

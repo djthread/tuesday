@@ -3,7 +3,7 @@ defmodule Tuesday.PhotosChannel do
   alias Tuesday.PhotoWorker
 
   def join("photos", _params, socket) do
-    send(self, :refresh_photos)
+    send(self(), :refresh_photos)
     {:ok, socket}
   end
 

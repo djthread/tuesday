@@ -22,7 +22,7 @@ defmodule Tuesday.Show do
 
     many_to_many :users, Tuesday.User, join_through: "shows_users"
 
-    timestamps
+    timestamps()
   end
 
   @required_fields ~w(name slug)a

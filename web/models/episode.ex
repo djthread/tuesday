@@ -16,7 +16,7 @@ defmodule Tuesday.Episode do
     belongs_to :user, Tuesday.User
     belongs_to :show, Tuesday.Show
 
-    timestamps
+    timestamps()
   end
 
   @required_fields ~w(number title record_date filename)a

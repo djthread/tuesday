@@ -14,7 +14,7 @@ defmodule Tuesday.Event do
     belongs_to :user, Tuesday.User
     belongs_to :show, Tuesday.Show
 
-    timestamps
+    timestamps()
   end
 
   @required_fields ~w(title happens_on)a

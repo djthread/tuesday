@@ -21,14 +21,14 @@ defmodule Tuesday.RoomChannel do
 
     # :timer.send_interval(5000, :ping)
 
-    send(self, {:after_join, message})
+    send(self(), {:after_join, message})
 
     {:ok, socket}
   end
 
   def join(@statroom, _message, socket) do
     Process.flag(:trap_exit, true)
-    send(self, :after_stat_join)
+    send(self(), :after_stat_join)
 
     {:ok, socket}
   end

@@ -12,7 +12,7 @@ defmodule Tuesday.User do
 
     many_to_many :shows, Tuesday.Show, join_through: "shows_users"
 
-    timestamps
+    timestamps()
   end
 
   @required_fields ~w(name email pwhash)a

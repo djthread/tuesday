@@ -9,7 +9,7 @@ defmodule Tuesday.Auth do
   #
   # end
 
-  def generate_token(user_id, now \\ get_now, secret \\ @secret) do
+  def generate_token(user_id, now \\ get_now(), secret \\ @secret) do
     user_id_s = user_id |> to_string
     now_s     = now     |> to_string
     content   = user_id_s <> now_s <> secret
@@ -18,7 +18,7 @@ defmodule Tuesday.Auth do
     user_id_s <> "," <> now_s <> "," <> hash
   end
 
-  def verify_token(token, now \\ get_now, secret \\ @secret) do
+  def verify_token(token, now \\ get_now(), secret \\ @secret) do
     case token |> String.split(",") do
       [user_id, stamp, _hash] ->
         user_id = user_id |> Integer.parse |> elem(0)
