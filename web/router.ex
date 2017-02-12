@@ -14,13 +14,12 @@ defmodule Tuesday.Router do
   end
 
   scope "/", Tuesday do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser
 
-    # get "/", PageController, :index
+    get "/", PageController, :index
     # resources "/episodes", EpisodeController, except: [:new, :edit]
   end
 
-  # Other scopes may use custom stacks.
   scope "/api", Tuesday do
     pipe_through :api
 

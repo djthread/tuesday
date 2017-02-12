@@ -42,7 +42,7 @@ exports.config = {
     // Dependencies and current project directories to watch
     watched: [
       "web/static",
-      "web/elm/Site/App.elm",
+      "web/elm/src/Public/App.elm",
       "test/static"
     ],
 
@@ -54,9 +54,20 @@ exports.config = {
   plugins: {
     elmBrunch: {
       elmFolder: "web/elm",
-      mainModules: ["Site/App.elm"],
+      mainModules: ["src/Public/App.elm"],
       outputFolder: "../static/vendor",
-      executablePath: '../../node_modules/elm/binwrappers'
+      executablePath: "../../node_modules/elm/binwrappers"
+    },
+    sass: {
+      mode: "native",
+      options: {
+        // allowCache: true,
+        // sourceMapEmbed: true,
+        includePaths: [
+          "node_modules/foundation/scss/",
+          "web/static/sass/"
+        ]
+      }
     },
     babel: {
       // Do not use ES6 compiler in vendor code
