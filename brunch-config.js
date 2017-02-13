@@ -58,14 +58,29 @@ exports.config = {
       outputFolder: "../static/vendor",
       executablePath: "../../node_modules/elm/binwrappers"
     },
+    // uglify: {
+    //   global_defs: {
+    //     DEBUG: false
+    //   },
+    //   compress: {
+    //     dead_code: true,
+    //     properties: true,
+    //     booleans: true,
+    //     conditionals: true,
+    //     sequences: true,
+    //     loops: true,
+    //     if_return: true,
+    //     join_vars: true,
+    //     cascade: true
+    //   }
+    // },
     sass: {
       mode: "native",
       options: {
-        // allowCache: true,
-        // sourceMapEmbed: true,
+        allowCache: true,
+        sourceMapEmbed: true,
         includePaths: [
-          "node_modules/foundation/scss/",
-          "web/static/sass/"
+          "node_modules/foundation/scss/"
         ]
       }
     },

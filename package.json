@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "elm": "^0.18.0",
-    "sass-brunch": "^2.10.2",
-    "foundation": "^4.2.1-1"
+    "foundation": "^4.2.1-1",
+    "sass-brunch": "^2.10.2"
   }
 }

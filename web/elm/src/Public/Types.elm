@@ -9,5 +9,7 @@ type alias Model =
   , chat  : Chat.Types.Model
   }
 
-type Msg =
-  OnLocationChange Location
+type Msg
+  = OnLocationChange Location
+  -- | PlayersMsg Players.Messages.Msg
+  -- | ShowAbout

@@ -15,7 +15,7 @@ import View exposing (root)
 
 -- main : Program Never Model Msg
 main =
-  Navigation.program UrlChange
+  Navigation.program OnLocationChange
     { init          = State.init
     , update        = State.update
     , subscriptions = State.subscriptions
