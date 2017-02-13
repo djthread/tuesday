@@ -1,10 +1,13 @@
 module Types exposing (..)
 
+import Navigation exposing (Location)
 import Chat.Types exposing (..)
+import Routing
 
 type alias Model =
-  { chat : Chat.Types.Model
+  { route : Routing.Route
+  , chat  : Chat.Types.Model
   }
 
 type Msg =
-  Athing
+  OnLocationChange Location

@@ -1,17 +1,31 @@
-module State exposing (..)
+module State exposing (init, update, subscriptions)
 
+import Routing exposing (parseLocation)
 import Types exposing (..)
 
-init : ( Model, Cmd Msg )
-init =
-  ( { chat = {} }
-  , Cmd.none
-  )
+
+init : Location -> ( Model, Cmd Msg )
+init location =
+  let
+    currentRoute = parseLocation location
+  in
+    ( { route = currentRoute
+      , chat  = {}
+      }
+    , Cmd.none
+    )
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  ( model, Cmd.none )
-  -- case msg of
+  case msg of
+    OnLocationChange location ->
+      let
+        newRoute =
+          parseLocation location
+      in
+        ( { model | route = newRoute }, Cmd.none )
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =

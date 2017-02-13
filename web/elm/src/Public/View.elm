@@ -5,4 +5,4 @@ import Types exposing (..)
 
 root : Model -> Html Msg
 root model =
-  p [] [text "whaddup"]
+  p [] [text "whadduppheh"]
