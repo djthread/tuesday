@@ -3,6 +3,7 @@ module State exposing (init, update, subscriptions)
 import Routing exposing (parseLocation)
 import Types exposing (..)
 import Navigation exposing (Location, newUrl)
+import Port exposing (activateVideo, videoActivated)
 
 
 init : Location -> ( Model, Cmd Msg )
@@ -10,7 +11,7 @@ init location =
   ( { route = parseLocation location
     , chat  = {}
     }
-  , Cmd.none
+  , activateVideo "do eet"
   )
 
 
@@ -24,8 +25,11 @@ update msg model =
       , Cmd.none
       )
 
+    VideoActivated msg ->
+      ( model, Cmd.none )
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Sub.none
+  videoActivated VideoActivated
 

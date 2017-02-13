@@ -12,8 +12,10 @@
     "uglify-js-brunch": ">= 1.0 < 1.8"
   },
   "devDependencies": {
+    "copycat-brunch": "^1.1.0",
     "elm": "^0.18.0",
     "foundation": "^4.2.1-1",
-    "sass-brunch": "^2.10.2"
+    "sass-brunch": "^2.10.2",
+    "video.js": "^5.16.0"
   }
 }

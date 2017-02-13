@@ -9,6 +9,7 @@
 
     <title>Impulse Detroit</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link href="/css/video-js.min.css" rel="stylesheet">
   </head>
 
   <body>
@@ -20,5 +21,6 @@
 
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script src="/js/video.min.js"></script>
   </body>
 </html>

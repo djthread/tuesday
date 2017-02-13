@@ -84,6 +84,17 @@ exports.config = {
         ]
       }
     },
+    copycat: {
+      "js": [
+        "node_modules/video.js/dist/video.min.js"
+      ],
+      "css": [
+        "node_modules/video.js/dist/video-js.min.css"
+      ],
+      "swf": [
+        "node_modules/video.js/dist/video-js.swf"
+      ]
+    },
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
