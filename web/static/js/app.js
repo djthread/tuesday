@@ -1,3 +1,4 @@
+/*
 const node = document.getElementById('elm-main')
     , idapp = Elm.Public.embed(node);
 
@@ -13,3 +14,12 @@ idapp.ports.activateVideo.subscribe(
     return "score";
   }
 );
+
+idapp.ports.playEpisode.subscribe(
+  function startEpisode(messageFromElm) {
+    $(function() {
+      $('audio').audioPlayer();
+    });
+  }
+);
+*/

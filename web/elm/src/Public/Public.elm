@@ -13,7 +13,7 @@ import View exposing (root)
 
 -- MAIN
 
--- main : Program Never Model Msg
+main : Program Never Model Msg
 main =
   Navigation.program OnLocationChange
     { init          = State.init
@@ -21,6 +21,3 @@ main =
     , subscriptions = State.subscriptions
     , view          = View.root
     }
-
--- main =
---   Html.text "Sap!"

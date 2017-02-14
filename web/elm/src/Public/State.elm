@@ -3,7 +3,7 @@ module State exposing (init, update, subscriptions)
 import Routing exposing (parseLocation)
 import Types exposing (..)
 import Navigation exposing (Location, newUrl)
-import Port exposing (activateVideo, videoActivated)
+import Port exposing (activateVideo, playEpisode)
 import Dock.Types
 
 
@@ -13,6 +13,8 @@ init location =
     , chat = {}
     , dock = { track = Nothing }
     }
+  -- , PlayPodcast "https://impulsedetroit.net/download/techno-tuesday/techtues-102.mp3" "TT 102"
+  -- , Cmd.none
   , activateVideo "do eet"
   )
 
@@ -20,15 +22,13 @@ init location =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    -- ShowAbout ->
-    --   ( model, newUrl "#about" )
     OnLocationChange location ->
       ( { model | route = parseLocation location }
       , Cmd.none
       )
 
-    VideoActivated msg ->
-      ( model, Cmd.none )
+    -- VideoActivated msg ->
+    --   ( model, Cmd.none )
 
     PlayPodcast url title ->
       let
@@ -37,15 +37,13 @@ update msg model =
       in
         ( { model
           | dock =
-              { dock
-              | track = Just track
-              }
+              { dock | track = Just track }
           }
-        , Cmd.none
+        , playEpisode "go beach"
         )
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  videoActivated VideoActivated
-
+  -- videoActivated VideoActivated
+  Sub.none

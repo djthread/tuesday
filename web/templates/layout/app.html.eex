@@ -21,6 +21,43 @@
 
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <!--
+    <script src="/js/audioplayer.min.js"></script>
+    -->
     <script src="/js/video.min.js"></script>
+    <script>
+      const node = document.getElementById('elm-main')
+          , idapp = Elm.Public.embed(node);
+
+      var audio
+        , audioFinder = setInterval(function() {
+            audio = document.getElementById('theaudio');
+            console.log('looking for audio:', audio);
+            if (audio) clearInterval(audioFinder);
+          }, 400);
+
+      idapp.ports.activateVideo.subscribe(
+        function launchVideoJs(messagefromElm) {
+          videojs.options.flash.swf = '/swf/video-js.swf';
+
+          videojs(
+            document.getElementById('thevideo'),
+            {'fluid': true, 'aspectRatio': '16:9'}
+          );
+        }
+      );
+
+      idapp.ports.playEpisode.subscribe(
+        function startEpisode(messageFromElm) {
+          setTimeout(function() {
+            audio.load();
+            audio.play();
+          }, 100);
+        }
+      );
+    </script>
   </body>
 </html>

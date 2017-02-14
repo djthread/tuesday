@@ -2,40 +2,41 @@ module Dock.View exposing (root)
 
 import String exposing (concat)
 import Html exposing (Html, div, p, a, text, footer, audio, source)
-import Html.Attributes exposing (class, href, style, controls, src, type_, attribute)
+import Html.Attributes exposing (class, href, style, controls, src, type_, attribute, id)
 import Html.Events exposing (onClick)
 import Types exposing (..)
 import Dock.Types exposing (Track)
 
 
+
 root : Model -> Html Msg
 root model =
-  case model.dock.track of
-    Just track ->
-      build track
-
-    Nothing ->
-      text ""
-
-
-build : Track -> Html Msg
-build track =
-  div [class "dock"]
-    [ div []
-        [ audio
-            [ attribute "ref" "audio"
-            , controls True
-            -- , attribute "data-setup" "{}"
-            ]
-            [ source
-                [ src track.src
-                , type_ "audio/mp3"
-                ]
-                []
-            ]
-        , p [] [text (concat ["Now Playing ", track.title])]
-        ]
-    ]
+  let
+    (display, thesrc, thetitle) =
+      case model.dock.track of
+        Just track ->
+          ("block", track.src, track.title)
+        Nothing ->
+          ("none", "", "")
+  in
+    div [class "dock", style [("display", display)]]
+      [ div []
+          [ audio
+              [ --attribute "ref" "audio"
+                id "theaudio"
+              , controls True
+              , attribute "preload" "auto"
+              -- , attribute "data-setup" "{}"
+              ]
+              [ source
+                  [ src thesrc
+                  , type_ "audio/mp3"
+                  ]
+                  []
+              ]
+          , p [] [text (concat ["Now Playing ", thetitle])]
+          ]
+      ]
 
 ep1url : String
 ep1url =

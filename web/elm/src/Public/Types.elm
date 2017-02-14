@@ -13,7 +13,7 @@ type alias Model =
 
 type Msg
   = OnLocationChange Location
-  | VideoActivated String
   | PlayPodcast String String
+  -- | VideoActivated String
   -- | PlayersMsg Players.Messages.Msg
   -- | ShowAbout
