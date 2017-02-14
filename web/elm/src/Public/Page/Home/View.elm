@@ -4,9 +4,19 @@ import Html exposing (Html, div, a, p, text, footer)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
 import Types exposing (..)
+import Layout
+
 
 root : Model -> Html Msg
 root model =
+  let
+    page = build model
+  in
+    Layout.root model page
+
+
+build : Model -> Html Msg
+build model =
   div [class "row"]
     [ div [class "large-6 columns"]
       [ text "hello"

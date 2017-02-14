@@ -4,12 +4,14 @@ import Routing exposing (parseLocation)
 import Types exposing (..)
 import Navigation exposing (Location, newUrl)
 import Port exposing (activateVideo, videoActivated)
+import Dock.Types
 
 
 init : Location -> ( Model, Cmd Msg )
 init location =
   ( { route = parseLocation location
-    , chat  = {}
+    , chat = {}
+    , dock = { track = Nothing }
     }
   , activateVideo "do eet"
   )
@@ -27,6 +29,20 @@ update msg model =
 
     VideoActivated msg ->
       ( model, Cmd.none )
+
+    PlayPodcast url title ->
+      let
+        dock  = model.dock
+        track = Dock.Types.Track url title
+      in
+        ( { model
+          | dock =
+              { dock
+              | track = Just track
+              }
+          }
+        , Cmd.none
+        )
 
 
 subscriptions : Model -> Sub Msg

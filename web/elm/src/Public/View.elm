@@ -9,14 +9,14 @@ import Page.Home.View
 import Page.Live.View
 import Page.About.View
 import Page.NotFound.View
+import Dock.View
 
 
 root : Model -> Html Msg
 root model =
   div []
     [ page model
-    , footer []
-        [text "i m d footer"]
+    , Dock.View.root model
     ]
 
 page : Model -> Html Msg
