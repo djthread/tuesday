@@ -24,7 +24,8 @@ root model =
           [ audio
               [ --attribute "ref" "audio"
                 id "theaudio"
-              , controls True
+              , attribute "controls" "true"
+              -- , attribute "autoplay" "true"
               , attribute "preload" "auto"
               -- , attribute "data-setup" "{}"
               ]

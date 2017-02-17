@@ -13,9 +13,12 @@ init location =
     , chat = {}
     , dock = { track = Nothing }
     }
-  -- , PlayPodcast "https://impulsedetroit.net/download/techno-tuesday/techtues-102.mp3" "TT 102"
+  -- , PlayPodcast
+  --   "https://impulsedetroit.net/download/techno-tuesday/techtues-102.mp3"
+  --   "TT 102"
   -- , Cmd.none
-  , activateVideo "do eet"
+  -- , activateVideo "do eet"
+  , Port.init "woop"
   )
 
 

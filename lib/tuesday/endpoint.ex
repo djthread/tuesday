@@ -9,7 +9,7 @@ defmodule Tuesday.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/", from: :tuesday, gzip: false,
-    only: ~w(css fonts images js swf robots.txt)
+    only: ~w(css fonts images js swf ttf robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

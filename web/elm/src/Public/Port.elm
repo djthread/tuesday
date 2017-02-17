@@ -6,3 +6,5 @@ port activateVideo : String -> Cmd msg
 
 port playEpisode : String -> Cmd msg
 -- port playEpisode : (String -> msg) -> Sub msg
+
+port init : String -> Cmd msg

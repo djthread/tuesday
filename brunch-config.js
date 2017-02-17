@@ -56,6 +56,7 @@ exports.config = {
       elmFolder: "web/elm",
       mainModules: ["src/Public/Public.elm"],
       outputFolder: "../static/vendor",
+      outputFile: "elm.js",
       executablePath: "../../node_modules/elm/binwrappers"
     },
     // uglify: {
@@ -85,15 +86,19 @@ exports.config = {
       }
     },
     copycat: {
-      "js": [
-        "node_modules/video.js/dist/video.min.js"
-      ],
+      // "js": [
+      //   // "node_modules/video.js/dist/video.min.js",
+      //   // "node_modules/foundation/stylus/foundation.js"
       "css": [
-        "node_modules/video.js/dist/video-js.min.css"
+        "node_modules/spectre.css/dist/spectre.min.css"
       ],
+      // ],
       "swf": [
         "node_modules/video.js/dist/video-js.swf"
-      ]
+      ],
+      "ttf": [
+        "web/static/ttf/desonanz.ttf"
+      ],
     },
     babel: {
       // Do not use ES6 compiler in vendor code
