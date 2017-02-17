@@ -21,7 +21,8 @@ root model =
   in
     div [class "dock", style [("display", display)]]
       [ div []
-          [ audio
+          [ p [] [text (concat ["Now Playing ", thetitle])]
+          , audio
               [ --attribute "ref" "audio"
                 id "theaudio"
               , attribute "controls" "true"
@@ -35,7 +36,6 @@ root model =
                   ]
                   []
               ]
-          , p [] [text (concat ["Now Playing ", thetitle])]
           ]
       ]
 

@@ -9,7 +9,11 @@ type alias Model =
   { route : Routing.Route
   , chat  : Chat.Types.Model
   , dock  : Dock.Types.Model
+  , video : VideoModel
   }
+
+type alias VideoModel =
+  Bool
 
 type Msg
   = OnLocationChange Location
