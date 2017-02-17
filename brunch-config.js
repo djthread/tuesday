@@ -21,7 +21,12 @@ exports.config = {
       // }
     },
     stylesheets: {
-      joinTo: "css/app.css"
+      joinTo: "css/app.css",
+      order: {
+        after: [
+          "web/static/css/app.scss"
+        ]
+      }
     },
     templates: {
       joinTo: "js/app.js"
@@ -78,20 +83,17 @@ exports.config = {
     sass: {
       mode: "native",
       options: {
-        allowCache: true,
         sourceMapEmbed: true,
-        includePaths: [
-          "node_modules/foundation/scss/"
-        ]
+        // allowCache: true,
+        // includePaths: [
+        //   "node_modules/foundation/scss/"
+        // ]
       }
     },
     copycat: {
       // "js": [
       //   // "node_modules/video.js/dist/video.min.js",
       //   // "node_modules/foundation/stylus/foundation.js"
-      "css": [
-        "node_modules/spectre.css/dist/spectre.min.css"
-      ],
       // ],
       "swf": [
         "node_modules/video.js/dist/video-js.swf"

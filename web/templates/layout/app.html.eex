@@ -10,7 +10,6 @@
     <title>Impulse Detroit</title>
     <link href="//fonts.googleapis.com/css?family=Josefin+Sans:400,700" rel="stylesheet" type="text/css">
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/spectre.css" rel="stylesheet">
     <link href="//vjs.zencdn.net/5.8.8/video-js.css" rel="stylesheet">
     <link href="<%= static_path(@conn, "/css/app.css") %>" rel="stylesheet">
     <!--
