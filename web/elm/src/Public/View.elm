@@ -8,18 +8,10 @@ import Routing exposing (Route(..))
 import Page.Home.View
 import Page.About.View
 import Page.NotFound.View
-import Dock.View
 
 
 root : Model -> Html Msg
 root model =
-  div []
-    [ page model
-    , Dock.View.root model
-    ]
-
-page : Model -> Html Msg
-page model =
   case model.route of
     HomeRoute ->
       Page.Home.View.root model

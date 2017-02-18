@@ -3,6 +3,7 @@ module Page.Home.View exposing (root)
 import Html exposing (Html, Attribute, div, a, p, text, footer, video, source, br, node, section)
 import Html.Attributes exposing (class, href, id, controls, preload, poster, src, type_)
 import Types exposing (..)
+import Chat.View
 import ViewUtil exposing (myOnClick)
 import Layout
 
@@ -35,29 +36,21 @@ build model =
     , div [class "container"]
         [ div [class "columns"]
             [ div [class "column col-6"]
-              [ p [] [text "And so it was, some things and stuff about whatever to make a longer line of text."]
-              , thevideo model
-              ]
+              [ thevideo model
+              , div [] [text "yayy"]
+              , div [] [text "yayy"]
+              , div []
+                  [ a [myOnClick (PlayEpisode "https://impulsedetroit.net/download/techno-tuesday/techtues-103.mp3" "TT 103"), href "#"] [text "TT103"]
+                  , br [] []
+                  , br [] []
+                  , a [myOnClick (PlayEpisode "https://impulsedetroit.net/download/techno-tuesday/techtues-102.mp3" "TT 102"), href "#"] [text "TT102"]
+                  ]
+              , div [] [text "yayy"]
+              , div [] [text "yayy"]
+              , div [] [text "yayy"]
+            ]
             , div [class "column col-6"]
-                [ div [] [text "yayy"]
-                , div [] [text "yayy"]
-                , div [] [text "yayy"]
-                , div [] [text "yayy"]
-                , div []
-                    [ a [myOnClick (PlayEpisode "https://impulsedetroit.net/download/techno-tuesday/techtues-103.mp3" "TT 103"), href "#"] [text "TT103"]
-                    , br [] []
-                    , br [] []
-                    , a [myOnClick (PlayEpisode "https://impulsedetroit.net/download/techno-tuesday/techtues-102.mp3" "TT 102"), href "#"] [text "TT102"]
-                    ]
-                , div [] [text "yayy"]
-                , div [] [text "yayy"]
-                , div [] [text "yayy"]
-                , div [] [text "yayy"]
-                , div [] [text "yayy"]
-                , div [] [text "yayy"]
-                , div [] [text "yayy"]
-                , div [] [text "yayy"]
-                , div [] [text "yayy"]
+                [ Chat.View.root model
                 ]
             ]
         ]
@@ -72,6 +65,7 @@ thevideo model =
         [ a [myOnClick EnableVideo, href "#"] [text "Start video"]
         ]
     True ->
+      -- div [class "video-responsive"]
       div []
         [ node "script" [src "//vjs.zencdn.net/5.8.8/video.min.js"] []
         , video

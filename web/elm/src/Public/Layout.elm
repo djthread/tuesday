@@ -5,6 +5,7 @@ import Html exposing (Html, Attribute,
 import Html.Attributes exposing (class, href, attribute, title, style)
 -- import Html.Events exposing (onClick)
 import Types exposing (..)
+import Dock.View
 -- import Routing exposing (Route(..))
 -- import Page.Home.View
 -- import Page.About.View
@@ -22,6 +23,7 @@ root model msg =
             , button [class "btn btn-primary"] [text "Share"]
             ]
         ]
+    , Dock.View.root model
     ]
 
 myheader : Model -> Html Msg
