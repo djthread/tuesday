@@ -9,7 +9,9 @@ import Chat.Types exposing (Line)
 import Chat.Modem exposing (newMsgDecoder)
 import Phoenix.Socket
 import Phoenix.Channel
+import Phoenix.Push
 import Json.Decode exposing (decodeValue)
+import Json.Encode as JE
 import Date exposing (Date)
 import Task
 -- import Phoenix.Push
@@ -21,7 +23,7 @@ init location =
     route =
       parseLocation location
     initSocket =
-      Phoenix.Socket.init "/socket"
+      Phoenix.Socket.init "ws://localhost:4091/socket/websocket"
         |> Phoenix.Socket.withDebug
         |> Phoenix.Socket.on "new:msg" "rooms:lobby" ReceiveNewMsg
     channel =
@@ -45,7 +47,7 @@ init location =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case msg of
+  case Debug.log "msg" msg of
     OnLocationChange location ->
       let
         route = parseLocation location
@@ -55,7 +57,7 @@ update msg model =
 
     EnableVideo ->
       ( { model | video = True }
-      , Debug.log "sap" (activateVideo "yeap")
+      , activateVideo "yeap"
       )
 
     PlayEpisode url title ->
@@ -85,9 +87,14 @@ update msg model =
           let
             -- now  = Date.now |> Task.Perform NoOp CurrentTime
             -- line = Line now "Bob" "Cheese"
-            chat = model.chat
+            chat =
+              model.chat
+            lines =
+              case chat.lines of
+                Just lines -> Just (lines ++ [line])
+                Nothing ->    Just [line]
           in
-            ( { model | chat = { chat | lines = Just [line] } }
+            ( { model | chat = { chat | lines = lines } }
             , Cmd.none
             )
 
@@ -110,6 +117,20 @@ update msg model =
         , Cmd.none
         )
 
+    Shout ->
+      pushChatMessage model
+
+    OnKeyPress int ->
+      case int of
+        13 ->   -- enter
+          pushChatMessage model
+
+        _ ->
+          update NoOp model
+
+    -- ScrollToBottom ->
+    --   scrollToBottom
+
     NoOp ->
       ( model, Cmd.none )
 
@@ -118,3 +139,35 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
   Phoenix.Socket.listen model.phxSocket PhoenixMsg
+
+
+pushChatMessage : Model -> ( Model, Cmd Msg )
+pushChatMessage model =
+  let
+    ( model_, cmd ) =
+      pushMessage "new:msg" "rooms:lobby" model
+    chat =
+      model_.chat
+  in
+    ( { model_ | chat = { chat | msg = "" } }
+    , cmd
+    )
+
+
+pushMessage : String -> String -> Model -> ( Model, Cmd Msg )
+pushMessage message channel model =
+  let
+    payload =
+      JE.object
+        [ ( "user", JE.string model.chat.name )
+        , ( "body", JE.string model.chat.msg )
+        ]
+    push_ =
+      Phoenix.Push.init message channel
+        |> Phoenix.Push.withPayload payload
+    ( phxSocket, phxCmd ) =
+      Phoenix.Socket.push push_ model.phxSocket
+  in
+    ( { model | phxSocket = phxSocket }
+    , Cmd.map PhoenixMsg phxCmd
+    )

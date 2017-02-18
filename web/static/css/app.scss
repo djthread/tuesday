@@ -94,10 +94,52 @@ header {
 }
 
 div.chat {
-    background-color: #000;
-    height: 8em;
-    font-family: monospace;
-    font-size: 70%;
+    height: 80%;
+
+    /*
+    .messages {
+        background-color: #000;
+        font-family: monospace;
+        font-size: 70%;
+        overflow: auto;
+    }
+    */
+
+.messages-outer {
+  height: 80%;
+  max-height: 18em;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 0.3em;
+}
+
+.messages {
+  max-height: 18em;
+  min-height: 18em;
+  width: 100%;
+  overflow: auto;
+  padding-right: 20px;
+  padding: 0 1em;
+  border: 2px solid rgba(99,99,99,0.5);
+  background-color: rgba(0,0,0,0.33);
+}
+
+    .inputs {
+        .name, .msg {
+            background-color: #333;
+            color: #ccc;
+        }
+        .name {
+            width: 20%;
+        }
+        .msg {
+            width: 80%;
+            float: right;
+        }
+        .submit {
+            position: absolute; left: -9999px;
+        }
+    }
 }
 
 

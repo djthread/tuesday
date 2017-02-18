@@ -14,7 +14,7 @@ type alias Model =
   , lines : Maybe (List Line)
   }
 
-type Msg
-  = Shout String
-  | AppendLine Line
-  | Reset
+-- type Msg
+--   = Shout
+--   | AppendLine Line
+--   | Reset

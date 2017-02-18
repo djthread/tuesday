@@ -24,9 +24,14 @@ type Msg
   | EnableVideo
   | PlayEpisode String String
   | PhoenixMsg (Phoenix.Socket.Msg Msg)
+
   | ReceiveNewMsg JE.Value
   | InputUser String
   | InputMsg String
+  | Shout
+  | OnKeyPress Int
+  -- | ScrollToBottom
+
   | NoOp
   -- | ActuallyPlayEpisode String String
   -- | VideoActivated String
