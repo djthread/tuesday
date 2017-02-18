@@ -6,6 +6,7 @@ import Html.Attributes exposing (class, href, attribute, title, style)
 -- import Html.Events exposing (onClick)
 import Types exposing (..)
 import Dock.View
+import ViewUtil exposing (toggle)
 -- import Routing exposing (Route(..))
 -- import Page.Home.View
 -- import Page.About.View
@@ -45,12 +46,3 @@ myheader model =
           , a [href "//photos.impulsedetroit.net", class "btn btn-link"] [text "Photos"]
           ]
       ]
-
-toggle : Bool -> Attribute msg
-toggle bool =
-  let display =
-    case bool of
-      True  -> "block"
-      False -> "none"
-  in
-    style [("display", display)]
