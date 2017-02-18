@@ -5,6 +5,7 @@ import Types exposing (..)
 import Navigation exposing (Location, newUrl)
 import Port exposing (activateVideo, playEpisode)
 import Dock.Types
+import Task
 
 
 init : Location -> ( Model, Cmd Msg )
@@ -20,16 +21,11 @@ init location =
       }
     , cmd
     )
-  -- , PlayPodcast
-  --   "https://impulsedetroit.net/download/techno-tuesday/techtues-102.mp3"
-  --   "TT 102"
-  -- , Port.init "woop"
-  -- )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case Debug.log "wat" msg of
+  case msg of
     OnLocationChange location ->
       let
         route_ = parseLocation location 
@@ -37,10 +33,12 @@ update msg model =
       in
         ( { model | route = route_ }, cmd )
 
-    -- VideoActivated msg ->
-    --   ( model, Cmd.none )
+    EnableVideo ->
+      ( { model | video = True }
+      , Debug.log "sap" (activateVideo "yeap")
+      )
 
-    PlayPodcast url title ->
+    PlayEpisode url title ->
       let
         dock  = model.dock
         track = Dock.Types.Track url title
@@ -61,8 +59,6 @@ subscriptions model =
 
 initCmd : Route -> Cmd Msg
 initCmd route =
-    case route of
-      LiveRoute ->
-        Debug.log "sap" (activateVideo "yeap")
-      _ ->
-        Cmd.none
+  case route of
+    _ ->
+      Cmd.none

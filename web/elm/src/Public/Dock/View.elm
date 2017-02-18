@@ -20,25 +20,19 @@ root model =
           ("none", "", "")
   in
     div [class "dock", style [("display", display)]]
-      [ div []
-          [ p [] [text (concat ["Now Playing ", thetitle])]
-          , audio
-              [ --attribute "ref" "audio"
-                id "theaudio"
-              , attribute "controls" "true"
-              -- , attribute "autoplay" "true"
-              , attribute "preload" "auto"
-              -- , attribute "data-setup" "{}"
+      [ p [] [text (concat ["Now Playing ", thetitle])]
+      , audio
+          [ --attribute "ref" "audio"
+            id "theaudio"
+          , attribute "controls" "true"
+          -- , attribute "autoplay" "true"
+          , attribute "preload" "auto"
+          -- , attribute "data-setup" "{}"
+          ]
+          [ source
+              [ src thesrc
+              , type_ "audio/mp3"
               ]
-              [ source
-                  [ src thesrc
-                  , type_ "audio/mp3"
-                  ]
-                  []
-              ]
+              []
           ]
       ]
-
-ep1url : String
-ep1url =
-  "https://impulsedetroit.net/download/wobblehead-radio/wobblehead-021.mp3"

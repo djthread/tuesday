@@ -50,6 +50,23 @@ header {
     background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.3));
 }
 
+section.hero {
+    background-size: cover;
+    background-position: center center;
+    // clear: both;
+    height: 50vh;
+    border-bottom: 3px solid $primary-color;
+    background-image: url(https://photos.impulsedetroit.net/action.php?id=182&part=e);
+}
+div.hero-overlay { height: 100%; }
+div.hero-info { max-width: 18em; float: left; padding: 0.7em;
+  margin-top: 1em; background: rgba(0,0,0,0.6); color: #eee; line-height: 1.2em; }
+// .dropshadow { background: transparent;
+//   background: -webkit-linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+//   background: -o-linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+//   background: -moz-linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+//   background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.0), rgba(0,0,0,0.0)); }
+
 
 
 
@@ -57,12 +74,24 @@ header.navbar .navbar-section {
     padding: 1rem 0 0 1rem;
 }
 
+header.navbar a.btn-link {
+    padding-top: 11px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    font-size: 80%;
+    border-bottom: 3px solid transparent;
+}
+
+header.navbar a.btn-link:hover {
+    border-bottom: 3px solid $primary-color;
+}
+
 a.navbar-brand {
     font-family: desmonanz;
     font-size: x-large;
     text-decoration: none;
     color: $primary-color;
-    padding-left: 1rem;
+    padding: 0 1rem 0 0;
 }
 
 header {
@@ -71,7 +100,7 @@ header {
 
 
 // .btn { font-size: 1.6rem; }
-.btn.btn-link { color: $primary-color; }
-.btn.btn-link:hover {
-    color: lighten($primary-color, 15%);
-}
+// .btn.btn-link { color: $primary-color; }
+// .btn.btn-link:hover {
+//     color: lighten($primary-color, 15%);
+// }

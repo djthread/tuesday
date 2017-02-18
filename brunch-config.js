@@ -64,22 +64,22 @@ exports.config = {
       outputFile: "elm.js",
       executablePath: "../../node_modules/elm/binwrappers"
     },
-    // uglify: {
-    //   global_defs: {
-    //     DEBUG: false
-    //   },
-    //   compress: {
-    //     dead_code: true,
-    //     properties: true,
-    //     booleans: true,
-    //     conditionals: true,
-    //     sequences: true,
-    //     loops: true,
-    //     if_return: true,
-    //     join_vars: true,
-    //     cascade: true
-    //   }
-    // },
+    uglify: {
+      global_defs: {
+        DEBUG: false
+      },
+      compress: {
+        dead_code: true,
+        properties: true,
+        booleans: true,
+        conditionals: true,
+        sequences: true,
+        loops: true,
+        if_return: true,
+        join_vars: true,
+        cascade: true
+      }
+    },
     sass: {
       mode: "native",
       options: {

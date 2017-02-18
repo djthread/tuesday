@@ -17,7 +17,9 @@ type alias VideoModel =
 
 type Msg
   = OnLocationChange Location
-  | PlayPodcast String String
+  | EnableVideo
+  | PlayEpisode String String
+  -- | ActuallyPlayEpisode String String
   -- | VideoActivated String
   -- | PlayersMsg Players.Messages.Msg
   -- | ShowAbout
