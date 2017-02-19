@@ -1,8 +1,8 @@
 module Chat.View exposing (root)
 
 import Date.Format
-import Types exposing (..)
-import Chat.Types exposing (Line)
+import Types exposing (Model, Msg)
+import Chat.Types exposing (Msg(..), Line)
 import Html exposing (Html, div, text, input, p)
 import Html.Attributes exposing (class, value, type_, disabled, placeholder)
 -- import Html.Events exposing (onInput, onClick)
@@ -10,7 +10,7 @@ import Html.Events exposing (on, onInput, keyCode)
 import Json.Decode as JD
 
 
-root : Model -> Html Msg
+root : Model -> Html Chat.Types.Msg
 root model =
   let
     cantSay =
@@ -55,7 +55,7 @@ root model =
           ]
       ]
 
-buildLine : Line -> Html Msg
+buildLine : Line -> Html Chat.Types.Msg
 buildLine line =
   let
     stamp =

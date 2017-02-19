@@ -50,7 +50,8 @@ build model =
               , div [] [text "yayy"]
             ]
             , div [class "column col-6"]
-                [ Chat.View.root model
+                -- [ Html.map ChatMsg (Chat.View.root model.chat)
+                [ Html.map ChatMsg (Chat.View.root model)
                 ]
             ]
         ]

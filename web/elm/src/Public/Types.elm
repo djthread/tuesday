@@ -1,6 +1,5 @@
 module Types exposing (..)
 
-import Json.Encode as JE
 import Phoenix.Socket
 import Navigation exposing (Location)
 import Chat.Types exposing (..)
@@ -20,17 +19,10 @@ type alias VideoModel =
 
 type Msg
   = OnLocationChange Location
-  -- | ChatMsg (Chat.Types.Msg Msg)
+  | ChatMsg Chat.Types.Msg
   | EnableVideo
   | PlayEpisode String String
   | PhoenixMsg (Phoenix.Socket.Msg Msg)
-
-  | ReceiveNewMsg JE.Value
-  | InputUser String
-  | InputMsg String
-  | Shout
-  | OnKeyPress Int
-  -- | ScrollToBottom
 
   | NoOp
   -- | ActuallyPlayEpisode String String

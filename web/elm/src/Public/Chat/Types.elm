@@ -1,5 +1,6 @@
 module Chat.Types exposing (..)
 
+import Json.Encode as JE
 import Date exposing (Date)
 
 type alias Line =
@@ -14,7 +15,12 @@ type alias Model =
   , lines : Maybe (List Line)
   }
 
--- type Msg
---   = Shout
---   | AppendLine Line
---   | Reset
+type Msg
+  = ReceiveNewMsg JE.Value
+  | InputUser String
+  | InputMsg String
+  | Shout
+  | OnKeyPress Int
+  | NoOp
+  -- | ScrollToBottom
+

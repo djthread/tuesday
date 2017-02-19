@@ -6,14 +6,6 @@ import Json.Decode.Extra exposing (date)
 import Chat.Types exposing (Line)
 
 
--- lobby : Decoder Lobby
--- lobby =
---   succeed Lobby
---     |: ("name" := string)
---     |: (("status" := string) `andThen` decodeStatus)
-
-
-
 newMsgDecoder : Decoder Line
 newMsgDecoder =
   decode Line
