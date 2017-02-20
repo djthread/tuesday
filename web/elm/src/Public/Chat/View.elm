@@ -3,8 +3,8 @@ module Chat.View exposing (root)
 import Date.Format
 import Types exposing (Model, Msg)
 import Chat.Types exposing (Msg(..), Line)
-import Html exposing (Html, div, text, input, p)
-import Html.Attributes exposing (class, value, type_, disabled, placeholder)
+import Html exposing (Html, div, text, input, p, span)
+import Html.Attributes exposing (class, value, type_, disabled, placeholder, id)
 -- import Html.Events exposing (onInput, onClick)
 import Html.Events exposing (on, onInput, keyCode)
 import Json.Decode as JD
@@ -24,11 +24,15 @@ root model =
         Nothing ->
           [text ""]
   in
-    div [class "chat"]
-      [ div [class "messages-outer"]
-          [ div [class "messages"] lines
+    div [ class "chat" ]
+      [ div [ class "messages-outer" ]
+          [ div
+              [ class "messages"
+              , id "chat-messages"
+              ]
+              lines
       ]
-      , div [class "inputs"]
+      , div [ class "inputs" ]
           [ input
               [ class "name"
               , type_ "text"
@@ -61,14 +65,11 @@ buildLine line =
     stamp =
       Date.Format.format "%l:%M%P" line.stamp
   in
-    div []
-      [ p []
-          [ text (String.concat
-              [ stamp
-              , " "
-              , line.user
-              , ": "
-              , line.body
-              ])
-          ]
+    div [ class "line"]
+      [ span [ class "stamp" ]
+          [ text stamp ]
+      , span [ class "user" ]
+          [ text line.user ]
+      , span [ class "content" ]
+          [ text line.body ]
       ]

@@ -52,12 +52,9 @@ update msg model =
     PlayEpisode url title ->
       let
         dock  = model.dock
-        track = Dock.Types.Track url title
+        track = Just (Dock.Types.Track url title)
       in
-        ( { model
-          | dock =
-              { dock | track = Just track }
-          }
+        ( { model | dock = { dock | track = track } }
         , playEpisode "go beach"
         )
 

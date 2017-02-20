@@ -22,5 +22,3 @@ type Msg
   | Shout
   | OnKeyPress Int
   | NoOp
-  -- | ScrollToBottom
-

@@ -8,14 +8,8 @@ import Json.Decode exposing (decodeValue)
 import Json.Encode as JE
 import Time exposing (Time)
 import Navigation exposing (Location)
-
-
--- btw, this is unused
--- init : Location -> ( Model, Cmd Msg )
--- init location =
---   ( Model "" "" Nothing
---   , Cmd.none
---   )
+import Dom.Scroll
+import Task
 
 
 update : Msg -> Types.Model -> ( Types.Model, Cmd Types.Msg )
@@ -25,17 +19,19 @@ update msg model =
       case decodeValue newMsgDecoder raw of
         Ok line ->
           let
-            -- now  = Date.now |> Task.Perform NoOp CurrentTime
-            -- line = Line now "Bob" "Cheese"
             chat =
               model.chat
             lines =
               case chat.lines of
                 Just lines -> Just (lines ++ [line])
                 Nothing ->    Just [line]
+            toBottom =
+              Dom.Scroll.toBottom "chat-messages"
           in
-            ( { model | chat = { chat | lines = lines } }
-            , Cmd.none
+            ( { model
+              | chat = { chat | lines = lines }
+              }
+            , Task.attempt (\_ -> Types.NoOp) toBottom
             )
 
         Err error ->
@@ -62,15 +58,11 @@ update msg model =
 
     OnKeyPress int ->
       case int of
-        13 ->   -- enter
-          -- doPhoenixMsg
+        13 ->   -- enter key
           pushChatMessage model
 
         _ ->
           ( model, Cmd.none )
-
-    -- ScrollToBottom ->
-    --   scrollToBottom
 
     NoOp ->
       ( model, Cmd.none )
