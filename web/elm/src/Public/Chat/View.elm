@@ -37,6 +37,7 @@ root model =
               [ class "name"
               , type_ "text"
               , placeholder "name"
+              , value model.chat.name
               , onInput InputUser
               ]
               []

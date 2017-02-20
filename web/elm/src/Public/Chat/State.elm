@@ -4,6 +4,7 @@ import StateUtil exposing (pushMessage)
 import Types
 import Chat.Types exposing (..)
 import Chat.Modem exposing (newMsgDecoder)
+import Port
 import Json.Decode exposing (decodeValue)
 import Json.Encode as JE
 import Time exposing (Time)
@@ -12,7 +13,8 @@ import Dom.Scroll
 import Task
 
 
-update : Msg -> Types.Model -> ( Types.Model, Cmd Types.Msg )
+update : Msg -> Types.Model
+      -> ( Types.Model, Cmd Types.Msg )
 update msg model =
   case msg of
     ReceiveNewMsg raw ->
@@ -53,9 +55,6 @@ update msg model =
         , Cmd.none
         )
 
-    Shout ->
-      pushChatMessage model
-
     OnKeyPress int ->
       case int of
         13 ->   -- enter key
@@ -64,14 +63,24 @@ update msg model =
         _ ->
           ( model, Cmd.none )
 
+    GotChatName name ->
+      let
+        chat = model.chat
+      in
+        ( { model | chat = { chat | name = name } }
+        , Cmd.none
+        )
+
     NoOp ->
       ( model, Cmd.none )
 
 
 
-subscriptions : Types.Model -> Sub Types.Msg
+subscriptions : Types.Model -> Sub Msg
 subscriptions model =
-  Sub.none
+  Sub.batch
+    [ Port.gotChatName GotChatName
+    ]
 
 
 
@@ -84,11 +93,14 @@ pushChatMessage model =
         [ ( "user", JE.string model.chat.name )
         , ( "body", JE.string model.chat.msg )
         ]
-    ( model_, cmd ) =
+    ( newmodel, cmd ) =
       pushMessage "new:msg" "rooms:lobby" payload model
     chat =
-      model_.chat
+      newmodel.chat
+    setChatName =
+      Port.setChatName chat.name
   in
-    ( { model_ | chat = { chat | msg = "" } }
-    , cmd
+    ( { newmodel | chat = { chat | msg = "" } }
+    , Cmd.batch
+        [ cmd, setChatName ]
     )

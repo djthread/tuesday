@@ -3,7 +3,7 @@ module State exposing (init, update, subscriptions)
 import Routing exposing (parseLocation, Route, Route(..))
 import Types exposing (..)
 import Navigation exposing (Location, newUrl)
-import Port exposing (activateVideo, playEpisode)
+import Port
 import Dock.Types
 import Chat.State
 import Phoenix.Socket
@@ -30,7 +30,7 @@ init location =
       , dock      = { track = Nothing }
       , video     = False
       }
-    , cmd
+    , Cmd.batch [ cmd, Port.getChatName "fo srs"]
     )
 
 
@@ -46,7 +46,7 @@ update msg model =
 
     EnableVideo ->
       ( { model | video = True }
-      , activateVideo "yeap"
+      , Port.activateVideo "yeap"
       )
 
     PlayEpisode url title ->
@@ -55,7 +55,7 @@ update msg model =
         track = Just (Dock.Types.Track url title)
       in
         ( { model | dock = { dock | track = track } }
-        , playEpisode "go beach"
+        , Port.playEpisode "go beach"
         )
 
     PhoenixMsg msg ->
@@ -69,7 +69,6 @@ update msg model =
         ( model_
         , cmd
         )
-        -- , Cmd.map ChatMsg cmd)
 
     NoOp ->
       ( model, Cmd.none )
@@ -78,4 +77,11 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Phoenix.Socket.listen model.phxSocket PhoenixMsg
+  let
+    chatSub =
+      Chat.State.subscriptions model
+  in
+    Sub.batch
+      [ Phoenix.Socket.listen model.phxSocket PhoenixMsg
+      , Sub.map ChatMsg chatSub
+      ]

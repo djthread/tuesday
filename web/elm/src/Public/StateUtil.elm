@@ -1,13 +1,11 @@
 module StateUtil exposing (initSocket, pushMessage, handlePhoenixMsg)
 
--- import Types exposing (Model, Msg(PhoenixMsg, ChatMsg))
 import Types exposing (..)
 import Chat.Types
 import Json.Encode as JE
 import Phoenix.Socket
 import Phoenix.Channel
 import Phoenix.Push
--- import Chat.Types exposing (Line)
 
 initSocket : ( ( Phoenix.Socket.Socket Types.Msg ), Cmd Types.Msg )
 initSocket =

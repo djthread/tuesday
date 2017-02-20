@@ -19,6 +19,6 @@ type Msg
   = ReceiveNewMsg JE.Value
   | InputUser String
   | InputMsg String
-  | Shout
   | OnKeyPress Int
+  | GotChatName String
   | NoOp
