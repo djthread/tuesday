@@ -28,28 +28,28 @@ infotext =
 build : Model -> Html Msg
 build model =
   div []
-    [ section [class "hero"]
+    [ section [ class "hero" ]
         [ div [class "hero-overlay"]
-            [ div [class "hero-info"] [text infotext]
+            [ div [ class "hero-info" ] [ text infotext ]
             ]
         ]
-    , div [class "container"]
-        [ div [class "columns"]
-            [ div [class "column col-6"]
+    , div [ class "container" ]
+        [ div [ class "columns" ]
+            [ div [ class "column col-6" ]
               [ thevideo model
-              , div [] [text "yayy"]
-              , div [] [text "yayy"]
+              , div [] [ text "yayy" ]
+              , div [] [ text "yayy" ]
               , div []
-                  [ a [myOnClick (PlayEpisode "https://impulsedetroit.net/download/techno-tuesday/techtues-103.mp3" "TT 103"), href "#"] [text "TT103"]
+                  [ a [ myOnClick (PlayEpisode "https://impulsedetroit.net/download/techno-tuesday/techtues-103.mp3" "TT 103"), href "#" ] [ text "TT103" ]
                   , br [] []
                   , br [] []
-                  , a [myOnClick (PlayEpisode "https://impulsedetroit.net/download/techno-tuesday/techtues-102.mp3" "TT 102"), href "#"] [text "TT102"]
+                  , a [ myOnClick (PlayEpisode "https://impulsedetroit.net/download/techno-tuesday/techtues-102.mp3" "TT 102"), href "#" ] [ text "TT102" ]
                   ]
-              , div [] [text "yayy"]
-              , div [] [text "yayy"]
-              , div [] [text "yayy"]
+              , div [] [ text "yayy" ]
+              , div [] [ text "yayy" ]
+              , div [] [ text "yayy" ]
             ]
-            , div [class "column col-6"]
+            , div [ class "column col-6" ]
                 -- [ Html.map ChatMsg (Chat.View.root model.chat)
                 [ Html.map ChatMsg (Chat.View.root model)
                 ]
@@ -63,7 +63,8 @@ thevideo model =
   case model.video of
     False ->
       div []
-        [ a [myOnClick EnableVideo, href "#"] [text "Start video"]
+        [ a [ myOnClick EnableVideo, href "#" ]
+            [ text "Start video" ]
         ]
     True ->
       -- div [class "video-responsive"]
