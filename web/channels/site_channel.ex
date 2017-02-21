@@ -8,6 +8,7 @@ defmodule Tuesday.SiteChannel do
     {:ok, socket}
   end
 
+  # TODO: Do i need this?!
   def join("episode", _, socket) do
     {:ok, socket}
   end

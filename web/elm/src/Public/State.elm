@@ -74,6 +74,15 @@ update msg model =
         , chatCmd
         )
 
+    DataMsg dataMsg ->
+      let
+        ( dataModel, dataCmd, newSocket ) =
+          Data.State.update dataMsg model.data model.idSocket
+      in
+        ( { model | data = dataModel, idSocket = newSocket }
+        , dataCmd
+        )
+
     NoOp ->
       ( model, Cmd.none )
 

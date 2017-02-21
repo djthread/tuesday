@@ -31,33 +31,30 @@ root model msg =
 
 myheader : Model -> Html Msg
 myheader model =
-  let
-    loading = False
-  in
-    header [class "navbar"]
-      [ section [ class "navbar-section" ]
-          [ div [ class "loading", toggle loading ] []
-          , a [ href "#", class "navbar-brand" ]
-              [ i
-                  [ class "icon icon-pages"
-                  , title "Impulse Detroit"]
-                  []
-              , text "impulse Detroit"
-              ]
-          , a [ href "#shows", class "btn btn-link" ]
-              [ text "Shows" ]
-          , a [ href "#schedule", class "btn btn-link" ]
-              [ text "Schedule" ]
-          , a [ href "#podcast", class "btn btn-link" ]
-              [ text "Podcast" ]
-          , a [ href "#info", class "btn btn-link" ]
-              [ text "Info" ]
-          , a [ href "//photos.impulsedetroit.net"
-              , class "btn btn-link"
-              ]
-              [text "Photos"]
-          ]
-      ]
+  header [class "navbar"]
+    [ section [ class "navbar-section" ]
+        [ div [ class "loading", toggle model.loading ] []
+        , a [ href "#", class "navbar-brand" ]
+            [ i
+                [ class "icon icon-pages"
+                , title "Impulse Detroit"]
+                []
+            , text "impulse Detroit"
+            ]
+        , a [ href "#shows", class "btn btn-link" ]
+            [ text "Shows" ]
+        , a [ href "#schedule", class "btn btn-link" ]
+            [ text "Schedule" ]
+        , a [ href "#podcast", class "btn btn-link" ]
+            [ text "Podcast" ]
+        , a [ href "#info", class "btn btn-link" ]
+            [ text "Info" ]
+        , a [ href "//photos.impulsedetroit.net"
+            , class "btn btn-link"
+            ]
+            [text "Photos"]
+        ]
+    ]
 
 player : Model -> Html Msg
 player model =

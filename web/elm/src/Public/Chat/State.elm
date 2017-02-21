@@ -1,14 +1,11 @@
 module Chat.State exposing (init, update, subscriptions)
 
-import StateUtil exposing (pushMessage)
 import Types exposing (IDSocket)
 import Chat.Types exposing (..)
 import Chat.Modem exposing (newMsgDecoder)
 import Port
 import Json.Decode exposing (decodeValue)
 import Json.Encode as JE
-import Time exposing (Time)
-import Navigation exposing (Location)
 import Dom.Scroll
 import Task
 
@@ -93,7 +90,7 @@ pushChatMessage model idSocket =
         , ( "body", JE.string model.msg )
         ]
     ( newSocket, cmd ) =
-      pushMessage "new:msg" "rooms:lobby" payload idSocket
+      pushMessage "new:msg" "rooms:lobby" (Just payload) idSocket
     setChatName =
       Port.setChatName model.name
   in
