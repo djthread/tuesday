@@ -1,4 +1,4 @@
-module Chat.State exposing (update, subscriptions)
+module Chat.State exposing (init, update, subscriptions)
 
 import StateUtil exposing (pushMessage)
 import Types
@@ -12,6 +12,14 @@ import Navigation exposing (Location)
 import Dom.Scroll
 import Task
 
+init : ( Model, Cmd Types.Msg )
+init =
+  ( { name  = ""
+    , msg   = ""
+    , lines = Nothing
+    }
+  , Cmd.none
+  )
 
 update : Msg -> Types.Model
       -> ( Types.Model, Cmd Types.Msg )

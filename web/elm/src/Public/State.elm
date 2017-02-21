@@ -14,22 +14,21 @@ import StateUtil
 init : Location -> ( Model, Cmd Msg )
 init location =
   let
-    route =
-      parseLocation location
-    ( phxSocket, cmd ) =
-      StateUtil.initSocket
+    route                  = parseLocation location
+    ( phxSocket, phxCmd )  = StateUtil.initSocket
+    ( chatModel, chatCmd ) = Chat.State.init
   in
     ( { route     = route
       , phxSocket = phxSocket
-      , chat =
-          { name  = ""
-          , msg   = ""
-          , lines = Nothing
-          }
-      , player = { track = Nothing }
-      , video  = False
+      , chat      = chatModel
+      , player    = { track = Nothing }
+      , video     = False
       }
-    , Cmd.batch [ cmd, Port.getChatName "fo srs"]
+    , Cmd.batch
+        [ phxCmd
+        , chatCmd
+        , Port.getChatName "fo srs"
+        ]
     )
 
 
