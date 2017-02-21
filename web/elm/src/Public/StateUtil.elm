@@ -26,8 +26,8 @@ initSocket =
       Phoenix.Socket.join channel phxSocket
   in
     phxSocket2
-    ! [ PhoenixMsg phxCmd
-      , PhoenixMsg phxCmd2
+    ! [ Cmd.map PhoenixMsg phxCmd
+      , Cmd.map PhoenixMsg phxCmd2
       ]
 
 
@@ -49,7 +49,7 @@ pushMessage message channel payload idSocket =
       Phoenix.Push.init message channel
     push_ =
       case payload of
-        Just p  -> push |> Phoenix.Push.withPayload payload
+        Just p  -> push |> Phoenix.Push.withPayload p
         Nothing -> push
     ( newSocket, phxCmd ) =
       Phoenix.Socket.push push_ idSocket

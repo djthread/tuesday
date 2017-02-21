@@ -1,6 +1,8 @@
 module Data.Types exposing (..)
 
+import Date exposing (Date)
 import RemoteData exposing (RemoteData)
+import Json.Encode as JE
 
 type Msg
   = ReceiveShows JE.Value

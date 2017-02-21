@@ -5,6 +5,7 @@ import Types exposing (..)
 import Navigation exposing (Location, newUrl)
 import Port
 import Chat.State
+import Data.State
 import Phoenix.Socket
 import Phoenix.Channel
 import Phoenix.Push

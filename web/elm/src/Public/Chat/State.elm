@@ -8,6 +8,7 @@ import Json.Decode exposing (decodeValue)
 import Json.Encode as JE
 import Dom.Scroll
 import Task
+import StateUtil exposing (pushMessage)
 
 init : ( Model, Cmd Types.Msg )
 init =
