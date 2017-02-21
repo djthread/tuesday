@@ -14,11 +14,11 @@ type Msg
   | NoOp
 
 type alias Model =
-  { route     : Routing.Route
-  , phxSocket : Phoenix.Socket.Socket Msg
-  , chat      : Chat.Types.Model
-  , player    : PlayerModel
-  , video     : VideoModel
+  { route    : Routing.Route
+  , idSocket : IDSocket
+  , chat     : Chat.Types.Model
+  , player   : PlayerModel
+  , video    : VideoModel
   }
 
 type alias PlayerModel =
@@ -32,3 +32,6 @@ type alias Track =
 
 type alias VideoModel =
   Bool
+
+type alias IDSocket =
+  Phoenix.Socket.Socket Msg

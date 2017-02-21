@@ -15,14 +15,14 @@ init : Location -> ( Model, Cmd Msg )
 init location =
   let
     route                  = parseLocation location
-    ( phxSocket, phxCmd )  = StateUtil.initSocket
+    ( idSocket, phxCmd )   = StateUtil.initSocket
     ( chatModel, chatCmd ) = Chat.State.init
   in
-    ( { route     = route
-      , phxSocket = phxSocket
-      , chat      = chatModel
-      , player    = { track = Nothing }
-      , video     = False
+    ( { route    = route
+      , idSocket = idSocket
+      , chat     = chatModel
+      , player   = { track = Nothing }
+      , video    = False
       }
     , Cmd.batch
         [ phxCmd
@@ -57,15 +57,21 @@ update msg model =
         )
 
     PhoenixMsg msg ->
-      StateUtil.handlePhoenixMsg msg model
+      let
+        ( newSocket, cmd ) =
+          StateUtil.handlePhoenixMsg msg model.idSocket
+      in
+        ( { model | idSocket = newSocket }
+        , cmd
+        )
 
     ChatMsg chatMsg ->
       let
-        (model_, cmd) =
-          Chat.State.update chatMsg model
+        ( chatModel, chatCmd, newSocket ) =
+          Chat.State.update chatMsg model.chat model.idSocket
       in
-        ( model_
-        , cmd
+        ( { model | chat = chatModel, idSocket = newSocket }
+        , chatCmd
         )
 
     NoOp ->
@@ -80,6 +86,6 @@ subscriptions model =
       Chat.State.subscriptions model
   in
     Sub.batch
-      [ Phoenix.Socket.listen model.phxSocket PhoenixMsg
+      [ Phoenix.Socket.listen model.idSocket PhoenixMsg
       , Sub.map ChatMsg chatSub
       ]

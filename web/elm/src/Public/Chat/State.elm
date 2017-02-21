@@ -1,7 +1,7 @@
 module Chat.State exposing (init, update, subscriptions)
 
 import StateUtil exposing (pushMessage)
-import Types
+import Types exposing (IDSocket)
 import Chat.Types exposing (..)
 import Chat.Modem exposing (newMsgDecoder)
 import Port
@@ -21,66 +21,57 @@ init =
   , Cmd.none
   )
 
-update : Msg -> Types.Model
-      -> ( Types.Model, Cmd Types.Msg )
-update msg model =
+update : Msg -> Model -> IDSocket
+      -> ( Model, Cmd Types.Msg, IDSocket )
+update msg model idSocket =
   case msg of
     ReceiveNewMsg raw ->
       case decodeValue newMsgDecoder raw of
         Ok line ->
           let
-            chat =
-              model.chat
             lines =
-              case chat.lines of
+              case model.lines of
                 Just lines -> Just (lines ++ [line])
                 Nothing ->    Just [line]
             toBottom =
               Dom.Scroll.toBottom "chat-messages"
           in
-            ( { model
-              | chat = { chat | lines = lines }
-              }
+            ( { model | lines = lines }
             , Task.attempt (\_ -> Types.NoOp) toBottom
+            , idSocket
             )
 
         Err error ->
-          ( model, Cmd.none )
+          ( model, Cmd.none, idSocket )
 
     InputUser name ->
-      let
-        chat = model.chat
-      in
-        ( { model | chat = { chat | name = name } }
-        , Cmd.none
-        )
+      ( { model | name = name }
+      , Cmd.none
+      , idSocket
+      )
 
     InputMsg msg ->
-      let
-        chat = model.chat
-      in
-        ( { model | chat = { chat | msg = msg } }
-        , Cmd.none
-        )
+      ( { model | msg = msg }
+      , Cmd.none
+      , idSocket
+      )
 
     OnKeyPress int ->
       case int of
         13 ->   -- enter key
-          pushChatMessage model
+          pushChatMessage model idSocket
 
         _ ->
-          ( model, Cmd.none )
+          ( model, Cmd.none, idSocket )
 
     GotChatName name ->
-      let
-        chat = model.chat
-      in
-        ( { model | chat = { chat | name = name } }
-        , Cmd.none
-        )
+      ( { model | name = name }
+      , Cmd.none
+      , idSocket
+      )
 
     NoOp ->
-      ( model, Cmd.none )
+      ( model, Cmd.none, idSocket )
 
 
 
@@ -92,23 +83,22 @@ subscriptions model =
 
 
 
-pushChatMessage : Types.Model
-               -> ( Types.Model, Cmd Types.Msg )
-pushChatMessage model =
+pushChatMessage : Model -> IDSocket
+               -> ( Model, Cmd Types.Msg, IDSocket )
+pushChatMessage model idSocket =
   let
     payload =
       JE.object
-        [ ( "user", JE.string model.chat.name )
-        , ( "body", JE.string model.chat.msg )
+        [ ( "user", JE.string model.name )
+        , ( "body", JE.string model.msg )
         ]
-    ( newmodel, cmd ) =
-      pushMessage "new:msg" "rooms:lobby" payload model
-    chat =
-      newmodel.chat
+    ( newSocket, cmd ) =
+      pushMessage "new:msg" "rooms:lobby" payload idSocket
     setChatName =
-      Port.setChatName chat.name
+      Port.setChatName model.name
   in
-    ( { newmodel | chat = { chat | msg = "" } }
+    ( { model | msg = "" }
     , Cmd.batch
         [ cmd, setChatName ]
+    , newSocket
     )

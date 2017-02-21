@@ -7,7 +7,7 @@ import Phoenix.Socket
 import Phoenix.Channel
 import Phoenix.Push
 
-initSocket : ( ( Phoenix.Socket.Socket Types.Msg ), Cmd Types.Msg )
+initSocket : ( (Phoenix.Socket.Socket Types.Msg), Cmd Types.Msg )
 initSocket =
   let
     initSocket =
@@ -24,28 +24,24 @@ initSocket =
     , Cmd.map PhoenixMsg phxCmd )
 
 
-handlePhoenixMsg : (Phoenix.Socket.Msg Types.Msg) -> Model
-                -> ( Model, Cmd Types.Msg )
-handlePhoenixMsg msg model =
+handlePhoenixMsg : (Phoenix.Socket.Msg Types.Msg) -> IDSocket
+                -> ( IDSocket, Cmd Types.Msg )
+handlePhoenixMsg msg idSocket =
   let
-    ( phxSocket, phxCmd ) =
-      Phoenix.Socket.update msg model.phxSocket
+    ( newSocket, phxCmd ) =
+      Phoenix.Socket.update msg idSocket
   in
-    ( { model | phxSocket = phxSocket }
-    , Cmd.map PhoenixMsg phxCmd
-    )
+    ( newSocket, Cmd.map PhoenixMsg phxCmd )
 
 
-pushMessage : String -> String -> JE.Value -> Model
-           -> ( Model, Cmd Types.Msg )
-pushMessage message channel payload model =
+pushMessage : String -> String -> JE.Value -> IDSocket
+           -> ( IDSocket, Cmd Types.Msg )
+pushMessage message channel payload idSocket =
   let
     push_ =
       Phoenix.Push.init message channel
         |> Phoenix.Push.withPayload payload
-    ( phxSocket, phxCmd ) =
-      Phoenix.Socket.push push_ model.phxSocket
+    ( newSocket, phxCmd ) =
+      Phoenix.Socket.push push_ idSocket
   in
-    ( { model | phxSocket = phxSocket }
-    , Cmd.map PhoenixMsg phxCmd
-    )
+    ( newSocket, Cmd.map PhoenixMsg phxCmd )
