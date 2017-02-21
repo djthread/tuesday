@@ -3,19 +3,7 @@ module Types exposing (..)
 import Phoenix.Socket
 import Navigation exposing (Location)
 import Chat.Types exposing (..)
-import Dock.Types exposing (..)
 import Routing
-
-type alias Model =
-  { route     : Routing.Route
-  , phxSocket : Phoenix.Socket.Socket Msg
-  , chat      : Chat.Types.Model
-  , dock      : Dock.Types.Model
-  , video     : VideoModel
-  }
-
-type alias VideoModel =
-  Bool
 
 type Msg
   = OnLocationChange Location
@@ -23,9 +11,24 @@ type Msg
   | EnableVideo
   | PlayEpisode String String
   | PhoenixMsg (Phoenix.Socket.Msg Msg)
-
   | NoOp
-  -- | ActuallyPlayEpisode String String
-  -- | VideoActivated String
-  -- | PlayersMsg Players.Messages.Msg
-  -- | ShowAbout
+
+type alias Model =
+  { route     : Routing.Route
+  , phxSocket : Phoenix.Socket.Socket Msg
+  , chat      : Chat.Types.Model
+  , player    : PlayerModel
+  , video     : VideoModel
+  }
+
+type alias PlayerModel =
+  { track : Maybe Track
+  }
+
+type alias Track =
+  { src   : String
+  , title : String
+  }
+
+type alias VideoModel =
+  Bool

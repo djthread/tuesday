@@ -4,7 +4,6 @@ import Routing exposing (parseLocation, Route, Route(..))
 import Types exposing (..)
 import Navigation exposing (Location, newUrl)
 import Port
-import Dock.Types
 import Chat.State
 import Phoenix.Socket
 import Phoenix.Channel
@@ -27,8 +26,8 @@ init location =
           , msg   = ""
           , lines = Nothing
           }
-      , dock      = { track = Nothing }
-      , video     = False
+      , player = { track = Nothing }
+      , video  = False
       }
     , Cmd.batch [ cmd, Port.getChatName "fo srs"]
     )
@@ -51,10 +50,10 @@ update msg model =
 
     PlayEpisode url title ->
       let
-        dock  = model.dock
-        track = Just (Dock.Types.Track url title)
+        player = model.player
+        track  = Just (Track url title)
       in
-        ( { model | dock = { dock | track = track } }
+        ( { model | player = { player | track = track } }
         , Port.playEpisode "go beach"
         )
 

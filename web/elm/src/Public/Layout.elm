@@ -1,12 +1,12 @@
 module Layout exposing (root)
 
 import Html exposing (Html, Attribute,
-  div, a, p, text, footer, span, ul, li, h1, header, section, i, button)
-import Html.Attributes exposing (class, href, attribute, title, style)
+  div, a, p, text, footer, span, ul, li, h1, header, section, i, button, source, audio)
+import Html.Attributes exposing (class, href, attribute, title, style, src, type_, id)
 -- import Html.Events exposing (onClick)
 import Types exposing (..)
-import Dock.View
 import ViewUtil exposing (toggle)
+import String exposing (concat)
 -- import Routing exposing (Route(..))
 -- import Page.Home.View
 -- import Page.About.View
@@ -26,7 +26,7 @@ root model msg =
                 [ text "Share" ]
             ]
         ]
-    , Dock.View.root model
+    , player model
     ]
 
 myheader : Model -> Html Msg
@@ -56,5 +56,33 @@ myheader model =
               , class "btn btn-link"
               ]
               [text "Photos"]
+          ]
+      ]
+
+player : Model -> Html Msg
+player model =
+  let
+    (display, thesrc, thetitle) =
+      case model.player.track of
+        Just track ->
+          ("block", track.src, track.title)
+        Nothing ->
+          ("none", "", "")
+  in
+    div [class "dock", style [("display", display)]]
+      [ p [] [text (concat ["Now Playing ", thetitle])]
+      , audio
+          [ --attribute "ref" "audio"
+            id "theaudio"
+          , attribute "controls" "true"
+          -- , attribute "autoplay" "true"
+          , attribute "preload" "auto"
+          -- , attribute "data-setup" "{}"
+          ]
+          [ source
+              [ src thesrc
+              , type_ "audio/mp3"
+              ]
+              []
           ]
       ]
