@@ -7,12 +7,17 @@ import Phoenix.Socket
 import Phoenix.Channel
 import Phoenix.Push
 
+wsUrl : String
+wsUrl =
+  "wss://api.impulsedetroit.net/socket/websocket"
+  -- "ws://localhost:4091/socket/websocket"
+
 initSocket : ( (Phoenix.Socket.Socket Types.Msg), Cmd Types.Msg )
 initSocket =
   let
     initSocket =
-      -- Phoenix.Socket.init "ws://localhost:4091/socket/websocket"
-      Phoenix.Socket.init "wss://api.impulsedetroit.net/socket/websocket"
+      wsUrl
+        |> Phoenix.Socket.init
         |> Phoenix.Socket.withDebug
         |> Phoenix.Socket.on "new:msg" "rooms:lobby"
             (\m -> ChatMsg (Chat.Types.ReceiveNewMsg m))
@@ -20,15 +25,20 @@ initSocket =
       Phoenix.Channel.init "rooms:lobby"
     ( phxSocket, phxCmd ) =
       Phoenix.Socket.join channel initSocket
+    onJoin =
+      always SocketInitialized
     channel2 =
       Phoenix.Channel.init "site"
+        |> Phoenix.Channel.onJoin onJoin
     ( phxSocket2, phxCmd2 ) =
-      Phoenix.Socket.join channel phxSocket
+      Phoenix.Socket.join channel2 phxSocket
+    cmd =
+      Cmd.batch
+        [ Cmd.map PhoenixMsg phxCmd
+        , Cmd.map PhoenixMsg phxCmd2
+        ]
   in
-    phxSocket2
-    ! [ Cmd.map PhoenixMsg phxCmd
-      , Cmd.map PhoenixMsg phxCmd2
-      ]
+    ( phxSocket2, cmd )
 
 
 handlePhoenixMsg : (Phoenix.Socket.Msg Types.Msg) -> IDSocket

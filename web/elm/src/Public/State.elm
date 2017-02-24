@@ -2,6 +2,7 @@ module State exposing (init, update, subscriptions)
 
 import Routing exposing (parseLocation, Route, Route(..))
 import Types exposing (..)
+import Data.Types
 import Navigation exposing (Location, newUrl)
 import Port
 import Chat.State
@@ -15,13 +16,18 @@ import StateUtil
 init : Location -> ( Model, Cmd Msg )
 init location =
   let
-    route                  = parseLocation location
-    ( idSocket, phxCmd )   = StateUtil.initSocket
-    ( chatModel, chatCmd ) = Chat.State.init
+    route =
+      parseLocation location
+    ( idSocket, phxCmd ) =
+      StateUtil.initSocket
+    ( chatModel, chatCmd ) =
+      Chat.State.init
   in
     ( { route    = route
+      , loading  = False
       , idSocket = idSocket
       , chat     = chatModel
+      , data     = Data.State.init
       , player   = { track = Nothing }
       , video    = False
       }
@@ -41,7 +47,8 @@ update msg model =
         route = parseLocation location
       in
         ( { model | route = route }
-        , Cmd.none )
+        , Cmd.none
+        )
 
     EnableVideo ->
       ( { model | video = True }
@@ -53,34 +60,60 @@ update msg model =
         player = model.player
         track  = Just (Track url title)
       in
-        ( { model | player = { player | track = track } }
+        ( { model
+          | player = { player | track = track }
+          }
         , Port.playEpisode "go beach"
         )
 
     PhoenixMsg msg ->
       let
         ( newSocket, cmd ) =
-          StateUtil.handlePhoenixMsg msg model.idSocket
+          StateUtil.handlePhoenixMsg msg
+            model.idSocket
       in
         ( { model | idSocket = newSocket }
         , cmd
         )
 
+    SocketInitialized ->
+      let
+        ( dataModel, dataCmd, newSocket ) =
+          Data.State.update
+            Data.Types.SocketInitialized
+            model.data
+            model.idSocket
+      in
+        ( { model
+          | data = dataModel
+          , idSocket = newSocket
+          }
+        , dataCmd
+        )
+
     ChatMsg chatMsg ->
       let
         ( chatModel, chatCmd, newSocket ) =
-          Chat.State.update chatMsg model.chat model.idSocket
+          Chat.State.update chatMsg model.chat
+            model.idSocket
       in
-        ( { model | chat = chatModel, idSocket = newSocket }
+        ( { model
+          | chat = chatModel
+          , idSocket = newSocket
+          }
         , chatCmd
         )
 
     DataMsg dataMsg ->
       let
         ( dataModel, dataCmd, newSocket ) =
-          Data.State.update dataMsg model.data model.idSocket
+          Data.State.update dataMsg model.data
+            model.idSocket
       in
-        ( { model | data = dataModel, idSocket = newSocket }
+        ( { model
+          | data = dataModel
+          , idSocket = newSocket
+        }
         , dataCmd
         )
 
@@ -96,6 +129,8 @@ subscriptions model =
       Chat.State.subscriptions model
   in
     Sub.batch
-      [ Phoenix.Socket.listen model.idSocket PhoenixMsg
+      [ Phoenix.Socket.listen
+          model.idSocket
+          PhoenixMsg
       , Sub.map ChatMsg chatSub
       ]

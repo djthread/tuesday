@@ -5,7 +5,6 @@ import Navigation exposing (Location)
 import Chat.Types
 import Data.Types
 import Routing
-import RemoteData exposing (RemoteData)
 
 type Msg
   = OnLocationChange Location
@@ -14,6 +13,7 @@ type Msg
   | EnableVideo
   | PlayEpisode String String
   | PhoenixMsg (Phoenix.Socket.Msg Msg)
+  | SocketInitialized
   | NoOp
 
 type alias Model =

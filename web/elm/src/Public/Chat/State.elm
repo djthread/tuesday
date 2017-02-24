@@ -2,7 +2,7 @@ module Chat.State exposing (init, update, subscriptions)
 
 import Types exposing (IDSocket)
 import Chat.Types exposing (..)
-import Chat.Modem exposing (newMsgDecoder)
+import Chat.Codec exposing (newMsgDecoder)
 import Port
 import Json.Decode exposing (decodeValue)
 import Json.Encode as JE
