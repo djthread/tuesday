@@ -96,7 +96,6 @@ pushChatMessage model idSocket =
       Port.setChatName model.name
   in
     ( { model | msg = "" }
-    , Cmd.batch
-        [ cmd, setChatName ]
+    , Cmd.batch [cmd, setChatName]
     , newSocket
     )

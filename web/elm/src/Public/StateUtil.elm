@@ -2,6 +2,7 @@ module StateUtil exposing (initSocket, pushMessage, handlePhoenixMsg)
 
 import Types exposing (..)
 import Chat.Types
+import Data.Types
 import Json.Encode as JE
 import Phoenix.Socket
 import Phoenix.Channel
@@ -21,6 +22,8 @@ initSocket =
         |> Phoenix.Socket.withDebug
         |> Phoenix.Socket.on "new:msg" "rooms:lobby"
             (\m -> ChatMsg (Chat.Types.ReceiveNewMsg m))
+        |> Phoenix.Socket.on "shows" "site"
+            (\m -> DataMsg (Data.Types.ReceiveShows m))
     channel =
       Phoenix.Channel.init "rooms:lobby"
     ( phxSocket, phxCmd ) =

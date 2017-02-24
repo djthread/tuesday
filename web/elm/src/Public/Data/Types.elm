@@ -5,8 +5,8 @@ import Date exposing (Date)
 import Json.Encode as JE
 
 type Msg
-  -- = ReceiveShows JE.Value
-  = SocketInitialized
+  = ReceiveShows JE.Value
+  | SocketInitialized
   | NoOp
 
 type alias Model =

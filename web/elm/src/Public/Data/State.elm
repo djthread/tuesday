@@ -23,19 +23,19 @@ update : Msg -> Model -> IDSocket
       -> ( Model, Cmd Types.Msg, IDSocket )
 update msg model idSocket =
   case msg of
-    -- ReceiveShows raw ->
-    --   case decodeValue showsDecoder raw of
-    --     Ok shows ->
-    --       let
-    --         foo =
-    --           shows
-    --             |> Debug.log
-    --       in
-    --         ( model, Cmd.none, idSocket )
-    --
-    --     Err error ->
-    --       ( model, Cmd.none, idSocket )
-    --
+    ReceiveShows raw ->
+      case decodeValue showsDecoder raw of
+        Ok shows ->
+          let
+            foo =
+              shows
+                |> Debug.log "AOEUDAOEUTDOAEUTOADEU"
+          in
+            ( model, Cmd.none, idSocket )
+
+        Err error ->
+          ( model, Cmd.none, idSocket )
+
     -- ReceiveNewMsg raw ->
     --   case decodeValue newMsgDecoder raw of
     --     Ok line ->
