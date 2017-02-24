@@ -7,6 +7,7 @@ import StateUtil exposing (pushMessage)
 import TypeUtil exposing (RemoteData(..))
 -- import Port
 import Json.Decode exposing (decodeValue)
+import Phoenix.Push
 -- import Json.Encode as JE
 -- import Task
 
@@ -83,9 +84,11 @@ update msg model idSocket =
 
     SocketInitialized ->
       let
+        configurator = 
+          (\p -> p |> Phoenix.Push.onOk ReceiveShows)
         ( newSocket, cmd ) =
           pushMessage
-            "shows" "site" Nothing idSocket
+            "shows" "site" configurator idSocket
       in
         ( model, cmd, newSocket )
 

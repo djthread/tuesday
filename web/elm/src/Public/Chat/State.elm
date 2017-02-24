@@ -9,6 +9,7 @@ import Json.Encode as JE
 import Dom.Scroll
 import Task
 import StateUtil exposing (pushMessage)
+import Phoenix.Push
 
 init : ( Model, Cmd Types.Msg )
 init =
@@ -90,8 +91,10 @@ pushChatMessage model idSocket =
         [ ( "user", JE.string model.name )
         , ( "body", JE.string model.msg )
         ]
+    configurator =
+      (\p -> p |> Phoenix.Push.withPayload payload)
     ( newSocket, cmd ) =
-      pushMessage "new:msg" "rooms:lobby" (Just payload) idSocket
+      pushMessage "new:msg" "rooms:lobby" configurator idSocket
     setChatName =
       Port.setChatName model.name
   in

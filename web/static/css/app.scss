@@ -2,19 +2,8 @@
 
 $primary-color: #f63;
 
-// @import "foundation";
-// @import
-//   "foundation/variables",
-//   "foundation/components/global",
-//   "foundation/components/grid",
-//   "foundation/components/top-bar";
-
-
-// @include foundation-flex-classes;
-// @include foundation-flex-grid;
 
 @font-face { font-family: desmonanz; src: url(/ttf/desonanz.ttf); }
-
 
 body {
     margin-bottom: 60px;
@@ -148,13 +137,10 @@ div.chat {
             }
         }
     }
-//     div#messages a { color: #999; }
-// input.form-control { background-color: rgba(99,99,99,0.5); padding: 1%;
-//     border: none; font-size: 100%; color: #eee; }
-// input.chat-name { width: 17%; }
-// input.chat-message { width: 82%; float: right; }
 
     .inputs {
+        margin-top: 0.4rem;
+
         .name, .msg {
             padding: 0.2rem;
             border: none;

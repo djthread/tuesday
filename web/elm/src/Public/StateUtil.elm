@@ -54,17 +54,15 @@ handlePhoenixMsg msg idSocket =
     ( newSocket, Cmd.map PhoenixMsg phxCmd )
 
 
-pushMessage : String -> String -> Maybe JE.Value -> IDSocket
+pushMessage : String -> String
+           -> (Phoenix.Push.Push Msg -> Phoenix.Push.Push Msg)
+           -> IDSocket
            -> ( IDSocket, Cmd Types.Msg )
-pushMessage message channel payload idSocket =
+pushMessage message channel configurator idSocket =
   let
     push =
-      Phoenix.Push.init message channel
-    push_ =
-      case payload of
-        Just p  -> push |> Phoenix.Push.withPayload p
-        Nothing -> push
+      configurator (Phoenix.Push.init message channel)
     ( newSocket, phxCmd ) =
-      Phoenix.Socket.push push_ idSocket
+      Phoenix.Socket.push push idSocket
   in
     ( newSocket, Cmd.map PhoenixMsg phxCmd )
