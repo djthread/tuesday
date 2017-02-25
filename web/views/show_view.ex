@@ -1,6 +1,15 @@
 defmodule Tuesday.ShowView do
   use Tuesday.Web, :view
   alias Calendar.DateTime
+  alias Tuesday.{EpisodeView,EventView}
+
+  def render("new.json",
+    %{episodes: episodes, events: events})
+  do
+    %{episodes: EpisodeView.list(episodes),
+      events:   EventView.list(events)
+    }
+  end
 
   @doc """
   Use param `full: true` to include short_info and full_info
@@ -24,12 +33,7 @@ defmodule Tuesday.ShowView do
     |> fn(map) ->  # add episodes, if provided
       case show.episodes do
         eps when is_list(eps) ->
-          Map.put(map, :episodes,
-            Enum.map(show.episodes, fn(ep) ->
-              Tuesday.EpisodeView
-              |> render("show.json", episode: ep, show: show)
-            end)
-          )
+          Map.put(map, :episodes, EpisodeView.list(show))
         _ ->
           map
       end
@@ -37,12 +41,7 @@ defmodule Tuesday.ShowView do
     |> fn(map) ->  # add events, if provided
       case show.events do
         evs when is_list(evs) ->
-          Map.put(map, :events,
-            Enum.map(show.events, fn(ev) ->
-              Tuesday.EventView
-              |> render("show.json", event: ev)
-            end)
-          )
+          Map.put(map, :events, EventView.list(evs))
         _ ->
           map
       end
@@ -55,4 +54,5 @@ defmodule Tuesday.ShowView do
       timestamp: DateTime.now_utc |> DateTime.Format.rfc850
     })
   end
+
 end

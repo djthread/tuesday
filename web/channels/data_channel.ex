@@ -22,21 +22,25 @@ defmodule Tuesday.DataChannel do
   end
 
   # get the last 5 episodes and the next 5 events
-  def handle_in("recent", _msg, socket) do
+  def handle_in("new", _msg, socket) do
     episodes =
-      from ep in Episode,
+      Repo.all from ep in Episode,
         where:    ep.record_date > ago(1, "month"),
         order_by: [desc: ep.number],
-        limit:    5
+        limit:    5,
+        preload:  [:show]
 
     events = 
-      from ev in Episode,
+      Repo.all from ev in Event,
         where:    ev.happens_on > ago(2, "day"),
         order_by: ev.happens_on,
         limit:    5
 
     { :reply,
-      {:ok, %{episodes: episodes, events: events}},
+      {:ok, render(ShowView, "new.json", %{
+        episodes: episodes,
+        events:   events
+      })},
       socket
     }
   end

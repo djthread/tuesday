@@ -11,4 +11,11 @@ defmodule Tuesday.EventView do
       show_id:     event.show_id
     }
   end
+
+  def list(events) do
+    Enum.map(events, fn(ev) ->
+      Tuesday.EventView
+      |> render("show.json", event: ev)
+    end)
+  end
 end

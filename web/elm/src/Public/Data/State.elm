@@ -37,62 +37,30 @@ update msg model idSocket =
         Err error ->
           ( model, Cmd.none, idSocket )
 
-    -- ReceiveNewMsg raw ->
-    --   case decodeValue newMsgDecoder raw of
-    --     Ok line ->
-    --       let
-    --         lines =
-    --           case model.lines of
-    --             Just lines -> Just (lines ++ [line])
-    --             Nothing ->    Just [line]
-    --         toBottom =
-    --           Dom.Scroll.toBottom "chat-messages"
-    --       in
-    --         ( { model | lines = lines }
-    --         , Task.attempt (\_ -> Types.NoOp) toBottom
-    --         , idSocket
-    --         )
-    --
-    --     Err error ->
-    --       ( model, Cmd.none, idSocket )
-    --
-    -- InputUser name ->
-    --   ( { model | name = name }
-    --   , Cmd.none
-    --   , idSocket
-    --   )
-    --
-    -- InputMsg msg ->
-    --   ( { model | msg = msg }
-    --   , Cmd.none
-    --   , idSocket
-    --   )
-    --
-    -- OnKeyPress int ->
-    --   case int of
-    --     13 ->   -- enter key
-    --       pushChatMessage model idSocket
-    --
-    --     _ ->
-    --       ( model, Cmd.none, idSocket )
-    --
-    -- GotChatName name ->
-    --   ( { model | name = name }
-    --   , Cmd.none
-    --   , idSocket
-    --   )
+    ReceiveNewStuff raw ->
+      ( model, Cmd.none, idSocket )
+      -- case decodeValue newStuffDecoder raw of
+      --   Ok data ->
+      --     let
 
     SocketInitialized ->
       let
-        retMsg =
+        retShowsMsg =
           (\m -> Types.DataMsg (ReceiveShows m))
-        configurator = 
-          (\p -> p |> Phoenix.Push.onOk retMsg)
-        ( newSocket, cmd ) =
-          pushMessage
-            "shows" "data" configurator idSocket
+        configurator1 = 
+          (\p -> p |> Phoenix.Push.onOk retShowsMsg)
+        ( newSocket1, cmd1 ) =
+          pushMessage "shows" "data" configurator1 idSocket
+        retDataMsg =
+          (\d -> Types.DataMsg (ReceiveNewStuff d))
+        configurator2 =
+          (\p -> p |> Phoenix.Push.onOk retDataMsg)
+        ( newSocket2, cmd2 ) =
+          pushMessage "new" "data" configurator2 newSocket1
+        cmd =
+          Cmd.batch [cmd1, cmd2]
       in
-        ( model, cmd, newSocket )
+        ( model, cmd, newSocket2 )
 
     NoOp ->
       ( model, Cmd.none, idSocket )

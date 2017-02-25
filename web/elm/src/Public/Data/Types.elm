@@ -6,6 +6,7 @@ import Json.Encode as JE
 
 type Msg
   = ReceiveShows JE.Value
+  | ReceiveNewStuff JE.Value
   | SocketInitialized
   | NoOp
 

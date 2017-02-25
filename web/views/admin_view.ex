@@ -1,6 +1,6 @@
 defmodule Tuesday.AdminView do
   use Tuesday.Web, :view
-  import Tuesday.Util, only: [bytes_by_slug_and_filename: 2]
+  import Tuesday.Util, only: [bytes_by_slug_and_filename: 1]
   import Calendar.Date.Format, only: [iso8601: 1]
 
   def render("show.json", %{episode: episode, show: show}) do
@@ -12,7 +12,7 @@ defmodule Tuesday.AdminView do
       filename:    episode.filename,
       description: episode.description,
       show_id:     episode.show_id,
-      bytes:       bytes_by_slug_and_filename(show, episode.filename)
+      bytes:       bytes_by_slug_and_filename(episode)
       # inserted_at: episode.inserted_at,
       # timestamp:   episode.inserted_at |> DateTime.Format.rfc850,
     }
