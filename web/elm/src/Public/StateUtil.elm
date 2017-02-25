@@ -10,8 +10,8 @@ import Phoenix.Push
 
 wsUrl : String
 wsUrl =
-  "wss://api.impulsedetroit.net/socket/websocket"
-  -- "ws://localhost:4091/socket/websocket"
+  -- "wss://api.impulsedetroit.net/socket/websocket"
+  "ws://localhost:4091/socket/websocket"
 
 initSocket : ( (Phoenix.Socket.Socket Types.Msg), Cmd Types.Msg )
 initSocket =
@@ -22,7 +22,7 @@ initSocket =
         |> Phoenix.Socket.withDebug
         |> Phoenix.Socket.on "new:msg" "rooms:lobby"
             (\m -> ChatMsg (Chat.Types.ReceiveNewMsg m))
-        |> Phoenix.Socket.on "shows" "site"
+        |> Phoenix.Socket.on "shows" "data"
             (\m -> DataMsg (Data.Types.ReceiveShows m))
     channel =
       Phoenix.Channel.init "rooms:lobby"
@@ -31,7 +31,7 @@ initSocket =
     onJoin =
       always SocketInitialized
     channel2 =
-      Phoenix.Channel.init "site"
+      Phoenix.Channel.init "data"
         |> Phoenix.Channel.onJoin onJoin
     ( phxSocket2, phxCmd2 ) =
       Phoenix.Socket.join channel2 phxSocket

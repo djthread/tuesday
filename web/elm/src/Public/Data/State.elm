@@ -84,11 +84,13 @@ update msg model idSocket =
 
     SocketInitialized ->
       let
+        retMsg =
+          (\m -> Types.DataMsg (ReceiveShows m))
         configurator = 
-          (\p -> p |> Phoenix.Push.onOk ReceiveShows)
+          (\p -> p |> Phoenix.Push.onOk retMsg)
         ( newSocket, cmd ) =
           pushMessage
-            "shows" "site" configurator idSocket
+            "shows" "data" configurator idSocket
       in
         ( model, cmd, newSocket )
 
