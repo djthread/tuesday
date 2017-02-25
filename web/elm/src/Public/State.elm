@@ -109,6 +109,7 @@ update msg model =
         ( dataModel, dataCmd, newSocket ) =
           Data.State.update dataMsg model.data
             model.idSocket
+          -- |> Debug.log "WTFFFFF"
       in
         ( { model
           | data = dataModel
