@@ -20,11 +20,12 @@ root model msg =
     , div []
         [ msg
         , div [ class "modal-footer" ]
-            [ button [ class "btn btn-link" ]
-                [ text "Close" ]
-            , button [ class "btn btn-primary" ]
-                [ text "Share" ]
-            ]
+            []
+            -- [ button [ class "btn btn-link" ]
+            --     [ text "Close" ]
+            -- , button [ class "btn btn-primary" ]
+            --     [ text "Share" ]
+            -- ]
         ]
     , player model
     ]
@@ -33,13 +34,11 @@ myheader : Model -> Html Msg
 myheader model =
   header [class "navbar"]
     [ section [ class "navbar-section" ]
-        [ div [ class "loading", toggle model.loading ] []
+        [ div [ class "loading", toggle False] []
+        -- [ div [ class "loading", toggle (model.loading != 0) ] []
         , a [ href "#", class "navbar-brand" ]
-            [ i
-                [ class "icon icon-pages"
-                , title "Impulse Detroit"]
-                []
-            , text "impulse Detroit"
+            [ span [ class "idi" ] [ text "I" ]
+            , text "mpulse Detroit"
             ]
         , a [ href "#shows", class "btn btn-link" ]
             [ text "Shows" ]

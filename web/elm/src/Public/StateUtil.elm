@@ -1,6 +1,7 @@
-module StateUtil exposing (initSocket, pushMessage, handlePhoenixMsg)
+module StateUtil exposing (..)
 
 import Types exposing (..)
+import TypeUtil exposing (RemoteData(..))
 import Chat.Types
 import Data.Types
 import Json.Encode as JE
@@ -12,6 +13,30 @@ wsUrl : String
 wsUrl =
   -- "wss://api.impulsedetroit.net/socket/websocket"
   "ws://localhost:4091/socket/websocket"
+
+startLoading : Model -> Model
+startLoading model =
+  let
+    newCount = model.loading + 1
+  in
+    { model | loading = newCount }
+
+-- filterLoaded : List (RemoteData List) -> Bool
+-- filterLoaded rds =
+--   let
+--     isLoaded = \rd ->
+--       case rd of
+--         Loaded x -> True
+--         _        -> False
+--   in
+--     List.filter isLoaded rds
+
+doneLoading : Model -> Model
+doneLoading model =
+  let
+    newCount = model.loading - 1
+  in
+    { model | loading = newCount }
 
 initSocket : ( (Phoenix.Socket.Socket Types.Msg), Cmd Types.Msg )
 initSocket =

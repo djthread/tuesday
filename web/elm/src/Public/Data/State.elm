@@ -27,22 +27,29 @@ update msg model idSocket =
     ReceiveShows raw ->
       case decodeValue showsDecoder raw of
         Ok shows ->
+          ( { model | shows = Loaded shows }
+          , Cmd.none
+          , idSocket
+          )
+
+        Err error ->
+          let _ = Debug.log "ReceiveShows Error" error
+          in ( model, Cmd.none, idSocket )
+
+    ReceiveNewStuff raw ->
+      case decodeValue newStuffDecoder raw of
+        Ok data ->
           ( { model
-            | shows = Loaded shows
+            | upcomingEvents = Loaded data.events
+            , recentEpisodes = Loaded data.episodes
             }
           , Cmd.none
           , idSocket
           )
 
         Err error ->
-          let _ = error |> Debug.log "ReceiveShows Error"
+          let _ = Debug.log "ReceiveNewStuff Error" error
           in ( model, Cmd.none, idSocket )
-
-    ReceiveNewStuff raw ->
-      ( model, Cmd.none, idSocket )
-      -- case decodeValue newStuffDecoder raw of
-      --   Ok data ->
-      --     let
 
     SocketInitialized ->
       let

@@ -10,9 +10,9 @@ defmodule Tuesday.EpisodeView do
       record_date: episode.record_date,
       posted_on:   episode.inserted_at |> iso8601,
       filename:    episode.filename,
-      description: episode.description,
+      description: episode.description || "",
       show_id:     episode.show_id,
-      bytes:       bytes_by_slug_and_filename(episode)
+      bytes:       bytes_by_slug_and_filename(episode) || 0
       # inserted_at: episode.inserted_at,
       # timestamp:   episode.inserted_at |> DateTime.Format.rfc850,
     }

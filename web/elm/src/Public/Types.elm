@@ -18,7 +18,7 @@ type Msg
 
 type alias Model =
   { route    : Routing.Route
-  , loading  : Bool
+  , loading  : Int
   , idSocket : IDSocket
   , chat     : Chat.Types.Model
   , data     : Data.Types.Model

@@ -24,7 +24,7 @@ init location =
       Chat.State.init
   in
     ( { route    = route
-      , loading  = False
+      , loading  = 0
       , idSocket = idSocket
       , chat     = chatModel
       , data     = Data.State.init
