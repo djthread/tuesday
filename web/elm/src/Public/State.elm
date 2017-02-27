@@ -11,6 +11,7 @@ import Phoenix.Socket
 import Phoenix.Channel
 import Phoenix.Push
 import StateUtil
+import Defer
 
 
 init : Location -> ( Model, Cmd Msg )
@@ -30,6 +31,7 @@ init location =
       , data     = Data.State.init
       , player   = { track = Nothing }
       , video    = False
+      , defer    = Defer.init []
       }
     , Cmd.batch
         [ phxCmd
@@ -53,10 +55,29 @@ update msg model =
     NavigateTo url ->
       ( model, Navigation.newUrl url )
 
+    -- EnableVideo ->
+    --   ( { model | video = True }
+    --   , Cmd.none
+    --   )
+    --
+    -- EnableVideo2 ->
+    --   ( model, Port.activateVideo "yeap" )
+
     EnableVideo ->
-      ( { model | video = True }
-      , Port.activateVideo "yeap"
-      )
+      let
+        cmd =
+          Port.activateVideo "hteud"
+        ( deferModel, deferCmd ) =
+          Defer.update (Defer.AddCmd cmd) model.defer
+      in
+        ( { model
+          | video = True
+          , defer = deferModel
+          }
+        , Cmd.map DeferMsg deferCmd
+        )
+          -- |> Debug.log "wtfoufouf"
+        -- , Port.activateVideo "yeap"
 
     ClosePlayer ->
       ( { model | player = { track = Nothing } }
@@ -98,6 +119,16 @@ update msg model =
           }
         , dataCmd
         )
+
+    DeferMsg deferMsg ->
+      let
+        ( deferModel, deferCmd ) =
+          Defer.update deferMsg model.defer
+      in
+        ( { model | defer = deferModel }
+        , Cmd.map DeferMsg deferCmd
+        )
+
 
     ChatMsg chatMsg ->
       let
@@ -142,4 +173,6 @@ subscriptions model =
           model.idSocket
           PhoenixMsg
       , Sub.map ChatMsg chatSub
+      , Defer.subscriptions model.defer
+          |> Sub.map DeferMsg
       ]

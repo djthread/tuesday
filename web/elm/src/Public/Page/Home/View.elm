@@ -89,14 +89,14 @@ thevideo model =
     False ->
       div [ class "video-button" ]
         [ a [ ViewUtil.myOnClick EnableVideo, href "#" ]
-            [ i [ class "fa fa-play-circle-o fa-5x" ] []
-            ]
+            [ ViewUtil.fa "play-circle-o fa-5x" ]
         ]
     True ->
       -- div [class "video-responsive"]
       div []
-        [ node "script" [src "//vjs.zencdn.net/5.8.8/video.min.js"] []
-        , video
+        -- [ node "script" [ src "//vjs.zencdn.net/5.8.8/video.min.js" ] []
+        -- [ node "script" [ src "/js/video.min.js" ] []
+        [ video
             [ id "thevideo"
             , class "video-js vjs-default-skin embed-responsive-item"
             , controls True

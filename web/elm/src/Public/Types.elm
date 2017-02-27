@@ -5,10 +5,12 @@ import Navigation exposing (Location)
 import Chat.Types
 import Data.Types
 import Routing
+import Defer
 
 type Msg
   = OnLocationChange Location
   | NavigateTo String
+  | DeferMsg Defer.Msg
   | ChatMsg Chat.Types.Msg
   | DataMsg Data.Types.Msg
   | EnableVideo
@@ -26,6 +28,7 @@ type alias Model =
   , data     : Data.Types.Model
   , player   : PlayerModel
   , video    : VideoModel
+  , defer    : Defer.Model
   }
 
 type alias PlayerModel =

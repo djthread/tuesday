@@ -16,6 +16,7 @@
         "evancz/elm-markdown": "3.0.1 <= v < 4.0.0",
         "evancz/url-parser": "2.0.1 <= v < 3.0.0",
         "fbonetti/elm-phoenix-socket": "2.0.1 <= v < 3.0.0",
+        "fredcy/elm-defer-command": "1.0.1 <= v < 2.0.0",
         "mgold/elm-date-format": "1.2.0 <= v < 2.0.0",
         "rgrempel/elm-route-url": "3.0.0 <= v < 4.0.0"
     },

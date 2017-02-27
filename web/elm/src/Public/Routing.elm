@@ -14,7 +14,7 @@ matchers : Parser (Route -> a) a
 matchers =
   oneOf
     [ map HomeRoute top
-    , map AboutRoute (s "about")
+    , map AboutRoute (s "info")
     ]
 
 parseLocation : Location -> Route

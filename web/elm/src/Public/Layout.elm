@@ -58,8 +58,8 @@ myheader model =
             [ text "Schedule" ]
         , a [ href "#podcast", class "btn btn-link" ]
             [ text "Podcast" ]
-        , a [ href "#info", class "btn btn-link" ]
-            [ text "Info" ]
+        , a [ href "#about", class "btn btn-link" ]
+            [ text "About" ]
         , a [ href "//photos.impulsedetroit.net"
             , class "btn btn-link"
             , target "_blank"

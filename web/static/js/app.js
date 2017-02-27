@@ -1,7 +1,8 @@
-const node = document.getElementById('elm-main')
-    , idapp = Elm.Public.embed(node);
+const elmDiv  = document.getElementById('elm-main')
+     , idapp  = Elm.Public.embed(elmDiv)
+     , vjsUrl = "//vjs.zencdn.net/5.8.8/video.min.js";
 
-var theaudio, thevideo;
+var theaudio;
   // , audioFinder = setInterval(function() {
   //     audio = document.getElementById('theaudio');
   //     console.log('looking for audio:', audio);
@@ -16,22 +17,14 @@ idapp.ports.init.subscribe((messageFromElm) => {
 
 idapp.ports.activateVideo.subscribe((messageFromElm) => {
 
-  console.log('got signal');
-
-  var tryvideo = setInterval(() => {
-    thevideo = document.getElementById('thevideo');
-    console.log('trying:', thevideo);
-    if (!thevideo) return;
-
-    clearInterval(tryvideo);
-    console.log('calling!', thevideo);
-
+  loadScript(vjsUrl, () => {
     videojs.options.flash.swf = '/swf/video-js.swf';
-    videojs(thevideo, {
+    videojs(document.getElementById('thevideo'), {
       'fluid': true,
       'aspectRatio': '16:9'
     });
-  }, 150);
+  });
+
 });
 
 var loadedAudioPlayer = false;
@@ -75,3 +68,41 @@ idapp.ports.setChatName.subscribe((chatname) => {
   localStorage.setItem("chatname", chatname || "");
 });
 
+
+
+// ty, http://stackoverflow.com/questions/1293367/how-to-detect-if-javascript-files-are-loaded
+function loadScript(path, callback) {
+
+    var done = false;
+    var scr = document.createElement('script');
+
+    scr.onload = handleLoad;
+    scr.onreadystatechange = handleReadyStateChange;
+    scr.onerror = handleError;
+    scr.src = path;
+    document.body.appendChild(scr);
+
+    function handleLoad() {
+        if (!done) {
+            done = true;
+            callback(path, "ok");
+        }
+    }
+
+    function handleReadyStateChange() {
+        var state;
+
+        if (!done) {
+            state = scr.readyState;
+            if (state === "complete") {
+                handleLoad();
+            }
+        }
+    }
+    function handleError() {
+        if (!done) {
+            done = true;
+            callback(path, "error");
+        }
+    }
+}
