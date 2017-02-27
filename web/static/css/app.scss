@@ -172,7 +172,7 @@ div.chat {
 
     .messages-outer {
       // height: 80%;
-      max-height: 18em;
+      max-height: 100%;
       width: 100%;
       overflow: hidden;
       // margin-bottom: 0.3em;
@@ -263,7 +263,10 @@ h3 {
 }
 
 .colorbox {
-    background: linear-gradient(rgba(100,100,100,0.15), rgba(100,100,100,0.3));
+    // border: 1px solid black;
+    // background: linear-gradient(rgba(100,100,100,0.3), rgba(100,100,100,0.15));
+    // background-color: $bg-color;
+    // background: linear-gradient(rgba(100,100,100,0.15), rgba(100,100,100,0.3));
     text-align: right;
     font-family: monospace;
     padding: 0 1rem;
