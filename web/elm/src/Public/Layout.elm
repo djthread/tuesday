@@ -2,7 +2,7 @@ module Layout exposing (root)
 
 import Html exposing (Html, Attribute,
   div, a, p, text, footer, span, ul, li, h1, header, section, i, button, source, audio, sup)
-import Html.Attributes exposing (class, href, attribute, title, style, src, type_, id)
+import Html.Attributes exposing (class, href, attribute, title, style, src, type_, id, target)
 -- import Html.Events exposing (onClick)
 import Types exposing (..)
 import ViewUtil exposing (fa)
@@ -62,6 +62,7 @@ myheader model =
             [ text "Info" ]
         , a [ href "//photos.impulsedetroit.net"
             , class "btn btn-link"
+            , target "_blank"
             ]
             [ text "Photos"
             , sup [ class "ext" ] [ fa "external-link" ]
