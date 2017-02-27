@@ -1,11 +1,11 @@
 module Data.EpisodeListView exposing (root)
 
-import Html exposing (Html, div, span, text, h3, h4, h6, p, div, button, a, i)
+import Html exposing (Html, div, span, text, h3, h4, h6, p, div, button, a)
 import Html.Attributes exposing (class, href, attribute)
 import Types exposing (Msg, Msg(PlayEpisode), PlayerModel)
 import Data.Types exposing (Episode, Show)
 import TypeUtil exposing (RemoteData, RemoteData(..))
-import ViewUtil exposing (waiting, formatDate, myOnClick)
+import ViewUtil
 -- import StateUtil exposing (filterLoaded)
 import Markdown
 
@@ -22,7 +22,7 @@ root playerModel rdShows rdEpisodes =
             _ -> 
               [ div [] [ text "no episodes" ] ]
         _ ->
-          [ waiting ]
+          [ ViewUtil.waiting ]
   in
     [ div [ class "episode-list" ] content ]
 
@@ -55,9 +55,9 @@ actuallyBuildEpisode playerModel show episode =
         []
     stamp =
       "Recorded on "
-        ++ (formatDate episode.record_date)
+        ++ (ViewUtil.formatDate episode.record_date)
         ++ ". Posted on "
-        ++ (formatDate episode.posted_on)
+        ++ (ViewUtil.formatDate episode.posted_on)
         ++ "."
     epUrl =
       "/download/" ++ show.slug ++ "/" ++ episode.filename
@@ -82,17 +82,13 @@ actuallyBuildEpisode playerModel show episode =
     ++
     [ div [ class "btn-group btn-group-block" ]
         [ a [ class ("btn btn-sm" ++ active)
-            , myOnClick (PlayEpisode epUrl episode.filename)
+            , ViewUtil.myOnClick (PlayEpisode epUrl episode.filename)
             ]
-            [ i [ class "fa fa-play-circle"
-                , attribute "aria-hidden" "true"
-                ] []
+            [ ViewUtil.fa "play-circle"
             , text " Listen"
             ]
         , a [ class "btn btn-sm", href epUrl ]
-            [ i [ class "fa fa-download"
-                , attribute "aria-hidden" "true"
-                ] []
+            [ ViewUtil.fa "download"
             , text " Download"
             ]
         ]

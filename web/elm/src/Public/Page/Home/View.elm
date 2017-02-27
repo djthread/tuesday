@@ -39,8 +39,25 @@ build model =
         [ div [ class "columns" ]
             [ div [ class "column col-sm-12 col-6" ]
                 [ thevideo model
-                , h2 [ style [("padding-top", "1rem")] ] [ text "Follow Us!" ]
-                , ViewUtil.socialButtons
+                , div [ class "infobox" ]
+                    [ p []
+                        [ ViewUtil.fa "music"
+                        , text " You can also tune in, audio only, via the "
+                        , a [ href "https://impulsedetroit.net/id.pls" ]
+                            [ text "MP3 stream" ]
+                        , text "!"]
+                    -- , p []
+                    --     [ ViewUtil.fa "question-circle"
+                    --     , text " If you're having trouble, check out our "
+                    --     , a [ href "#streaming-tips" ]
+                    --         [ text "streaming tips" ]
+                    --     , text " page."
+                    --     ]
+                    ]
+                , div [ class "homesocialbtns" ]
+                    [ h2 [ style [("padding-top", "1rem")] ] [ text "Follow Us!" ]
+                    , ViewUtil.socialButtons
+                    ]
                 ]
             , div [ class "column col-sm-12 col-6" ]
                 [ Html.map ChatMsg (Chat.View.root model)

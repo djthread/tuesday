@@ -1,6 +1,6 @@
 module ViewUtil exposing (..)
 
-import Html exposing (Html, Attribute, div, span, text, button, i, a)
+import Html exposing (Html, Attribute, div, span, text, button, i, a, sup)
 import Html.Attributes exposing (style, class, attribute, href, target)
 import Html.Events exposing (onWithOptions, defaultOptions)
 import Json.Decode
@@ -16,7 +16,13 @@ formatDate date =
 
 waiting : Html Msg
 waiting =
-  div [ class "loading" ] []
+  div [ class "loading" ]
+    [ i [ class "fa fa-spinner fa-spin fa-2x fa-fw"
+        , attribute "aria-hidden" "true"
+        ]
+        [ span [ class "sr-only" ] [ text "Loading..." ]
+        ]
+    ]
 
 
 myOnClick : Msg -> Attribute Msg
@@ -39,6 +45,13 @@ toggle bool =
     style [("display", display)]
 
 
+fa : String -> Html Msg
+fa icon =
+  i [ class ("fa fa-" ++ icon)
+    , attribute "aria-hidden" "true"
+    ] []
+
+
 socialButtons : Html Msg
 socialButtons =
   div [ class "social-buttons" ]
@@ -46,31 +59,28 @@ socialButtons =
         , href "https://twitter.com/impulsedetroit"
         , target "_blank"
         ]
-        [ i [ class "fa fa-twitter"
-            , attribute "aria-hidden" "true"
-            ] []
+        [ fa "twitter"
         , span [ style [("display", "none")] ] [ text "T" ]
         , text "witter"
+        , sup [ class "ext" ] [ fa "external-link" ]
         ]
     , a [ class "btn"
         , href "https://facebook.com/impulsedetroit"
         , target "_blank"
         ]
-        [ i [ class "fa fa-facebook"
-            , attribute "aria-hidden" "true"
-            ] []
+        [ fa "facebook"
         , span [ style [("display", "none")] ] [ text "F" ]
         , text "acebook"
+        , sup [ class "ext" ] [ fa "external-link" ]
         ]
     , a [ class "btn"
         , href "https://www.instagram.com/impulsedetroit"
         , target "_blank"
         ]
-        [ i [ class "fa fa-instagram"
-            , attribute "aria-hidden" "true"
-            ] []
+        [ fa "instagram"
         , span [ style [("display", "none")] ] [ text "I" ]
         , text "nstagram"
+        , sup [ class "ext" ] [ fa "external-link" ]
         ]
     ]
     -- <div class="buttons bit sm">

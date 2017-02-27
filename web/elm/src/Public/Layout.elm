@@ -5,7 +5,7 @@ import Html exposing (Html, Attribute,
 import Html.Attributes exposing (class, href, attribute, title, style, src, type_, id)
 -- import Html.Events exposing (onClick)
 import Types exposing (..)
-import ViewUtil
+import ViewUtil exposing (fa)
 -- import String exposing (concat)
 -- import Routing exposing (Route(..))
 -- import Page.Home.View
@@ -38,12 +38,8 @@ root model content =
 
 shmegal : List (Html Msg)
 shmegal =
-  [ p []
-      [ i [ class "fa fa-copyright"
-          , attribute "aria-hidden" "true"
-          ] []
-      , text " 2017 Impulse Detroit"
-      ]
+  [ p [] [ fa "copyright" ]
+  , text " 2017 Impulse Detroit"
   ]
 
 myheader : Model -> Html Msg
@@ -68,13 +64,7 @@ myheader model =
             , class "btn btn-link"
             ]
             [ text "Photos"
-            , sup []
-                [ i
-                    [ class "fa fa-external-link"
-                    , attribute "aria-hidden" "true"
-                    ]
-                    []
-                ]
+            , sup [ class "ext" ] [ fa "external-link" ]
             ]
         ]
     ]
@@ -128,10 +118,7 @@ player model =
     div [ class "dock", style [("display", display)] ]
       [ div [ class "close" ]
           [ a [ ViewUtil.myOnClick ClosePlayer ]
-              [ i [ class "fa fa-window-close-o"
-                  , attribute "aria-hidden" "true"
-                  ] []
-              ]
+              [ fa "window-close-o" ]
           ]
       , p []
           [ text "Now Playing "
