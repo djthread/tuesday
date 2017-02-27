@@ -1,7 +1,7 @@
 const node = document.getElementById('elm-main')
     , idapp = Elm.Public.embed(node);
 
-var audio;
+var theaudio, thevideo;
   // , audioFinder = setInterval(function() {
   //     audio = document.getElementById('theaudio');
   //     console.log('looking for audio:', audio);
@@ -42,26 +42,26 @@ idapp.ports.playEpisode.subscribe((messageFromElm) => {
 
   if (player.length) {
     console.log("rremoving player", player);
-    audio = $("audio");
-    console.log('got audio', audio.children());
-    audio.detach();
+    theaudio = $("audio");
+    console.log('got audio', theaudio.children());
+    theaudio.detach();
     player.remove();
-    $(".dock").append(audio);
-    console.log('appended', audio, audio.children());
+    $(".dock").append(theaudio);
+    console.log('appended', theaudio, theaudio.children());
   }
   console.log('win');
 
   audioWatcher = setInterval(() => {
-    audio = $("audio");
-    console.log('trying', audio);
+    theaudio = $("audio");
+    console.log('trying', theaudio);
 
-    if (!audio.length) return;
+    if (!theaudio.length) return;
 
     clearInterval(audioWatcher);
-    audio.audioPlayer();
+    theaudio.audioPlayer();
 
-    // audio.load();
-    // audio.play();
+    // theaudio.load();
+    // theaudio.play();
   }, 150);
 });
 

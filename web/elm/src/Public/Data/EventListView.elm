@@ -5,19 +5,13 @@ import Html.Attributes exposing (class, colspan)
 import Types exposing (Msg)
 import Data.Types exposing (Show, Event, Performance, Episode)
 import TypeUtil exposing (RemoteData, RemoteData(..))
--- import StateUtil exposing (filterLoaded)
-import Date.Format
+import ViewUtil exposing (waiting, formatDate)
 import Markdown
 
 root : RemoteData (List Show) -> RemoteData (List Event)
     -> List (Html Msg)
 root rdShows rdEvents =
   let
-    --   filterLoaded [shows, events]
-    fn =
-      \shows event -> buildEvent shows event
-    waiting =
-      [ div [] [ text "..."] ]
     content =
       case rdShows of
         Loaded shows ->
@@ -27,9 +21,9 @@ root rdShows rdEvents =
             _ -> 
               [ div [] [ text "no events" ] ]
         _ ->
-          waiting
+          [ waiting ]
   in
-    [ div [ class "eventList" ] content ]
+    [ div [ class "event-list" ] content ]
 
 
 buildEvent : List Show -> Event -> Html Msg
@@ -52,7 +46,7 @@ actuallyBuildEvent : Show -> Event -> List (Html Msg)
 actuallyBuildEvent show event =
   let
     happens_on =
-      Date.Format.format "%A, %B %d" event.happens_on
+      formatDate event.happens_on
     performanceList =
       event.performances
         |> List.map renderPerformance
@@ -69,8 +63,10 @@ actuallyBuildEvent show event =
         []
   in
     [ h3 [] [ text event.title ]
-    , p [ class ("showname bg-" ++ show.slug) ] [ text show.name ]
-    , p [ class ("stamp bg-" ++ show.slug) ] [ text happens_on ]
+    , div [ class "colorbox" ]
+      [ p [ class "showname" ] [ text show.name ]
+      , p [ class "stamp" ] [ text happens_on ]
+      ]
     ]
     ++ description
     ++ performances

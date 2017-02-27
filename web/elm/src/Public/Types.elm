@@ -8,9 +8,11 @@ import Routing
 
 type Msg
   = OnLocationChange Location
+  | NavigateTo String
   | ChatMsg Chat.Types.Msg
   | DataMsg Data.Types.Msg
   | EnableVideo
+  | ClosePlayer
   | PlayEpisode String String
   | PhoenixMsg (Phoenix.Socket.Msg Msg)
   | SocketInitialized

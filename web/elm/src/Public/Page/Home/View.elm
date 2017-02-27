@@ -1,11 +1,12 @@
 module Page.Home.View exposing (root)
 
 import Html exposing (Html, Attribute, div, h2, a, p, i, text, footer, video, source, br, node, section)
-import Html.Attributes exposing (class, href, id, controls, preload, poster, src, type_)
+import Html.Attributes exposing (class, style, href, id, controls, preload, poster, src, type_)
 import Types exposing (..)
 import Chat.View
 import Data.EventListView
-import ViewUtil exposing (myOnClick)
+import Data.EpisodeListView
+import ViewUtil
 import Layout
 
 
@@ -30,7 +31,7 @@ build : Model -> Html Msg
 build model =
   div []
     [ section [ class "hero" ]
-        [ div [class "hero-overlay"]
+        [ div [ class "hero-overlay" ]
             [ div [ class "hero-info" ] [ text infotext ]
             ]
         ]
@@ -38,8 +39,8 @@ build model =
         [ div [ class "columns" ]
             [ div [ class "column col-sm-12 col-6" ]
                 [ thevideo model
-                , div [] [ p [] [ text "Welcome to Impulse Detroit!" ] ]
-                    -- [ a [ myOnClick (PlayEpisode "https://impulsedetroit.net/download/techno-tuesday/techtues-103.mp3" "TT 103"), href "#" ] [ text "TT103" ]
+                , h2 [ style [("padding-top", "1rem")] ] [ text "Follow Us!" ]
+                , ViewUtil.socialButtons
                 ]
             , div [ class "column col-sm-12 col-6" ]
                 [ Html.map ChatMsg (Chat.View.root model)
@@ -49,15 +50,17 @@ build model =
     , div [ class "container" ]
         [ div [ class "columns" ]
             [ div [ class "column col-sm-12 col-6" ]
-                ( [ h2 [] [text "Upcoming Events"]
+                ( [ h2 [] [ text "Upcoming Events" ]
                   ]
                   ++ Data.EventListView.root
                       model.data.shows model.data.upcomingEvents
                 )
             , div [ class "column col-sm-12 col-6" ]
-                [ h2 [] [text "Recent Episodes"]
-                -- , EpisodeList.View.root model.shows model.recentEpisodes
-                ]
+                ( [ h2 [] [text "Recent Episodes"]
+                  ]
+                  ++ Data.EpisodeListView.root
+                      model.player model.data.shows model.data.recentEpisodes
+                )
             ]
         ]
     ]
@@ -68,7 +71,7 @@ thevideo model =
   case model.video of
     False ->
       div [ class "video-button" ]
-        [ a [ myOnClick EnableVideo, href "#" ]
+        [ a [ ViewUtil.myOnClick EnableVideo, href "#" ]
             [ i [ class "fa fa-play-circle-o fa-5x" ] []
             ]
         ]

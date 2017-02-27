@@ -12,9 +12,9 @@ $generic-bg-color: #222;
 
 @font-face { font-family: desmonanz; src: url(/ttf/desonanz.ttf); }
 
-.bg-techno-tuesday { background-color: $techtues-bg-color; }
-.bg-wobblehead-radio { background-color: $wobblehead-bg-color; }
-.bg-sub-therapy-radio { background-color: $sub-therapy-bg-color; }
+// .bg-techno-tuesday { background-color: $techtues-bg-color; }
+// .bg-wobblehead-radio { background-color: $wobblehead-bg-color; }
+// .bg-sub-therapy-radio { background-color: $sub-therapy-bg-color; }
 
 
 body {
@@ -32,6 +32,20 @@ div.dock {
     background-color: #444;
     color: #ccc;
     border-top: 1px solid #222;
+
+    p {
+        line-height: 1em;
+        font-size: 80%;
+        span {
+            color: #fff;
+            font-family: monospace;
+        }
+    }
+
+    .close {
+        float: right;
+        font-size: x-large;
+    }
 }
 
 div.dock p {
@@ -67,7 +81,7 @@ div.hero-info { max-width: 18em; float: left; padding: 0.7em;
 
 div.video-button a {
     display: block;
-    padding: 1em;
+    padding: 3em;
     width: 100%;
     text-align: center;
     border: 3px solid $primary-color;
@@ -108,6 +122,11 @@ a.navbar-brand {
     .idi {
         text-transform: lowercase;
     }
+}
+
+header.navbar sup i {
+    color: #fc9;
+    // font-size: small !important;
 }
 
 header {
@@ -192,48 +211,51 @@ div.chat {
     }
 }
 
-// div.eventList { padding-left: 1rem; }
+// div.event-list { padding-left: 1rem; }
 
 h2 {
     font-size: 160%;
-    margin: 0 0 1rem 0;
+    // margin-bottom
+    // margin: 0 0 1rem 0;
 }
 
-div.event {
+h3 {
+    font-size: 120%;
+    margin: 0;
+    color: #fff;
+}
+
+@mixin card {
     background-color: $contentbg-color;
     padding: 1em 0.75em;
     margin-bottom: 0.5em;
 
     background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.1));
 
+    .showname {
+        font-weight: bold;
+        margin: 0;
+    }
+}
+
+.colorbox {
+    background: linear-gradient(rgba(100,100,100,0.15), rgba(100,100,100,0.3));
+    text-align: right;
+    font-family: monospace;
+    padding: 0 1rem;
+    color: #ccc;
+    font-size: 80%;
+}
+
+div.event-list div.event {
+    @include card;
     // background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.25));
     // background: -o-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.7));
     // background: -moz-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.7));
     // background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.3));
     //
-    h3 {
-        font-size: 120%;
-        font-weight: bold;
-        margin: 0;
-        color: #aaa;
-    }
     p, div, table {
         padding-left: 1.5rem;
-    }
-    @mixin eventinfo {
-        text-align: right;
-        font-family: monospace;
-        padding: 0 1rem;
-        color: #aaa;
-        font-size: 80%;
-    }
-    .showname {
-        @include eventinfo;
-        // background-color: darken($bg-color, 3%);
-        margin: 0;
-    }
-    .stamp {
-        @include eventinfo;
     }
     .time {
         vertical-align: top;
@@ -256,6 +278,68 @@ div.event {
         padding: 0;
     }
 }
+
+.episode-list .episode {
+    @include card;
+
+    .description {
+        padding-left: 1rem;
+    }
+    .stamp {
+        color: #999;
+        font-size: 70%;
+        line-height: 1.2em;
+        padding: 1rem 0 0 0;
+    }
+    .desc {
+        padding: 1rem;
+    }
+}
+
+
+footer.container {
+    padding: 3em 1em;
+    line-height: 1.5em;
+
+    ul {
+        margin: 0.2em 1em;
+    }
+    li {
+        margin: 0;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+    .shmegal {
+        width: 100%;
+    }
+    .shmegal p {
+        margin: 1.5rem;
+        text-align: right;
+        font-size: 50%;
+        color: #999;
+    }
+
+    .social-buttons a {
+        width: 100%;
+    }
+}
+
+.social-buttons {
+    // padding: 2rem;
+    text-align: center;
+
+    a {
+        margin: 0.2em;
+        display: block;
+        float: left;
+        // margin-left: 1em;
+    }
+}
+
 
 
 // .btn { font-size: 1.6rem; }

@@ -50,9 +50,17 @@ update msg model =
         , Cmd.none
         )
 
+    NavigateTo url ->
+      ( model, Navigation.newUrl url )
+
     EnableVideo ->
       ( { model | video = True }
       , Port.activateVideo "yeap"
+      )
+
+    ClosePlayer ->
+      ( { model | player = { track = Nothing } }
+      , Cmd.none
       )
 
     PlayEpisode url title ->
