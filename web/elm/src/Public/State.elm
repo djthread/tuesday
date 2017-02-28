@@ -54,14 +54,6 @@ update msg model =
     NavigateTo url ->
       ( model, Navigation.newUrl url )
 
-    -- EnableVideo ->
-    --   ( { model | video = True }
-    --   , Cmd.none
-    --   )
-    --
-    -- EnableVideo2 ->
-    --   ( model, Port.activateVideo "yeap" )
-
     EnableVideo ->
       let
         cmd =
@@ -75,24 +67,29 @@ update msg model =
           }
         , Cmd.map DeferMsg deferCmd
         )
-          -- |> Debug.log "wtfoufouf"
-        -- , Port.activateVideo "yeap"
+
+    PlayEpisode url title ->
+      let
+        player =
+          model.player
+        track =
+          Just (Track url title)
+        cmd =
+          Port.playEpisode "x"
+        ( deferModel, deferCmd ) =
+          Defer.update (Defer.AddCmd cmd) model.defer
+      in
+        ( { model
+          | player = { player | track = track }
+          , defer  = deferModel
+          }
+        , Cmd.map DeferMsg deferCmd
+        )
 
     ClosePlayer ->
       ( { model | player = { track = Nothing } }
       , Cmd.none
       )
-
-    PlayEpisode url title ->
-      let
-        player = model.player
-        track  = Just (Track url title)
-      in
-        ( { model
-          | player = { player | track = track }
-          }
-        , Port.playEpisode "go beach"
-        )
 
     PhoenixMsg msg ->
       let

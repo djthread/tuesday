@@ -2,21 +2,9 @@ const elmDiv  = document.getElementById('elm-main')
      , idapp  = Elm.Public.embed(elmDiv)
      , vjsUrl = "//vjs.zencdn.net/5.8.8/video.min.js";
 
-var theaudio;
-  // , audioFinder = setInterval(function() {
-  //     audio = document.getElementById('theaudio');
-  //     console.log('looking for audio:', audio);
-  //     if (audio) clearInterval(audioFinder);
-  //   }, 400);
-
-/*
-idapp.ports.init.subscribe((messageFromElm) => {
-  $(document).foundation();
-});
-*/
+let theaudio;
 
 idapp.ports.activateVideo.subscribe((messageFromElm) => {
-
   loadScript(vjsUrl, () => {
     videojs.options.flash.swf = '/swf/video-js.swf';
     videojs(document.getElementById('thevideo'), {
@@ -24,38 +12,20 @@ idapp.ports.activateVideo.subscribe((messageFromElm) => {
       'aspectRatio': '16:9'
     });
   });
-
 });
 
-var loadedAudioPlayer = false;
-
 idapp.ports.playEpisode.subscribe((messageFromElm) => {
-  var audioWatcher
-    , player = $(".audioplayer");
+  const audioPlayer = $(".audioplayer");
 
-  if (player.length) {
-    console.log("rremoving player", player);
+  if (audioPlayer.length) {
     theaudio = $("audio");
-    console.log('got audio', theaudio.children());
     theaudio.detach();
-    player.remove();
+    audioPlayer.remove();
     $(".dock").append(theaudio);
-    console.log('appended', theaudio, theaudio.children());
   }
-  console.log('win');
 
-  audioWatcher = setInterval(() => {
-    theaudio = $("audio");
-    console.log('trying', theaudio);
-
-    if (!theaudio.length) return;
-
-    clearInterval(audioWatcher);
-    theaudio.audioPlayer();
-
-    // theaudio.load();
-    // theaudio.play();
-  }, 150);
+  theaudio = $("audio");
+  theaudio.audioPlayer();
 });
 
 
@@ -90,11 +60,8 @@ function loadScript(path, callback) {
     }
 
     function handleReadyStateChange() {
-        var state;
-
         if (!done) {
-            state = scr.readyState;
-            if (state === "complete") {
+            if (scr.readyState === "complete") {
                 handleLoad();
             }
         }
