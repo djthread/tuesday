@@ -46,11 +46,10 @@ update msg model =
   case Debug.log "msg" msg of
     OnLocationChange location ->
       let
-        route = parseLocation location
+        newModel =
+          { model | route = parseLocation location }
       in
-        ( { model | route = route }
-        , Cmd.none
-        )
+        initPage newModel
 
     NavigateTo url ->
       ( model, Navigation.newUrl url )
@@ -112,13 +111,15 @@ update msg model =
             Data.Types.SocketInitialized
             model.data
             model.idSocket
-      in
-        ( { model
+        model2 =
+          { model
           | data = dataModel
           , idSocket = newSocket
           }
-        , dataCmd
-        )
+        ( model3, cmd ) =
+          initPage model2
+      in
+        ( model3, Cmd.batch [ dataCmd, cmd ] )
 
     DeferMsg deferMsg ->
       let
@@ -176,3 +177,29 @@ subscriptions model =
       , Defer.subscriptions model.defer
           |> Sub.map DeferMsg
       ]
+
+
+
+initPage : Model -> ( Model, Cmd Msg )
+initPage model =
+  case model.route of
+    HomeRoute ->
+      dataUpdate Data.Types.FetchNewStuff model
+
+    _ ->
+      ( model, Cmd.none )
+
+
+
+dataUpdate : Data.Types.Msg -> Model -> ( Model, Cmd Msg )
+dataUpdate msg model =
+  let
+    ( dataModel, cmd, idSocket ) =
+      Data.State.update
+        Data.Types.FetchNewStuff
+        model.data
+        model.idSocket
+  in
+    ( { model | data = dataModel, idSocket = idSocket }
+    , cmd
+    )

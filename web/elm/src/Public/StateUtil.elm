@@ -21,16 +21,6 @@ startLoading model =
   in
     { model | loading = newCount }
 
--- filterLoaded : List (RemoteData List) -> Bool
--- filterLoaded rds =
---   let
---     isLoaded = \rd ->
---       case rd of
---         Loaded x -> True
---         _        -> False
---   in
---     List.filter isLoaded rds
-
 doneLoading : Model -> Model
 doneLoading model =
   let
@@ -69,6 +59,7 @@ initSocket =
     ( phxSocket2, cmd )
 
 
+
 handlePhoenixMsg : (Phoenix.Socket.Msg Types.Msg) -> IDSocket
                 -> ( IDSocket, Cmd Types.Msg )
 handlePhoenixMsg msg idSocket =
@@ -77,6 +68,7 @@ handlePhoenixMsg msg idSocket =
       Phoenix.Socket.update msg idSocket
   in
     ( newSocket, Cmd.map PhoenixMsg phxCmd )
+
 
 
 pushMessage : String -> String

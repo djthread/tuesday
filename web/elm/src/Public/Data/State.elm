@@ -8,7 +8,7 @@ import TypeUtil exposing (RemoteData(..))
 -- import Port
 import Json.Decode exposing (decodeValue)
 import Phoenix.Push
--- import Json.Encode as JE
+import Json.Encode as JE
 -- import Task
 
 init : Model
@@ -24,6 +24,10 @@ update : Msg -> Model -> IDSocket
       -> ( Model, Cmd Types.Msg, IDSocket )
 update msg model idSocket =
   case msg of
+    SocketInitialized ->
+      pushDataMsg
+        "shows" "data" model idSocket ReceiveShows
+
     ReceiveShows raw ->
       case decodeValue showsDecoder raw of
         Ok shows ->
@@ -35,6 +39,10 @@ update msg model idSocket =
         Err error ->
           let _ = Debug.log "ReceiveShows Error" error
           in ( model, Cmd.none, idSocket )
+
+    FetchNewStuff ->
+      pushDataMsg
+        "new" "data" model idSocket ReceiveNewStuff
 
     ReceiveNewStuff raw ->
       case decodeValue newStuffDecoder raw of
@@ -51,25 +59,6 @@ update msg model idSocket =
           let _ = Debug.log "ReceiveNewStuff Error" error
           in ( model, Cmd.none, idSocket )
 
-    SocketInitialized ->
-      let
-        retShowsMsg =
-          (\m -> Types.DataMsg (ReceiveShows m))
-        configurator1 = 
-          (\p -> p |> Phoenix.Push.onOk retShowsMsg)
-        ( newSocket1, cmd1 ) =
-          pushMessage "shows" "data" configurator1 idSocket
-        retDataMsg =
-          (\d -> Types.DataMsg (ReceiveNewStuff d))
-        configurator2 =
-          (\p -> p |> Phoenix.Push.onOk retDataMsg)
-        ( newSocket2, cmd2 ) =
-          pushMessage "new" "data" configurator2 newSocket1
-        cmd =
-          Cmd.batch [cmd1, cmd2]
-      in
-        ( model, cmd, newSocket2 )
-
     NoOp ->
       ( model, Cmd.none, idSocket )
 
@@ -80,20 +69,16 @@ subscriptions model =
   Sub.none
 
 
-
--- pushFetchMessage : Model -> IDSocket
---                 -> ( Model, Cmd Types.Msg, IDSocket )
--- pushFetchMessage model idSocket =
---   let
---     -- payload =
---     --   JE.object
---     --     [ ( "user", JE.string model.name )
---     --     , ( "body", JE.string model.msg )
---     --     ]
---     ( newSocket, cmd ) =
---       pushMessage "new:msg" "rooms:lobby" payload idSocket
---   in
---     ( model
---     , cmd
---     , newSocket
---     )
+pushDataMsg : String -> String -> Model -> IDSocket
+           -> (JE.Value -> Msg)
+           -> ( Model, Cmd Types.Msg, IDSocket )
+pushDataMsg message channel model idSocket msg =
+  let
+    retDataMsg =
+      (\d -> Types.DataMsg (msg d))
+    configurator =
+      (\p -> p |> Phoenix.Push.onOk retDataMsg)
+    ( newSocket, cmd ) =
+      pushMessage message channel configurator idSocket
+  in
+    ( model, cmd, newSocket )
