@@ -60,17 +60,20 @@ defmodule Tuesday.RoomChannel do
     :ok
   end
 
-  def handle_in("new:msg", msg, socket) do
-    [event, data] = ["new:msg", %{
-      user:  msg["user"],
-      body:  msg["body"],
-      stamp: DateTime.now_utc |> DateTime.Format.rfc3339
-    }]
+  def handle_in("new:msg", %{"body" => body, "user" => user}, socket) do
+    if String.length(body) > 0 and String.length(user) > 0 do
+      [event, data] = ["new:msg", %{
+        user:  user,
+        body:  body,
+        stamp: DateTime.now_utc |> DateTime.Format.rfc3339
+      }]
 
-    broadcast! socket, event, data
-    ChatLog.append event: event, data: data
+      broadcast! socket, event, data
+      ChatLog.append event: event, data: data
+    end
 
     # socket = socket |> assign(:user, msg["user"])
-    {:reply, {:ok, %{msg: msg["body"]}}, socket}
+    # {:reply, {:ok, %{msg: body}}, socket}
+    {:reply, :ok, socket}
   end
 end
