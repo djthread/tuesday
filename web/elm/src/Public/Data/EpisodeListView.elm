@@ -48,9 +48,7 @@ actuallyBuildEpisode playerModel show episode =
   let
     description =
       if not (String.isEmpty episode.description) then
-        [ div [ class "desc" ]
-            [ Markdown.toHtml [ class "description" ] episode.description ]
-        ]
+        [ Markdown.toHtml [ class "desc" ] episode.description ]
       else
         []
     stamp =
