@@ -49,7 +49,7 @@ defmodule Tuesday.DataChannel do
     Show
     |> where(slug: ^slug)
     |> Repo.one
-    |> Show.preload_episodes_and_events
+    # |> Show.preload_episodes_and_events
     |> fn(show) ->
       render(ShowView, "show.json", show: show, full: true)
     end.()
@@ -73,14 +73,36 @@ defmodule Tuesday.DataChannel do
     end.()
   end
 
-  # def handle_in("episodes", %{"slug" => slug, "page" => pageno}, socket) do
-  #   q = from e in Episode,
-  #       join:    s in Show,
-  #       where:   s.slug == ^slug,
-  #       preload: [show: s]
-  #
-  #   {:reply, {:ok, %{episodes: q |> Repo.all}}, socket}
-  # end
+  def handle_in("episodes", %{"slug" => slug, "page" => page}, socket) do
+    listing =
+      Episode
+      |> join(s in Show)
+      |> where(s.slug == ^slug)
+      |> preload(show: s)
+      |> Repo.paginate(page: page)
+    # q = from e in Episode,
+    #     join:    s in Show,
+    #     where:   s.slug == ^slug,
+    #     preload: [show: s]
+    ret =
+      %{episodes:      listing.entries,
+        page_number:   listing.page_number,
+        page_size:     listing.page_size,
+        total_pages:   listing.total_pages,
+        total_entries: listing.total_entries
+      }
+
+    {:reply, {:ok, ret}, socket}
+  end
+  # |> MyApp.Repo.paginate(page: 2, page_size: 5)
+  # render conn, :index,
+  #   people: page.entries,
+  #   page_number: page.page_number,
+  #   page_size: page.page_size,
+  #   total_pages: page.total_pages,
+  #   total_entries: page.total_entries
+  # 
+  # 
 
   """
   def handle_in("whoami", _msg, socket) do
