@@ -73,27 +73,28 @@ defmodule Tuesday.DataChannel do
     end.()
   end
 
-  def handle_in("episodes", %{"slug" => slug, "page" => page}, socket) do
-    listing =
-      Episode
-      |> join(s in Show)
-      |> where(s.slug == ^slug)
-      |> preload(show: s)
-      |> Repo.paginate(page: page)
-    # q = from e in Episode,
-    #     join:    s in Show,
-    #     where:   s.slug == ^slug,
-    #     preload: [show: s]
-    ret =
-      %{episodes:      listing.entries,
-        page_number:   listing.page_number,
-        page_size:     listing.page_size,
-        total_pages:   listing.total_pages,
-        total_entries: listing.total_entries
-      }
-
-    {:reply, {:ok, ret}, socket}
-  end
+  # def handle_in("episodes", %{"slug" => slug, "page" => page}, socket) do
+  #   listing =
+  #     Episode
+  #     |> join(s in Show)
+  #     |> where(s.slug == ^slug)
+  #     |> preload(show: s)
+  #     |> Repo.paginate(page: page)
+  #   # q = from e in Episode,
+  #   #     join:    s in Show,
+  #   #     where:   s.slug == ^slug,
+  #   #     preload: [show: s]
+  #   ret =
+  #     %{episodes:      listing.entries,
+  #       page_number:   listing.page_number,
+  #       page_size:     listing.page_size,
+  #       total_pages:   listing.total_pages,
+  #       total_entries: listing.total_entries
+  #     }
+  #
+  #   {:reply, {:ok, ret}, socket}
+  # end
+  #
   # |> MyApp.Repo.paginate(page: 2, page_size: 5)
   # render conn, :index,
   #   people: page.entries,
