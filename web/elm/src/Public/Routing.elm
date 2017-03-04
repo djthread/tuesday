@@ -6,6 +6,7 @@ import UrlParser exposing (..)
 
 type Route
   = HomeRoute
+  | EpisodesRoute
   | AboutRoute
   | NotFoundRoute
 
@@ -14,6 +15,7 @@ matchers : Parser (Route -> a) a
 matchers =
   oneOf
     [ map HomeRoute top
+    , map EpisodesRoute (s "episodes")
     , map AboutRoute (s "info")
     ]
 

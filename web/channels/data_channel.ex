@@ -95,6 +95,49 @@ defmodule Tuesday.DataChannel do
   #   {:reply, {:ok, ret}, socket}
   # end
   #
+
+  def handle_in("episodes", params, socket) do
+    # %{"slug" => slug, "page" => page}
+    showPartFn =
+      case params["show_id"] do
+        id when is_integer(id) ->
+          fn(q) ->
+            q
+            |> join(s in Show)
+            |> where(s.slug == ^slug)
+            |> preload(show: s)
+          end
+        _ ->
+          fn(q) -> q end
+      end
+
+    page =
+      if (pg = params["page"]) |> is_integer,
+        do: pg else: 1
+
+        # do: params["page"] else: 1
+
+    listing =
+      Episode
+      |> showPartFn.()
+      |> order_by(desc: :posted_on)
+      |> Repo.paginate(page: page)
+
+    ret =
+      %{episodes:      listing.entries,
+        page_number:   listing.page_number,
+        page_size:     listing.page_size,
+        total_pages:   listing.total_pages,
+        total_entries: listing.total_entries
+      }
+
+    {:reply, {:ok, ret}, socket}
+  end
+    # q = from e in Episode,
+    #     join:    s in Show,
+    #     where:   s.slug == ^slug,
+    #     preload: [show: s]
+
   # |> MyApp.Repo.paginate(page: 2, page_size: 5)
   # render conn, :index,
   #   people: page.entries,
