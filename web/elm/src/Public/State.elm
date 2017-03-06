@@ -186,6 +186,9 @@ initPage model =
     EpisodesRoute page ->
       dataUpdate (Data.Types.FetchEpisodes page) model
 
+    EventsRoute page ->
+      dataUpdate (Data.Types.FetchEvents page) model
+
     _ ->
       ( model, Cmd.none )
 

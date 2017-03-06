@@ -7,6 +7,7 @@ import UrlParser exposing (..)
 type Route
   = HomeRoute
   | EpisodesRoute Int
+  | EventsRoute Int
   | AboutRoute
   | NotFoundRoute
 
@@ -17,9 +18,11 @@ matchers =
     [ map HomeRoute top
     , map (EpisodesRoute 1) (s "episodes")
     , map EpisodesRoute (s "episodes" </> int)
-    -- , map Events (s "events")
+    , map (EventsRoute 1) (s "events")
+    , map EventsRoute (s "events/page" </> int)
     , map AboutRoute (s "info")
     ]
+
 
 parseLocation : Location -> Route
 parseLocation location =
@@ -30,6 +33,12 @@ parseLocation location =
     Nothing ->
       NotFoundRoute
 
-episodesUrl : Int -> String
-episodesUrl page =
+
+episodesPageUrl : Int -> String
+episodesPageUrl page =
   "#episodes/" ++ (toString page)
+
+
+eventsPageUrl : Int -> String
+eventsPageUrl page =
+  "#events/" ++ (toString page)

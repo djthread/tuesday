@@ -8,6 +8,7 @@ type Msg
   = ReceiveShows JE.Value
   | FetchNewStuff
   | FetchEpisodes Int
+  | FetchEvents Int
   | ReceiveEpisodes JE.Value
   | ReceiveEvents JE.Value
   | SocketInitialized

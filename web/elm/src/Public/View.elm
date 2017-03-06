@@ -7,6 +7,7 @@ import Types exposing (..)
 import Routing exposing (Route(..))
 import Page.Home.View
 import Page.Episodes.View
+import Page.Events.View
 import Page.About.View
 import Page.NotFound.View
 
@@ -19,6 +20,9 @@ root model =
 
     EpisodesRoute page ->
       Page.Episodes.View.root model
+
+    EventsRoute page ->
+      Page.Events.View.root model
 
     AboutRoute ->
       Page.About.View.root model

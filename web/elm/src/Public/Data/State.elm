@@ -61,6 +61,15 @@ update msg model idSocket =
           "episodes" "data" model idSocket ReceiveEpisodes
           (\p -> p |> Phoenix.Push.withPayload payload)
 
+    FetchEvents page ->
+      let
+        payload =
+          JE.object [ ("page", JE.int page) ]
+      in
+        pushDataMsgWithConfigurator
+          "events" "data" model idSocket ReceiveEvents
+          (\p -> p |> Phoenix.Push.withPayload payload)
+
     ReceiveEpisodes raw ->
       case decodeValue episodePagerDecoder raw of
         Ok data ->
@@ -79,10 +88,13 @@ update msg model idSocket =
     ReceiveEvents raw ->
       case decodeValue eventPagerDecoder raw of
         Ok data ->
-          ( { model | events = Loaded data }
-          , Cmd.none
-          , idSocket
-          )
+          let
+            toTop = Dom.Scroll.toTop "body"
+          in
+            ( { model | events = Loaded data }
+            , Task.attempt (\_ -> Types.NoOp) toTop
+            , idSocket
+            )
 
         Err error ->
           let _ = Debug.log "ReceiveEvents Error" error

@@ -88,6 +88,27 @@ socialButtons =
     ]
 
 
+breadcrumber : List (String, String) -> List (Html Msg)
+breadcrumber items =
+  let
+    home =
+      [ li [ class "breadcrumb-item" ]
+          [ a [ href "#" ] [ fa "home" ] ]
+      ]
+    render (words, url) =
+      let
+        inner =
+          if String.length(url) > 0 then
+            a [ href url ] [ text words ]
+          else 
+            text words
+      in
+        li [ class "breadcrumb-item" ] [ inner ]
+  in
+    [ ul [ class "breadcrumb" ]
+      (home ++ (List.map render items))
+    ]
+
 
 paginator : Pager -> List (Html Msg)
 paginator pager =
@@ -102,7 +123,7 @@ paginator pager =
         [ msg ]
     buildNum active num =
       buildLi active
-        ( a [ href (Routing.episodesUrl num) ]
+        ( a [ href (Routing.episodesPageUrl num) ]
             [ text (toString num) ]
         )
     previous =
@@ -114,7 +135,9 @@ paginator pager =
             []
       in
         [ buildLi False
-            (a ([ href "#" , tabindex -1 ] ++ dis) [ text "Previous" ])
+            ( a ([ href "#" , tabindex -1 ] ++ dis)
+                [ text "Previous" ]
+            )
         ]
     firstPage =
       if page < 4 then [] else [ buildNum False 1 ]
@@ -137,7 +160,7 @@ paginator pager =
         in
           List.map (buildNum False) (List.range (page + 1) finish)
     el2 =
-      if page < (total - 2) then [el] else []
+      if page < (total - 3) then [el] else []
     lastPage =
       if page > (total - 3) then [] else [ buildNum False total ]
     next =

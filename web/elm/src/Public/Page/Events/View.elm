@@ -1,6 +1,6 @@
-module Page.Episodes.View exposing (root)
+module Page.Events.View exposing (root)
 
-import Data.EpisodeListView
+import Data.EventListView
 import Html exposing (Html, h2, div, text)
 import Html.Attributes exposing (class)
 import Types exposing (..)
@@ -12,11 +12,10 @@ root : Model -> Html Msg
 root model =
   let
     listing =
-      Data.EpisodeListView.root
+      Data.EventListView.root
         True
-        model.player
         model.data.shows
-        model.data.episodes
+        model.data.events
     pagetext =
       case model.data.episodes of
         Loaded data ->
@@ -24,12 +23,12 @@ root model =
         _ ->
           ""
     titletext = 
-      "Podcast Episodes" ++ pagetext
+      "Events" ++ pagetext
     title =
       [ h2 [] [ text titletext ] ]
     crumbs =
-      ViewUtil.breadcrumber [("Episodes", "#episodes")]
+      ViewUtil.breadcrumber [("Events", "#events")]
     content =
-      div [ class "page-episodes" ] (title ++ crumbs ++ listing)
+      div [ class "page-events" ] (title ++ crumbs ++ listing)
   in
     Layout.root model content

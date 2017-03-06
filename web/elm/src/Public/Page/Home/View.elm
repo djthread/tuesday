@@ -8,6 +8,7 @@ import Data.EventListView
 import Data.EpisodeListView
 import ViewUtil
 import Layout
+import Routing
 
 
 root : Model -> Html Msg
@@ -74,7 +75,9 @@ build model =
                       False model.data.shows model.data.events
                   )
                   ++
-                  [ a [ class "morebtn", href "#events/2" ]
+                  [ a [ class "morebtn"
+                      , href (Routing.eventsPageUrl 2)
+                      ]
                       [ text "More Events" ]
                   ]
                 )
@@ -86,7 +89,9 @@ build model =
                       False model.player model.data.shows model.data.episodes
                   )
                   ++
-                  [ a [ class "morebtn", href "#episodes/2" ]
+                  [ a [ class "morebtn"
+                      , href (Routing.episodesPageUrl 2)
+                      ]
                       [ text "More Episodes" ]
                   ]
                 )
