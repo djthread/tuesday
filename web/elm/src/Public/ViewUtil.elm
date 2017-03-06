@@ -93,7 +93,6 @@ paginator pager =
   let
     ( page, total ) =
       ( pager.pageNumber, pager.totalEntries )
-    -- g = Debug.log "PAGE" page
     el =
       span [] [ text "..." ]
     buildLi active msg =
@@ -105,6 +104,8 @@ paginator pager =
         ( a [ myOnClick (fetchPg num) ]
             [ text (toString num) ]
         )
+    fetchPg =
+      \p -> DataMsg (Data.Types.FetchEpisodePage p)
     previous =
       let
         dis =
@@ -116,17 +117,17 @@ paginator pager =
         [ buildLi False
             (a ([ href "#" , tabindex -1 ] ++ dis) [ text "Previous" ])
         ]
-    fetchPg =
-      \p -> DataMsg (Data.Types.FetchEpisodePage p)
+    firstPage =
+      if page < 4 then [] else [ buildNum False 1 ]
     el1 =
-      if page > 3 then [el] else []
+      if page < 5 then [] else [el]
     before =
       if page == 1 then [] else
         let
           tmp = page - 2
           start = if tmp < 1 then 1 else tmp
         in
-          List.map (buildNum False) (List.range start page)
+          List.map (buildNum False) (List.range start (page - 1))
     active =
       [ buildNum True page ]
     after =
@@ -138,6 +139,8 @@ paginator pager =
           List.map (buildNum False) (List.range (page + 1) finish)
     el2 =
       if page < (total - 2) then [el] else []
+    lastPage =
+      if page > (total - 3) then [] else [ buildNum False total ]
     next =
       let
         dis =
@@ -162,20 +165,3 @@ paginator pager =
           ++ next
         )
     ]
-    --
-    --     , li [ class "page-item active" ]
-    --         [ a [ myOnClick (fetchPg 1) ]
-    --             [ text "1" ]
-    --         ]
-    --     , li [ class "page-item" ]
-    --         [ a [ href "#" ] [ text "2" ] ]
-    --     , li [ class "page-item" ]
-    --         [ a [ href "#" ] [ text "3" ] ]
-    --     , li [ class "page-item" ]
-    --         [ span [] [ text "..." ] ]
-    --     , li [ class "page-item" ]
-    --         [ a [ href "#" ] [ text "12" ] ]
-    --     , li [ class "page-item" ]
-    --         [ a [ href "#" ] [ text "Next" ] ]
-    --     ]
-    -- ]
