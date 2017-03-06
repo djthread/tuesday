@@ -1,7 +1,7 @@
 module Page.Home.View exposing (root)
 
-import Html exposing (Html, Attribute, div, h2, a, p, i, text, footer, video, source, br, node, section)
-import Html.Attributes exposing (class, style, href, id, controls, preload, poster, src, type_)
+import Html exposing (Html, Attribute, div, h2, a, p, i, text, footer, video, source, br, node, section, button, form, input)
+import Html.Attributes exposing (class, style, href, id, controls, preload, poster, src, type_, value, attribute)
 import Types exposing (..)
 import Chat.View
 import Data.EventListView
@@ -71,28 +71,50 @@ build model =
                 ( [ h2 [] [ text "Upcoming Events" ]
                   ]
                   ++
-                  ( Data.EventListView.root
-                      False model.data.shows model.data.events
+                  ( let options =
+                      { paginate = False, only = Just 5 }
+                    in Data.EventListView.root
+                      options model.data.shows model.data.events
                   )
                   ++
-                  [ a [ class "morebtn"
-                      , href (Routing.eventsPageUrl 2)
+                  [ form []
+                      [ input
+                          [ type_ "button"
+                          , class "btn morebtn"
+                          , attribute "onClick"
+                              ( "parent.location='"
+                                  ++ (Routing.eventsPageUrl 1)
+                                  ++ "'"
+                              )
+                          , value "More Events"
+                          ]
+                          []
                       ]
-                      [ text "More Events" ]
                   ]
                 )
             , div [ class "column col-sm-12 col-6" ]
                 ( [ h2 [] [text "Recent Episodes"]
                   ]
                   ++
-                  ( Data.EpisodeListView.root
-                      False model.player model.data.shows model.data.episodes
+                  ( let options =
+                      { paginate = False, only = Just 5 }
+                    in Data.EpisodeListView.root
+                      options model.player model.data.shows model.data.episodes
                   )
                   ++
-                  [ a [ class "morebtn"
-                      , href (Routing.episodesPageUrl 2)
+                  [ form []
+                      [ input
+                          [ type_ "button"
+                          , class "btn morebtn"
+                          , attribute "onClick"
+                              ( "parent.location='"
+                                  ++ (Routing.episodesPageUrl 1)
+                                  ++ "'"
+                              )
+                          , value "More Episodes"
+                          ]
+                          []
                       ]
-                      [ text "More Episodes" ]
                   ]
                 )
             ]

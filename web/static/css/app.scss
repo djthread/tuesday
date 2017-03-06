@@ -344,6 +344,14 @@ div.episode-list div.episode {
     }
 }
 
+.morebtn {
+    float: right;
+    padding: 0.5rem 1rem;
+    // border: 1px solid darken($primary-color, 30%);
+    // background-color: darken($primary-color, 50%);
+    text-align: center;
+}
+
 .clearer {
     line-height: 0;
     clear: both;

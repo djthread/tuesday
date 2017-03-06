@@ -11,13 +11,15 @@ import Layout
 root : Model -> Html Msg
 root model =
   let
+    conf =
+      { paginate = True, only = Nothing }
     listing =
       Data.EventListView.root
-        True
+        conf
         model.data.shows
         model.data.events
     pagetext =
-      case model.data.episodes of
+      case model.data.events of
         Loaded data ->
           ", Page " ++ (toString data.pager.pageNumber)
         _ ->

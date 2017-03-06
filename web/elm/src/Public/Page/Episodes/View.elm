@@ -11,9 +11,11 @@ import Layout
 root : Model -> Html Msg
 root model =
   let
+    conf =
+      { paginate = True, only = Nothing }
     listing =
       Data.EpisodeListView.root
-        True
+        conf
         model.player
         model.data.shows
         model.data.episodes

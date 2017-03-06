@@ -6,7 +6,6 @@ import Html.Events exposing (onWithOptions, defaultOptions)
 import Json.Decode
 import Types exposing (..)
 import Data.Types
-import Routing
 import TypeUtil exposing (Pager)
 import Date exposing (Date)
 import Date.Format
@@ -110,8 +109,8 @@ breadcrumber items =
     ]
 
 
-paginator : Pager -> List (Html Msg)
-paginator pager =
+paginator : (Int -> String) -> Pager -> List (Html Msg)
+paginator urlBuilder pager =
   let
     ( page, total ) =
       ( pager.pageNumber, pager.totalPages )
@@ -123,7 +122,7 @@ paginator pager =
         [ msg ]
     buildNum active num =
       buildLi active
-        ( a [ href (Routing.episodesPageUrl num) ]
+        ( a [ href (urlBuilder num) ]
             [ text (toString num) ]
         )
     previous =

@@ -3,16 +3,17 @@ module Data.EpisodeListView exposing (root)
 import Html exposing (Html, div, span, text, h3, h4, h6, p, div, button, a)
 import Html.Attributes exposing (class, href, attribute)
 import Types exposing (Msg, Msg(PlayEpisode), PlayerModel)
-import Data.Types exposing (Show, Episode, EpisodeListing)
+import Data.Types exposing (Show, Episode, EpisodeListing, ListConfig)
 import TypeUtil exposing (RemoteData, RemoteData(..), Pager)
 import ViewUtil
 -- import StateUtil exposing (filterLoaded)
+import Routing
 import Markdown
 
-root : Bool -> PlayerModel -> RemoteData (List Show)
+root : ListConfig -> PlayerModel -> RemoteData (List Show)
     -> RemoteData EpisodeListing
     -> List (Html Msg)
-root paginate playerModel rdShows rdEpisodes =
+root conf playerModel rdShows rdEpisodes =
   let
     content =
       case rdShows of
@@ -21,12 +22,17 @@ root paginate playerModel rdShows rdEpisodes =
             Loaded lsEpisodes ->
               ( List.map
                   (buildEpisode playerModel shows) 
-                  lsEpisodes.entries
+                  ( case conf.only of
+                      Nothing -> lsEpisodes.entries
+                      Just n  -> List.take n lsEpisodes.entries
+                  )
               )
               ++
-              if paginate then
-                (ViewUtil.paginator lsEpisodes.pager)
-              else []
+              ( if not conf.paginate then [] else
+                  ViewUtil.paginator
+                    Routing.episodesPageUrl
+                    lsEpisodes.pager
+              )
             _ -> 
               [ div [] [ text "no episodes" ] ]
         _ ->

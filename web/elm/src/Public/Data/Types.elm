@@ -72,6 +72,11 @@ type alias Episode =
   , bytes       : Int
   }
 
+type alias ListConfig =
+  { paginate : Bool
+  , only     : Maybe Int
+  }
+
 
 findShow : List Show -> Int -> Maybe Show
 findShow shows show_id =

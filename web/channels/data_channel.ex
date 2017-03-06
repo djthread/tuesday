@@ -101,10 +101,12 @@ defmodule Tuesday.DataChannel do
       case params["show_id"] do
         show_id when is_integer(show_id) ->
           from e in Event,
-            where: e.show_id == ^show_id,
+            where: e.show_id == ^show_id and
+                   e.happens_on > ago(2, "day"),
             order_by: e.happens_on
         _ ->
           from e in Event,
+            where: e.happens_on > ago(2, "day"),
             order_by: e.happens_on
       end
 

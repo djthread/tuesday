@@ -3,14 +3,15 @@ module Data.EventListView exposing (root)
 import Html exposing (Html, div, span, text, h3, p, table, tr, td)
 import Html.Attributes exposing (class, colspan)
 import Types exposing (Msg)
-import Data.Types exposing (Show, Event, Performance, EventListing)
+import Data.Types exposing (Show, Event, Performance, EventListing, ListConfig)
 import TypeUtil exposing (RemoteData, RemoteData(..))
 import ViewUtil exposing (waiting, formatDate)
+import Routing
 import Markdown
 
-root : Bool -> RemoteData (List Show) -> RemoteData EventListing
+root : ListConfig -> RemoteData (List Show) -> RemoteData EventListing
     -> List (Html Msg)
-root paginate rdShows rdEvents =
+root conf rdShows rdEvents =
   let
     content =
       case rdShows of
@@ -18,7 +19,18 @@ root paginate rdShows rdEvents =
           case rdEvents of
             Loaded lsEvents ->
               ( List.map
-                  (buildEvent shows) pager.entries
+                  (buildEvent shows)
+                  ( case conf.only of
+                      Nothing -> lsEvents.entries
+                      Just n  -> List.take n lsEvents.entries
+                  )
+              )
+              ++
+              ( if not conf.paginate then [] else
+                  ViewUtil.paginator
+                    Routing.eventsPageUrl
+                    lsEvents.pager
+              )
             _ -> 
               [ div [] [ text "no events" ] ]
         _ ->
