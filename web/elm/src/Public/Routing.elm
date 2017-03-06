@@ -19,7 +19,7 @@ matchers =
     , map (EpisodesRoute 1) (s "episodes")
     , map EpisodesRoute (s "episodes" </> int)
     , map (EventsRoute 1) (s "events")
-    , map EventsRoute (s "events/page" </> int)
+    , map EventsRoute (s "events" </> int)
     , map AboutRoute (s "info")
     ]
 

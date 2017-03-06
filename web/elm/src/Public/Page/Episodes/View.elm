@@ -24,7 +24,7 @@ root model =
         _ ->
           ""
     titletext = 
-      "Podcast Episodes" ++ pagetext
+      "Episodes" ++ pagetext
     title =
       [ h2 [] [ text titletext ] ]
     crumbs =

@@ -102,10 +102,10 @@ defmodule Tuesday.DataChannel do
         show_id when is_integer(show_id) ->
           from e in Event,
             where: e.show_id == ^show_id,
-            order_by: [desc: e.happens_on]
+            order_by: e.happens_on
         _ ->
           from e in Event,
-            order_by: [desc: e.happens_on]
+            order_by: e.happens_on
       end
 
     listing = Repo.paginate(query, params)

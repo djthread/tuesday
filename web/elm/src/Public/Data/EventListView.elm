@@ -16,8 +16,9 @@ root paginate rdShows rdEvents =
       case rdShows of
         Loaded shows ->
           case rdEvents of
-            Loaded pager ->
-              List.map (buildEvent shows) pager.entries
+            Loaded lsEvents ->
+              ( List.map
+                  (buildEvent shows) pager.entries
             _ -> 
               [ div [] [ text "no events" ] ]
         _ ->
@@ -70,6 +71,7 @@ actuallyBuildEvent show event =
     ]
     ++ description
     ++ performances
+    ++ [ p [ class "clearer" ] [] ]
 
 renderPerformance : Performance -> List (Html Msg)
 renderPerformance perf =

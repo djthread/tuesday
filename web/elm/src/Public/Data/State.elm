@@ -45,12 +45,11 @@ update msg model idSocket =
         ( model1, cmd1, socket1 ) =
           pushDataMsg
             "episodes" "data" model idSocket ReceiveEpisodes
-        -- ( model2, cmd2, socket2 ) =
-        --   pushDataMsg
-        --     "events" "data" model1 socket1 ReceiveEvents
+        ( model2, cmd2, socket2 ) =
+          pushDataMsg
+            "events" "data" model1 socket1 ReceiveEvents
       in
-        ( model1, cmd1, socket1 )
-        -- ( model2, Cmd.batch [cmd1, cmd2], socket2 )
+        ( model2, Cmd.batch [cmd1, cmd2], socket2 )
 
     FetchEpisodes page ->
       let

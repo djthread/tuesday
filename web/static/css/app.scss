@@ -63,7 +63,7 @@ header {
     background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.3));
 }
 
-div.page-episodes {
+div.page-episodes, div.page-events{
     max-width: 40em;
     padding: 1rem;
     margin: 0 auto;
@@ -318,12 +318,19 @@ div.event-list div.event {
         margin: 0;
         padding: 0;
     }
+    table.performances {
+        clear: both;
+    }
+    .description {
+        clear: both;
+    }
 }
 
-.episode-list .episode {
+div.episode-list div.episode {
     @include card;
 
     .stamp {
+        clear: both;
         color: #999;
         font-size: 70%;
         line-height: 1.2em;
@@ -337,6 +344,10 @@ div.event-list div.event {
     }
 }
 
+.clearer {
+    line-height: 0;
+    clear: both;
+}
 
 footer.container {
     padding: 3em 1em;
