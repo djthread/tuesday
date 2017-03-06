@@ -3,13 +3,14 @@ module Data.EpisodeListView exposing (root)
 import Html exposing (Html, div, span, text, h3, h4, h6, p, div, button, a)
 import Html.Attributes exposing (class, href, attribute)
 import Types exposing (Msg, Msg(PlayEpisode), PlayerModel)
-import Data.Types exposing (Episode, Show)
-import TypeUtil exposing (RemoteData, RemoteData(..))
+import Data.Types exposing (Show, Episode, EpisodeListing)
+import TypeUtil exposing (RemoteData, RemoteData(..), Pager)
 import ViewUtil
 -- import StateUtil exposing (filterLoaded)
 import Markdown
 
-root : PlayerModel -> RemoteData (List Show) -> RemoteData (List Episode)
+root : PlayerModel -> RemoteData (List Show)
+    -> RemoteData EpisodeListing
     -> List (Html Msg)
 root playerModel rdShows rdEpisodes =
   let
@@ -17,8 +18,12 @@ root playerModel rdShows rdEpisodes =
       case rdShows of
         Loaded shows ->
           case rdEpisodes of
-            Loaded episodes ->
-              List.map (buildEpisode playerModel shows) episodes
+            Loaded lsEpisodes ->
+              ( List.map
+                  (buildEpisode playerModel shows) 
+                  lsEpisodes.entries
+              )
+              ++ (ViewUtil.paginator lsEpisodes.pager)
             _ -> 
               [ div [] [ text "no episodes" ] ]
         _ ->

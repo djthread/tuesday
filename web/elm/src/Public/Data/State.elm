@@ -13,11 +13,9 @@ import Json.Encode as JE
 
 init : Model
 init =
-  { shows          = NotAsked
-  , upcomingEvents = NotAsked
-  , recentEpisodes = NotAsked
-  , viewedEvents   = NotAsked
-  , viewedEpisodes = NotAsked
+  { shows    = NotAsked
+  , events   = NotAsked
+  , episodes = NotAsked
   }
 
 update : Msg -> Model -> IDSocket
@@ -41,22 +39,48 @@ update msg model idSocket =
           in ( model, Cmd.none, idSocket )
 
     FetchNewStuff ->
-      pushDataMsg
-        "new" "data" model idSocket ReceiveNewStuff
+      let
+        ( model1, cmd1, socket1 ) =
+          pushDataMsg
+            "episodes" "data" model idSocket ReceiveEpisodes
+        -- ( model2, cmd2, socket2 ) =
+        --   pushDataMsg
+        --     "events" "data" model1 socket1 ReceiveEvents
+      in
+        ( model1, cmd1, socket1 )
+        -- ( model2, Cmd.batch [cmd1, cmd2], socket2 )
 
-    ReceiveNewStuff raw ->
-      case decodeValue newStuffDecoder raw of
+    FetchEpisodePage page ->
+      let
+        payload =
+          JE.object [ ("page", JE.int page) ]
+      in
+        pushDataMsgWithConfigurator
+          "episodes" "data" model idSocket ReceiveEpisodes
+          (\p -> p |> Phoenix.Push.withPayload payload)
+
+    ReceiveEpisodes raw ->
+      case decodeValue episodePagerDecoder raw of
         Ok data ->
-          ( { model
-            | upcomingEvents = Loaded data.events
-            , recentEpisodes = Loaded data.episodes
-            }
+          ( { model | episodes = Loaded data }
           , Cmd.none
           , idSocket
           )
 
         Err error ->
-          let _ = Debug.log "ReceiveNewStuff Error" error
+          let _ = Debug.log "ReceiveEpisodes Error" error
+          in ( model, Cmd.none, idSocket )
+
+    ReceiveEvents raw ->
+      case decodeValue eventPagerDecoder raw of
+        Ok data ->
+          ( { model | events = Loaded data }
+          , Cmd.none
+          , idSocket
+          )
+
+        Err error ->
+          let _ = Debug.log "ReceiveEvents Error" error
           in ( model, Cmd.none, idSocket )
 
     NoOp ->
@@ -73,12 +97,22 @@ pushDataMsg : String -> String -> Model -> IDSocket
            -> (JE.Value -> Msg)
            -> ( Model, Cmd Types.Msg, IDSocket )
 pushDataMsg message channel model idSocket msg =
+  pushDataMsgWithConfigurator
+    message channel model idSocket msg (\a -> a)
+
+pushDataMsgWithConfigurator : String -> String
+           -> Model -> IDSocket -> (JE.Value -> Msg)
+           -> (Phoenix.Push.Push Types.Msg
+              -> Phoenix.Push.Push Types.Msg )
+           -> ( Model, Cmd Types.Msg, IDSocket )
+pushDataMsgWithConfigurator
+  message channel model idSocket msg configurator =
   let
     retDataMsg =
       (\d -> Types.DataMsg (msg d))
-    configurator =
-      (\p -> p |> Phoenix.Push.onOk retDataMsg)
+    configurator2 =
+      (\p -> p |> Phoenix.Push.onOk retDataMsg |> configurator)
     ( newSocket, cmd ) =
-      pushMessage message channel configurator idSocket
+      pushMessage message channel configurator2 idSocket
   in
     ( model, cmd, newSocket )

@@ -3,6 +3,7 @@ module Data.Codec exposing (..)
 import Json.Decode exposing (Decoder, at, list, int, string, succeed)
 import Json.Decode.Extra exposing (date, (|:))
 import Data.Types exposing (..)
+import TypeUtil exposing (Pager)
 
 
 showsDecoder : Decoder (List Show)
@@ -17,14 +18,38 @@ showDecoder =
     |: (at ["name"] string)
     |: (at ["slug"] string)
     |: (at ["tiny_info"] string)
--- ReceiveShows Error: "Expecting an object with a field named `tinyInfo` at _.shows[5] but instead got: {\"tiny_info\":\"Every Monday at 7-10 Eastern. No Boundaries, No Hype, Just Music.\",\"slug\":\"sub-therapy-radio\",\"name\":\"SUB:Therapy Radio\",\"id\":6}"
 
-newStuffDecoder : Decoder NewStuff
-newStuffDecoder =
+eventPagerDecoder : Decoder EventListing
+eventPagerDecoder =
   succeed
-    NewStuff
-    |: (at ["events"] (list eventDecoder))
-    |: (at ["episodes"] (list episodeDecoder))
+    EventListing
+    |: (at ["entries"] (list eventDecoder))
+    |: (at ["pager"] pagerDecoder)
+    
+
+episodePagerDecoder : Decoder EpisodeListing
+episodePagerDecoder =
+  succeed
+    EpisodeListing
+    |: (at ["entries"] (list episodeDecoder))
+    |: (at ["pager"] pagerDecoder)
+    
+
+pagerDecoder : Decoder Pager
+pagerDecoder =
+  succeed
+    Pager
+    |: (at ["page_number"] int)
+    |: (at ["page_size"] int)
+    |: (at ["total_pages"] int)
+    |: (at ["total_entries"] int)
+
+-- newStuffDecoder : Decoder NewStuff
+-- newStuffDecoder =
+--   succeed
+--     NewStuff
+--     |: (at ["events"] (list eventDecoder))
+--     |: (at ["episodes"] (list episodeDecoder))
 
 -- type alias Event =
 --   { id           : Int

@@ -1,26 +1,32 @@
 module Data.Types exposing (..)
 
-import TypeUtil exposing (RemoteData)
+import TypeUtil exposing (RemoteData, Pager)
 import Date exposing (Date)
 import Json.Encode as JE
 
 type Msg
   = ReceiveShows JE.Value
   | FetchNewStuff
-  | ReceiveNewStuff JE.Value
+  | FetchEpisodePage Int
+  | ReceiveEpisodes JE.Value
+  | ReceiveEvents JE.Value
   | SocketInitialized
   | NoOp
 
 type alias Model =
-  { shows          : RemoteData (List Show)
+  { shows    : RemoteData (List Show)
+  , events   : RemoteData EventListing
+  , episodes : RemoteData EpisodeListing
+  }
 
-    -- home page data, cached
-  , upcomingEvents : RemoteData (List Event)
-  , recentEpisodes : RemoteData (List Episode)
+type alias EventListing =
+  { entries : List Event
+  , pager   : Pager
+  }
 
-    -- whatever is listed on the current page
-  , viewedEvents   : RemoteData (List Event)
-  , viewedEpisodes : RemoteData (List Episode)
+type alias EpisodeListing =
+  { entries : List Episode
+  , pager   : Pager
   }
 
 type alias Show =

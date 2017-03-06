@@ -47,14 +47,14 @@ defmodule Tuesday.Util do
     |> IO.inspect
   end
 
-  def bytes_by_slug_and_filename(episode) do
-    episode.show.slug
-    |> podcast_path_by_slug
-    |> Path.join(episode.filename)
-    |> File.stat 
-    |> case do
-      {:ok, %File.Stat{size: size}} -> size
-      _                             -> nil
-    end
-  end
+  # def bytes_by_slug_and_filename(episode) do
+  #   episode.show.slug
+  #   |> podcast_path_by_slug
+  #   |> Path.join(episode.filename)
+  #   |> File.stat 
+  #   |> case do
+  #     {:ok, %File.Stat{size: size}} -> size
+  #     _                             -> nil
+  #   end
+  # end
 end

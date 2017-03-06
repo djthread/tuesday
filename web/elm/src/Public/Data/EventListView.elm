@@ -3,12 +3,12 @@ module Data.EventListView exposing (root)
 import Html exposing (Html, div, span, text, h3, p, table, tr, td)
 import Html.Attributes exposing (class, colspan)
 import Types exposing (Msg)
-import Data.Types exposing (Show, Event, Performance, Episode)
+import Data.Types exposing (Show, Event, Performance, EventListing)
 import TypeUtil exposing (RemoteData, RemoteData(..))
 import ViewUtil exposing (waiting, formatDate)
 import Markdown
 
-root : RemoteData (List Show) -> RemoteData (List Event)
+root : RemoteData (List Show) -> RemoteData EventListing
     -> List (Html Msg)
 root rdShows rdEvents =
   let
@@ -16,8 +16,8 @@ root rdShows rdEvents =
       case rdShows of
         Loaded shows ->
           case rdEvents of
-            Loaded events ->
-              List.map (buildEvent shows) events
+            Loaded pager ->
+              List.map (buildEvent shows) pager.entries
             _ -> 
               [ div [] [ text "no events" ] ]
         _ ->

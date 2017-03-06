@@ -97,38 +97,66 @@ defmodule Tuesday.DataChannel do
   #
 
   def handle_in("episodes", params, socket) do
-    # %{"slug" => slug, "page" => page}
-    showPartFn =
-      case params["show_id"] do
-        id when is_integer(id) ->
-          fn(q) ->
-            q
-            |> join(s in Show)
-            |> where(s.slug == ^slug)
-            |> preload(show: s)
-          end
-        _ ->
-          fn(q) -> q end
-      end
+    # page =
+    #   case String.to_integer(params["page"]) do
+    #   if params["page"] whe
+    #     do: pg else: 1
 
-    page =
-      if (pg = params["page"]) |> is_integer,
-        do: pg else: 1
+    # listing =
+    #   Episode
+    #   |> fn(q) ->
+    #     case params["show_id"] do
+    #       id when is_integer(id) ->
+    #         fn(q) -> q
+    #           |> join(:left, [e], s in Show,
+    #                   s.id == e.show_id)
+    #           |> preload(show: s)
+    #           |> select([s, e], {s, e})
+    #         end
+    #       _ -> fn(q) -> q end
+    #     end
+    #   end.()
+    #   |> order_by(desc: :posted_on)
+    #   |> Repo.paginate(params)
 
-        # do: params["page"] else: 1
+    listing = Repo.paginate(
+      # case params["show_id"] do
+      #   id when is_integer(id) ->
+      #     from e in "episodes",
+      #       where: e.show_id == ^id
+      #       order_by: [desc: e.posted_on],
+      #   _ ->
+      #     from e in "episodes",
+      #       order_by: [desc: e.posted_on]
+      # end
 
-    listing =
-      Episode
-      |> showPartFn.()
-      |> order_by(desc: :posted_on)
-      |> Repo.paginate(page: page)
+      from e in Episode,
+        order_by: [desc: e.inserted_at]
+
+      )
+
+    entries =
+      Tuesday.EpisodeView.list(listing.entries)
+      # Enum.map(listing.entries, fn(sh) ->
+      #    Phoenix.View.render(Tuesday.EpisodeView, "show.json")
+      # end)
+      # Enum.map(listing.entries, fn(ep) ->
+      #   ep
+      #   |> Map.delete(:__struct__)
+      #   |> Map.delete(:__meta__)
+      #   |> Map.delete(:show)
+      #   |> Map.delete(:user)
+      #   |> IO.inspect
+      # end)
 
     ret =
-      %{episodes:      listing.entries,
-        page_number:   listing.page_number,
-        page_size:     listing.page_size,
-        total_pages:   listing.total_pages,
-        total_entries: listing.total_entries
+      %{entries: entries,
+        pager: %{
+          page_number:   listing.page_number,
+          page_size:     listing.page_size,
+          total_pages:   listing.total_pages,
+          total_entries: listing.total_entries
+        }
       }
 
     {:reply, {:ok, ret}, socket}

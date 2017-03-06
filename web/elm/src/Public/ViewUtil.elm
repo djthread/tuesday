@@ -1,10 +1,12 @@
 module ViewUtil exposing (..)
 
-import Html exposing (Html, Attribute, div, span, text, button, i, a, sup)
-import Html.Attributes exposing (style, class, attribute, href, target)
+import Html exposing (Html, Attribute, div, span, text, button, i, a, sup, ul, li)
+import Html.Attributes exposing (style, class, attribute, href, target, disabled, tabindex)
 import Html.Events exposing (onWithOptions, defaultOptions)
 import Json.Decode
 import Types exposing (..)
+import Data.Types
+import TypeUtil exposing (Pager)
 import Date exposing (Date)
 import Date.Format
 
@@ -62,7 +64,7 @@ socialButtons =
         [ fa "twitter"
         , span [ style [("display", "none")] ] [ text "T" ]
         , text "witter"
-        , sup [ class "ext" ] [ fa "external-link" ]
+        -- , sup [ class "ext" ] [ fa "external-link" ]
         ]
     , a [ class "btn"
         , href "https://facebook.com/impulsedetroit"
@@ -71,7 +73,7 @@ socialButtons =
         [ fa "facebook"
         , span [ style [("display", "none")] ] [ text "F" ]
         , text "acebook"
-        , sup [ class "ext" ] [ fa "external-link" ]
+        -- , sup [ class "ext" ] [ fa "external-link" ]
         ]
     , a [ class "btn"
         , href "https://www.instagram.com/impulsedetroit"
@@ -80,31 +82,39 @@ socialButtons =
         [ fa "instagram"
         , span [ style [("display", "none")] ] [ text "I" ]
         , text "nstagram"
-        , sup [ class "ext" ] [ fa "external-link" ]
+        -- , sup [ class "ext" ] [ fa "external-link" ]
         ]
     ]
-    -- <div class="buttons bit sm">
-    --   <ul>
-    --     <li>
-    --       <a href="https://twitter.com/impulsedetroit">
-    --         <i class="fa fa-twitter"></i>witter
-    --       </a>
-    --     </li>
-    --     <li>
-    --       <a href="https://facebook.com/impulsedetroit">
-    --         <i class="fa fa-facebook"></i>acebook
-    --       </a>
-    --     </li>
-    --     <li>
-    --       <a href="https://www.instagram.com/impulsedetroit">
-    --         <i class="fa fa-instagram"></i>nstagram
-    --       </a>
-    --     </li>
-    --     <li>
-    --       <a href="mailto:impulsedetroit@gmail.com">
-    --         <i class="fa fa-envelope"></i>mail
-    --       </a>
-    --     </li>
-    --   </ul>
-    --   </ul>
-    -- </div>
+
+
+
+paginator : Pager -> List (Html Msg)
+paginator pager =
+  let
+      g = Debug.log "pager" pager
+      prevDim =
+        pager.pageNumber == 1
+      fetchPg =
+        \p -> DataMsg (Data.Types.FetchEpisodePage p)
+  in
+  [ ul [ class "pagination" ]
+      [ li [ class "page-item" ]
+          [ a [ href "#", disabled prevDim, tabindex -1 ]
+              [ text "Previous" ]
+          ]
+      , li [ class "page-item active" ]
+          [ a [ myOnClick (fetchPg 1) ]
+              [ text "1" ]
+          ]
+      , li [ class "page-item" ]
+          [ a [ href "#" ] [ text "2" ] ]
+      , li [ class "page-item" ]
+          [ a [ href "#" ] [ text "3" ] ]
+      , li [ class "page-item" ]
+          [ span [] [ text "..." ] ]
+      , li [ class "page-item" ]
+          [ a [ href "#" ] [ text "12" ] ]
+      , li [ class "page-item" ]
+          [ a [ href "#" ] [ text "Next" ] ]
+      ]
+  ]
