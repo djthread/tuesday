@@ -9,10 +9,10 @@ import ViewUtil
 -- import StateUtil exposing (filterLoaded)
 import Markdown
 
-root : PlayerModel -> RemoteData (List Show)
+root : Bool -> PlayerModel -> RemoteData (List Show)
     -> RemoteData EpisodeListing
     -> List (Html Msg)
-root playerModel rdShows rdEpisodes =
+root paginate playerModel rdShows rdEpisodes =
   let
     content =
       case rdShows of
@@ -23,7 +23,10 @@ root playerModel rdShows rdEpisodes =
                   (buildEpisode playerModel shows) 
                   lsEpisodes.entries
               )
-              ++ (ViewUtil.paginator lsEpisodes.pager)
+              ++
+              if paginate then
+                (ViewUtil.paginator lsEpisodes.pager)
+              else []
             _ -> 
               [ div [] [ text "no episodes" ] ]
         _ ->

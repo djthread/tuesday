@@ -18,7 +18,7 @@
     -->
   </head>
 
-  <body>
+  <body id="body">
     <main role="main">
       <%= render @view_module, @view_template, assigns %>
     </main>

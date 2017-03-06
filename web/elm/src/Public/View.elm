@@ -6,6 +6,7 @@ import Html.Events exposing (onClick)
 import Types exposing (..)
 import Routing exposing (Route(..))
 import Page.Home.View
+import Page.Episodes.View
 import Page.About.View
 import Page.NotFound.View
 
@@ -15,6 +16,9 @@ root model =
   case model.route of
     HomeRoute ->
       Page.Home.View.root model
+
+    EpisodesRoute page ->
+      Page.Episodes.View.root model
 
     AboutRoute ->
       Page.About.View.root model

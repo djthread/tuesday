@@ -47,12 +47,12 @@ div.dock {
         float: right;
         font-size: x-large;
     }
-}
 
-div.dock p {
-    border-top: 1px solid $primary-color;
-    padding: 1rem 1rem 0 1rem;
-    margin-bottom: 0.5rem;
+    p {
+        border-top: 1px solid $primary-color;
+        padding: 1rem 1rem 0 1rem;
+        margin-bottom: 0.5rem;
+    }
 }
 
 a:hover {
@@ -61,6 +61,12 @@ a:hover {
 
 header {
     background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.3));
+}
+
+div.page-episodes {
+    max-width: 40em;
+    padding: 1rem;
+    margin: 0 auto;
 }
 
 section.hero {
@@ -373,6 +379,10 @@ footer.container {
         float: left;
         // margin-left: 1em;
     }
+}
+
+.pagination {
+    text-align: center;
 }
 
 

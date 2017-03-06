@@ -119,21 +119,20 @@ defmodule Tuesday.DataChannel do
     #   |> order_by(desc: :posted_on)
     #   |> Repo.paginate(params)
 
-    listing = Repo.paginate(
-      # case params["show_id"] do
-      #   id when is_integer(id) ->
-      #     from e in "episodes",
-      #       where: e.show_id == ^id
-      #       order_by: [desc: e.posted_on],
-      #   _ ->
-      #     from e in "episodes",
-      #       order_by: [desc: e.posted_on]
-      # end
+    query =
+      case params["show_id"] do
+        id when is_integer(id) ->
+          from e in "episodes",
+            where: e.show_id == ^id,
+            order_by: [desc: e.inserted_at]
+        _ ->
+          from e in Episode,
+            order_by: [desc: e.inserted_at]
+      end
 
-      from e in Episode,
-        order_by: [desc: e.inserted_at]
+    params |> IO.inspect
 
-      )
+    listing = Repo.paginate(query, params)
 
     entries =
       Tuesday.EpisodeView.list(listing.entries)

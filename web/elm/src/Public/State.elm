@@ -183,6 +183,9 @@ initPage model =
     HomeRoute ->
       dataUpdate Data.Types.FetchNewStuff model
 
+    EpisodesRoute page ->
+      dataUpdate (Data.Types.FetchEpisodes page) model
+
     _ ->
       ( model, Cmd.none )
 
@@ -192,10 +195,7 @@ dataUpdate : Data.Types.Msg -> Model -> ( Model, Cmd Msg )
 dataUpdate msg model =
   let
     ( dataModel, cmd, idSocket ) =
-      Data.State.update
-        Data.Types.FetchNewStuff
-        model.data
-        model.idSocket
+      Data.State.update msg model.data model.idSocket
   in
     ( { model | data = dataModel, idSocket = idSocket }
     , cmd

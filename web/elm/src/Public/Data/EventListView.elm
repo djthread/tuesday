@@ -8,9 +8,9 @@ import TypeUtil exposing (RemoteData, RemoteData(..))
 import ViewUtil exposing (waiting, formatDate)
 import Markdown
 
-root : RemoteData (List Show) -> RemoteData EventListing
+root : Bool -> RemoteData (List Show) -> RemoteData EventListing
     -> List (Html Msg)
-root rdShows rdEvents =
+root paginate rdShows rdEvents =
   let
     content =
       case rdShows of

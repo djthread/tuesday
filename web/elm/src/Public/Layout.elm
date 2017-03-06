@@ -38,8 +38,10 @@ root model content =
 
 shmegal : List (Html Msg)
 shmegal =
-  [ p [] [ fa "copyright" ]
-  , text " 2017 Impulse Detroit"
+  [ p []
+      [ fa "copyright"
+      , text " 2017 Impulse Detroit"
+      ]
   ]
 
 myheader : Model -> Html Msg

@@ -6,6 +6,7 @@ import Html.Events exposing (onWithOptions, defaultOptions)
 import Json.Decode
 import Types exposing (..)
 import Data.Types
+import Routing
 import TypeUtil exposing (Pager)
 import Date exposing (Date)
 import Date.Format
@@ -92,7 +93,7 @@ paginator : Pager -> List (Html Msg)
 paginator pager =
   let
     ( page, total ) =
-      ( pager.pageNumber, pager.totalEntries )
+      ( pager.pageNumber, pager.totalPages )
     el =
       span [] [ text "..." ]
     buildLi active msg =
@@ -101,11 +102,9 @@ paginator pager =
         [ msg ]
     buildNum active num =
       buildLi active
-        ( a [ myOnClick (fetchPg num) ]
+        ( a [ href (Routing.episodesUrl num) ]
             [ text (toString num) ]
         )
-    fetchPg =
-      \p -> DataMsg (Data.Types.FetchEpisodePage p)
     previous =
       let
         dis =

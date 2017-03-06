@@ -69,14 +69,26 @@ build model =
             [ div [ class "column col-sm-12 col-6" ]
                 ( [ h2 [] [ text "Upcoming Events" ]
                   ]
-                  ++ Data.EventListView.root
-                      model.data.shows model.data.events
+                  ++
+                  ( Data.EventListView.root
+                      False model.data.shows model.data.events
+                  )
+                  ++
+                  [ a [ class "morebtn", href "#events/2" ]
+                      [ text "More Events" ]
+                  ]
                 )
             , div [ class "column col-sm-12 col-6" ]
                 ( [ h2 [] [text "Recent Episodes"]
                   ]
-                  ++ Data.EpisodeListView.root
-                      model.player model.data.shows model.data.episodes
+                  ++
+                  ( Data.EpisodeListView.root
+                      False model.player model.data.shows model.data.episodes
+                  )
+                  ++
+                  [ a [ class "morebtn", href "#episodes/2" ]
+                      [ text "More Episodes" ]
+                  ]
                 )
             ]
         ]
