@@ -91,30 +91,91 @@ socialButtons =
 paginator : Pager -> List (Html Msg)
 paginator pager =
   let
-      g = Debug.log "pager" pager
-      prevDim =
-        pager.pageNumber == 1
-      fetchPg =
-        \p -> DataMsg (Data.Types.FetchEpisodePage p)
+    ( page, total ) =
+      ( pager.pageNumber, pager.totalEntries )
+    -- g = Debug.log "PAGE" page
+    el =
+      span [] [ text "..." ]
+    buildLi active msg =
+      li
+        [ class ("page-item" ++ if active then " active" else "") ]
+        [ msg ]
+    buildNum active num =
+      buildLi active
+        ( a [ myOnClick (fetchPg num) ]
+            [ text (toString num) ]
+        )
+    previous =
+      let
+        dis =
+          if page == 1 then
+            [ attribute "disabled" "disabled" ]
+          else
+            []
+      in
+        [ buildLi False
+            (a ([ href "#" , tabindex -1 ] ++ dis) [ text "Previous" ])
+        ]
+    fetchPg =
+      \p -> DataMsg (Data.Types.FetchEpisodePage p)
+    el1 =
+      if page > 3 then [el] else []
+    before =
+      if page == 1 then [] else
+        let
+          tmp = page - 2
+          start = if tmp < 1 then 1 else tmp
+        in
+          List.map (buildNum False) (List.range start page)
+    active =
+      [ buildNum True page ]
+    after =
+      if page == total then [] else
+        let
+          tmp = page + 2
+          finish = if tmp > total then total else tmp
+        in
+          List.map (buildNum False) (List.range (page + 1) finish)
+    el2 =
+      if page < (total - 2) then [el] else []
+    next =
+      let
+        dis =
+          if page == total then
+            [ attribute "disabled" "disabled" ]
+          else
+            []
+      in
+        [ buildLi False
+            (a ([ href "#" , tabindex -1 ] ++ dis) [ text "Next" ])
+        ]
   in
-  [ ul [ class "pagination" ]
-      [ li [ class "page-item" ]
-          [ a [ href "#", disabled prevDim, tabindex -1 ]
-              [ text "Previous" ]
-          ]
-      , li [ class "page-item active" ]
-          [ a [ myOnClick (fetchPg 1) ]
-              [ text "1" ]
-          ]
-      , li [ class "page-item" ]
-          [ a [ href "#" ] [ text "2" ] ]
-      , li [ class "page-item" ]
-          [ a [ href "#" ] [ text "3" ] ]
-      , li [ class "page-item" ]
-          [ span [] [ text "..." ] ]
-      , li [ class "page-item" ]
-          [ a [ href "#" ] [ text "12" ] ]
-      , li [ class "page-item" ]
-          [ a [ href "#" ] [ text "Next" ] ]
-      ]
-  ]
+    [ ul [ class "pagination" ]
+        ( previous
+          ++ firstPage
+          ++ el1
+          ++ before
+          ++ active
+          ++ after
+          ++ el2
+          ++ lastPage
+          ++ next
+        )
+    ]
+    --
+    --     , li [ class "page-item active" ]
+    --         [ a [ myOnClick (fetchPg 1) ]
+    --             [ text "1" ]
+    --         ]
+    --     , li [ class "page-item" ]
+    --         [ a [ href "#" ] [ text "2" ] ]
+    --     , li [ class "page-item" ]
+    --         [ a [ href "#" ] [ text "3" ] ]
+    --     , li [ class "page-item" ]
+    --         [ span [] [ text "..." ] ]
+    --     , li [ class "page-item" ]
+    --         [ a [ href "#" ] [ text "12" ] ]
+    --     , li [ class "page-item" ]
+    --         [ a [ href "#" ] [ text "Next" ] ]
+    --     ]
+    -- ]
