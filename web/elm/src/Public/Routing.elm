@@ -6,6 +6,7 @@ import UrlParser exposing (..)
 
 type Route
   = HomeRoute
+  | ShowsRoute
   | EpisodesRoute Int
   | EventsRoute Int
   | AboutRoute
@@ -16,6 +17,7 @@ matchers : Parser (Route -> a) a
 matchers =
   oneOf
     [ map HomeRoute top
+    , map ShowsRoute (s "shows")
     , map (EpisodesRoute 1) (s "episodes")
     , map EpisodesRoute (s "episodes" </> int)
     , map (EventsRoute 1) (s "events")
@@ -32,6 +34,11 @@ parseLocation location =
 
     Nothing ->
       NotFoundRoute
+
+
+showUrl : String -> String
+showUrl slug =
+  "#shows/" ++ slug
 
 
 episodesPageUrl : Int -> String

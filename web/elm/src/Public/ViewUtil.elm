@@ -92,7 +92,7 @@ breadcrumber items =
   let
     home =
       [ li [ class "breadcrumb-item" ]
-          [ a [ href "#" ] [ fa "home" ] ]
+          [ a [ href "#", class "home" ] [ fa "home" ] ]
       ]
     render (words, url) =
       let
@@ -100,7 +100,7 @@ breadcrumber items =
           if String.length(url) > 0 then
             a [ href url ] [ text words ]
           else 
-            text words
+            span [] [ text words ]
       in
         li [ class "breadcrumb-item" ] [ inner ]
   in

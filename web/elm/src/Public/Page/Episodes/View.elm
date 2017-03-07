@@ -28,10 +28,10 @@ root model =
               , ", Page " ++ (toString page)
               )
           _ -> ( 1, "" )
-    titletext = 
-      "Podcast Episodes" -- ++ pagetext
-    title =
-      [ h2 [] [ text titletext ] ]
+    -- titletext = 
+    --   "Podcast Episodes" -- ++ pagetext
+    -- title =
+    --   [ h2 [] [ text titletext ] ]
     crumbs =
       ViewUtil.breadcrumber
         ( if page == 1 then [("Episodes", "")] else
@@ -40,6 +40,6 @@ root model =
             ]
         )
     content =
-      div [ class "page-episodes" ] (crumbs ++ title ++ listing)
+      div [ class "page page-episodes" ] (crumbs ++ listing)
   in
     Layout.root model content

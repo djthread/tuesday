@@ -85,3 +85,12 @@ findShow shows show_id =
       List.filter (\s -> s.id == show_id) shows
   in
     List.head maybeOne
+
+
+findShowBySlug : List Show -> String -> Maybe Show
+findShowBySlug shows slug =
+  let
+    maybeOne =
+      List.filter (\s -> s.slug == slug) shows
+  in
+    List.head maybeOne

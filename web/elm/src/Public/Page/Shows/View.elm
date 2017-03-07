@@ -1,45 +1,58 @@
-module Page.Episodes.View exposing (root)
+module Page.Shows.View exposing (root)
 
-import Data.EpisodeListView
-import Html exposing (Html, h2, div, text)
-import Html.Attributes exposing (class)
+import Html exposing (Html, h2, h3, h4, div, text, p, a)
+import Html.Attributes exposing (class, href)
 import Types exposing (..)
+import Data.Types exposing (Show, findShowBySlug)
 import TypeUtil exposing (RemoteData(Loaded))
-import ViewUtil
+import ViewUtil exposing (waiting, breadcrumber)
 import Layout
 
 root : Model -> Html Msg
 root model =
   let
-    conf =
-      { paginate = True, only = Nothing }
-    listing =
-      Data.EpisodeListView.root
-        conf
-        model.player
-        model.data.shows
-        model.data.episodes
-    ( page, pagetext ) =
-        case model.data.episodes of
-          Loaded data ->
-            let page = data.pager.pageNumber
-            in
-              ( page 
-              , ", Page " ++ (toString page)
-              )
-          _ -> ( 1, "" )
-    titletext = 
-      "Podcast Episodes" -- ++ pagetext
-    title =
-      [ h2 [] [ text titletext ] ]
     crumbs =
-      ViewUtil.breadcrumber
-        ( if page == 1 then [("Episodes", "")] else
-            [ ("Episodes", "#episodes")
-            , ("Page " ++ toString page, "")
-            ]
-        )
+      breadcrumber [ ( "Shows", "" ) ]
+    showlist =
+      case model.data.shows of
+        Loaded shows -> buildShowList shows
+        _            -> [ waiting ]
     content =
-      div [ class "page-episodes" ] (crumbs ++ title ++ listing)
+      div [ class "page page-shows" ]
+        (crumbs ++ showlist)
   in
     Layout.root model content
+
+
+buildShowList : List Show -> List (Html Msg)
+buildShowList shows =
+  let
+    getShow = findShowBySlug shows
+  in
+    [ day "Monday"  [ getShow "sub-therapy-radio" |> buildShow ]
+    , day "Tuesday" [ getShow "techno-tuesday"    |> buildShow ]
+    , day "Friday"  [ getShow "wobblehead-radio"  |> buildShow ]
+    ]
+
+
+buildShow : Maybe Show -> Html Msg
+buildShow maybeShow =
+  case maybeShow of
+    Nothing ->
+      p [] []
+    Just show ->
+      a [ class "sh-show", href ("#shows/" ++ show.slug) ]
+        [ h4 [] [ text show.name ]
+        , p [] [ text show.tinyInfo ]
+        ]
+
+
+day : String -> List (Html Msg) -> Html Msg
+day name htmls =
+  let
+    thetitle =
+      [ h3 [] [ text name ] ]
+  in
+    div [ class "sh-day" ]
+      (thetitle ++ htmls)
+
