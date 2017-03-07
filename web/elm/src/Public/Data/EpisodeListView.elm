@@ -5,7 +5,7 @@ import Html.Attributes exposing (class, href, attribute)
 import Types exposing (Msg, Msg(PlayEpisode), PlayerModel)
 import Data.Types exposing (Show, Episode, EpisodeListing, ListConfig)
 import TypeUtil exposing (RemoteData, RemoteData(..), Pager)
-import ViewUtil
+import ViewUtil exposing (waiting)
 -- import StateUtil exposing (filterLoaded)
 import Routing
 import Markdown
@@ -34,12 +34,15 @@ root conf playerModel rdShows rdEpisodes =
                     Nothing -> lsEpisodes.entries
                     Just n  -> List.take n lsEpisodes.entries
               in
-                List.map (buildEpisode playerModel shows) entries
-                ++ pager
+                if List.length(entries) > 0 then
+                  List.map (buildEpisode playerModel shows) entries
+                  ++ pager
+                else
+                  [ div [] [ text "no episodes" ] ]
             _ -> 
-              [ div [] [ text "no episodes" ] ]
+              [ waiting ]
         _ ->
-          [ ViewUtil.waiting ]
+          [ waiting ]
   in
     [ div [ class "episode-list" ] content ]
 

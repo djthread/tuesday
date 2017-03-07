@@ -32,11 +32,13 @@ root conf rdShows rdEvents =
                     Nothing -> lsEvents.entries
                     Just n  -> List.take n lsEvents.entries
               in
-                pager
-                ++ List.map (buildEvent shows) entries
-                ++ pager
+                if List.length(entries) > 0 then
+                  List.map (buildEvent shows) entries
+                  ++ pager
+                else
+                  [ div [] [ text "no events" ] ]
             _ -> 
-              [ div [] [ text "no events" ] ]
+              [ waiting ]
         _ ->
           [ waiting ]
   in
