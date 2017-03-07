@@ -19,19 +19,27 @@ root model =
         model.player
         model.data.shows
         model.data.episodes
-    pagetext =
-      case model.data.episodes of
-        Loaded data ->
-          ", Page " ++ (toString data.pager.pageNumber)
-        _ ->
-          ""
+    ( page, pagetext ) =
+        case model.data.episodes of
+          Loaded data ->
+            let page = data.pager.pageNumber
+            in
+              ( page 
+              , ", Page " ++ (toString page)
+              )
+          _ -> ( 1, "" )
     titletext = 
-      "Episodes" ++ pagetext
+      "Podcast Episodes" -- ++ pagetext
     title =
       [ h2 [] [ text titletext ] ]
     crumbs =
-      ViewUtil.breadcrumber [("Episodes", "#episodes")]
+      ViewUtil.breadcrumber
+        ( if page == 1 then [("Episodes", "")] else
+            [ ("Episodes", "#episodes")
+            , ("Page " ++ toString page, "")
+            ]
+        )
     content =
-      div [ class "page-episodes" ] (title ++ crumbs ++ listing)
+      div [ class "page-episodes" ] (crumbs ++ title ++ listing)
   in
     Layout.root model content

@@ -18,19 +18,27 @@ root model =
         conf
         model.data.shows
         model.data.events
-    pagetext =
-      case model.data.events of
-        Loaded data ->
-          ", Page " ++ (toString data.pager.pageNumber)
-        _ ->
-          ""
+    ( page, pagetext ) =
+        case model.data.events of
+          Loaded data ->
+            let page = data.pager.pageNumber
+            in
+              ( page 
+              , ", Page " ++ (toString page)
+              )
+          _ -> ( 1, "" )
     titletext = 
-      "Events" ++ pagetext
+      "Events" -- ++ pagetext
     title =
       [ h2 [] [ text titletext ] ]
     crumbs =
-      ViewUtil.breadcrumber [("Events", "#events")]
+      ViewUtil.breadcrumber
+        ( if page == 1 then [("Events", "")] else
+            [ ("Events", "#events")
+            , ("Page " ++ toString page, "")
+            ]
+        )
     content =
-      div [ class "page-events" ] (title ++ crumbs ++ listing)
+      div [ class "page-events" ] (crumbs ++ title ++ listing)
   in
     Layout.root model content

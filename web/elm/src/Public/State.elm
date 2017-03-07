@@ -4,6 +4,7 @@ import Routing exposing (parseLocation, Route, Route(..))
 import Types exposing (..)
 import Data.Types
 import Navigation exposing (Location, newUrl)
+import Dom.Scroll
 import Port
 import Chat.State
 import Data.State
@@ -12,6 +13,7 @@ import Phoenix.Channel
 import Phoenix.Push
 import StateUtil
 import Defer
+import Task
 
 
 init : Location -> ( Model, Cmd Msg )
@@ -179,19 +181,26 @@ subscriptions model =
 
 initPage : Model -> ( Model, Cmd Msg )
 initPage model =
-  case model.route of
-    HomeRoute ->
-      dataUpdate Data.Types.FetchNewStuff model
+  let
+    topCmd =
+      Task.attempt
+        (\_ -> Types.NoOp)
+        (Dom.Scroll.toTop "body")
+    ( newModel, cmd ) =
+      case model.route of
+        HomeRoute ->
+          dataUpdate Data.Types.FetchNewStuff model
 
-    EpisodesRoute page ->
-      dataUpdate (Data.Types.FetchEpisodes page) model
+        EpisodesRoute page ->
+          dataUpdate (Data.Types.FetchEpisodes page) model
 
-    EventsRoute page ->
-      dataUpdate (Data.Types.FetchEvents page) model
+        EventsRoute page ->
+          dataUpdate (Data.Types.FetchEvents page) model
 
-    _ ->
-      ( model, Cmd.none )
-
+        _ ->
+          ( model, Cmd.none )
+  in
+    ( newModel, Cmd.batch [topCmd, cmd] )
 
 
 dataUpdate : Data.Types.Msg -> Model -> ( Model, Cmd Msg )

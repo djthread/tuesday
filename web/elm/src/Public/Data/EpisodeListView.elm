@@ -28,10 +28,13 @@ root conf playerModel rdShows rdEpisodes =
                   )
               )
               ++
-              ( if not conf.paginate then [] else
-                  ViewUtil.paginator
-                    Routing.episodesPageUrl
-                    lsEpisodes.pager
+              ( if conf.paginate
+                  && lsEpisodes.pager.totalPages > 1
+                  then
+                    ViewUtil.paginator
+                      Routing.episodesPageUrl
+                      lsEpisodes.pager
+                else []
               )
             _ -> 
               [ div [] [ text "no episodes" ] ]

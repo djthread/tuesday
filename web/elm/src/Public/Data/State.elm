@@ -10,7 +10,6 @@ import Json.Decode exposing (decodeValue)
 import Phoenix.Push
 import Json.Encode as JE
 -- import Task
-import Dom.Scroll
 import Task
 
 init : Model
@@ -72,13 +71,10 @@ update msg model idSocket =
     ReceiveEpisodes raw ->
       case decodeValue episodePagerDecoder raw of
         Ok data ->
-          let
-            toTop = Dom.Scroll.toTop "body"
-          in
-            ( { model | episodes = Loaded data }
-            , Task.attempt (\_ -> Types.NoOp) toTop
-            , idSocket
-            )
+          ( { model | episodes = Loaded data }
+          , Cmd.none
+          , idSocket
+          )
 
         Err error ->
           let _ = Debug.log "ReceiveEpisodes Error" error
@@ -87,13 +83,10 @@ update msg model idSocket =
     ReceiveEvents raw ->
       case decodeValue eventPagerDecoder raw of
         Ok data ->
-          let
-            toTop = Dom.Scroll.toTop "body"
-          in
-            ( { model | events = Loaded data }
-            , Task.attempt (\_ -> Types.NoOp) toTop
-            , idSocket
-            )
+          ( { model | events = Loaded data }
+          , Cmd.none
+          , idSocket
+          )
 
         Err error ->
           let _ = Debug.log "ReceiveEvents Error" error

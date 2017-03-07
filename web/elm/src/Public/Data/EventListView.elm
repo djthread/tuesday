@@ -26,10 +26,13 @@ root conf rdShows rdEvents =
                   )
               )
               ++
-              ( if not conf.paginate then [] else
-                  ViewUtil.paginator
-                    Routing.eventsPageUrl
-                    lsEvents.pager
+              ( if conf.paginate
+                  && lsEvents.pager.totalPages > 1
+                  then
+                    ViewUtil.paginator
+                      Routing.eventsPageUrl
+                      lsEvents.pager
+                else []
               )
             _ -> 
               [ div [] [ text "no events" ] ]
