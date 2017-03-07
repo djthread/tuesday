@@ -20,22 +20,22 @@ root conf playerModel rdShows rdEpisodes =
         Loaded shows ->
           case rdEpisodes of
             Loaded lsEpisodes ->
-              ( List.map
-                  (buildEpisode playerModel shows) 
-                  ( case conf.only of
-                      Nothing -> lsEpisodes.entries
-                      Just n  -> List.take n lsEpisodes.entries
-                  )
-              )
-              ++
-              ( if conf.paginate
-                  && lsEpisodes.pager.totalPages > 1
-                  then
-                    ViewUtil.paginator
-                      Routing.episodesPageUrl
-                      lsEpisodes.pager
-                else []
-              )
+              let
+                pager =
+                  if conf.paginate
+                      && lsEpisodes.pager.totalPages > 1
+                      then
+                        ViewUtil.paginator
+                          Routing.episodesPageUrl
+                          lsEpisodes.pager
+                    else []
+                entries = 
+                  case conf.only of
+                    Nothing -> lsEpisodes.entries
+                    Just n  -> List.take n lsEpisodes.entries
+              in
+                List.map (buildEpisode playerModel shows) entries
+                ++ pager
             _ -> 
               [ div [] [ text "no episodes" ] ]
         _ ->

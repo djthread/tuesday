@@ -18,22 +18,23 @@ root conf rdShows rdEvents =
         Loaded shows ->
           case rdEvents of
             Loaded lsEvents ->
-              ( List.map
-                  (buildEvent shows)
-                  ( case conf.only of
-                      Nothing -> lsEvents.entries
-                      Just n  -> List.take n lsEvents.entries
-                  )
-              )
-              ++
-              ( if conf.paginate
-                  && lsEvents.pager.totalPages > 1
-                  then
-                    ViewUtil.paginator
-                      Routing.eventsPageUrl
-                      lsEvents.pager
-                else []
-              )
+              let
+                pager =
+                  if conf.paginate
+                      && lsEvents.pager.totalPages > 1
+                      then
+                        ViewUtil.paginator
+                          Routing.eventsPageUrl
+                          lsEvents.pager
+                    else []
+                entries = 
+                  case conf.only of
+                    Nothing -> lsEvents.entries
+                    Just n  -> List.take n lsEvents.entries
+              in
+                pager
+                ++ List.map (buildEvent shows) entries
+                ++ pager
             _ -> 
               [ div [] [ text "no events" ] ]
         _ ->
