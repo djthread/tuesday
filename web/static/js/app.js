@@ -38,6 +38,9 @@ idapp.ports.setChatName.subscribe((chatname) => {
   localStorage.setItem("chatname", chatname || "");
 });
 
+idapp.ports.setTitle.subscribe((title) => {
+  document.title = title;
+});
 
 
 // ty, http://stackoverflow.com/questions/1293367/how-to-detect-if-javascript-files-are-loaded

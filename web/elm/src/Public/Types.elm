@@ -45,3 +45,6 @@ type alias VideoModel =
 
 type alias IDSocket =
   Phoenix.Socket.Socket Msg
+
+type alias Crumbs =
+  List ( String,  String )

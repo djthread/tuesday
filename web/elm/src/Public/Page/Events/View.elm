@@ -6,9 +6,8 @@ import Html.Attributes exposing (class)
 import Types exposing (..)
 import TypeUtil exposing (RemoteData(Loaded))
 import ViewUtil
-import Layout
 
-root : Model -> Html Msg
+root : Model -> ( Crumbs, List (Html Msg) )
 root model =
   let
     conf =
@@ -18,23 +17,17 @@ root model =
         conf
         model.data.shows
         model.data.events
-    ( page, pagetext ) =
-        case model.data.events of
-          Loaded data ->
-            let page = data.pager.pageNumber
-            in
-              ( page 
-              , ", Page " ++ (toString page)
-              )
-          _ -> ( 1, "" )
-    crumbs =
-      ViewUtil.breadcrumber
-        ( if page == 1 then [("Events", "")] else
-            [ ("Events", "#events")
-            , ("Page " ++ toString page, "")
-            ]
-        )
-    content =
-      div [ class "page page-events" ] (crumbs ++ listing)
+    thecrumbs =
+      case model.data.events of
+        Loaded data -> crumbs data.pager.pageNumber
+        _           -> crumbs 1
   in
-    Layout.root model content
+    ( thecrumbs, listing )
+
+
+crumbs : Int -> Crumbs
+crumbs page =
+  if page == 1 then [("Events", "")] else
+    [ ("Events", "#events")
+    , ("Page " ++ toString page, "")
+    ]

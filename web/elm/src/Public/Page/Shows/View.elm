@@ -5,23 +5,20 @@ import Html.Attributes exposing (class, href)
 import Types exposing (..)
 import Data.Types exposing (Show, findShowBySlug)
 import TypeUtil exposing (RemoteData(Loaded))
-import ViewUtil exposing (waiting, breadcrumber)
-import Layout
+import ViewUtil exposing (waiting)
 
-root : Model -> Html Msg
+
+root : Model -> ( Crumbs, List (Html Msg) )
 root model =
   let
-    crumbs =
-      breadcrumber [ ( "Shows", "" ) ]
-    showlist =
+    msgs =
       case model.data.shows of
         Loaded shows -> buildShowList shows
         _            -> [ waiting ]
-    content =
-      div [ class "page page-shows" ]
-        (crumbs ++ showlist)
+    crumbs =
+      [ ( "Shows", "" ) ]
   in
-    Layout.root model content
+    ( crumbs, msgs )
 
 
 buildShowList : List Show -> List (Html Msg)

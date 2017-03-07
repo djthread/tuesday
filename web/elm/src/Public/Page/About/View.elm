@@ -5,8 +5,18 @@ import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
 import Types exposing (..)
 
-root : Model -> Html Msg
+root : Model -> ( Crumbs, List (Html Msg) )
 root model =
-  div [class "row"]
-    [ p [] [text "about!"]
-    ]
+  let
+    crumbs =
+      [("About", "#about")]
+  in
+    ( crumbs, build )
+
+
+build : List (Html Msg)
+build =
+  [ div [class "row"]
+      [ p [] [text "about!"]
+      ]
+  ]

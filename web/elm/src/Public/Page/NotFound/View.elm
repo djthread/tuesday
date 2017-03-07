@@ -5,8 +5,11 @@ import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
 import Types exposing (..)
 
-root : Model -> Html Msg
+root : Model -> ( Crumbs, List (Html Msg) )
 root model =
-  div []
-    [ p [] [text "404 not found"]
-    ]
+  let
+    content =
+      [ p [] [text "404 not found"]
+      ]
+  in
+    ( [], content )

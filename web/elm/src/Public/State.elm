@@ -21,6 +21,8 @@ init location =
   let
     route =
       parseLocation location
+    routeCmd =
+      StateUtil.routeCmd route
     ( idSocket, phxCmd ) =
       StateUtil.initSocket
     ( chatModel, chatCmd ) =
@@ -38,6 +40,7 @@ init location =
     , Cmd.batch
         [ phxCmd
         , chatCmd
+        , routeCmd
         , Port.getChatName "fo srs"
         ]
     )
@@ -48,10 +51,14 @@ update msg model =
   case Debug.log "msg" msg of
     OnLocationChange location ->
       let
-        newModel =
+        model1 =
           { model | route = parseLocation location }
+        routeCmd =
+          StateUtil.routeCmd model1.route
+        ( model2, initCmd ) =
+          initPage model1
       in
-        initPage newModel
+        ( model2, Cmd.batch [initCmd, routeCmd] )
 
     NavigateTo url ->
       ( model, Navigation.newUrl url )

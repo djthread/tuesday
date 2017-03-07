@@ -22,8 +22,7 @@ waiting =
     [ i [ class "fa fa-spinner fa-spin fa-2x fa-fw"
         , attribute "aria-hidden" "true"
         ]
-        [ span [ class "sr-only" ] [ text "Loading..." ]
-        ]
+        [ span [ class "sr-only" ] [ text "Loading..." ] ]
     ]
 
 

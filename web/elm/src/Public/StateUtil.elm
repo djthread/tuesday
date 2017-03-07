@@ -8,11 +8,33 @@ import Json.Encode as JE
 import Phoenix.Socket
 import Phoenix.Channel
 import Phoenix.Push
+import Routing exposing (Route, Route(..))
+import Port
 
 wsUrl : String
 wsUrl =
   -- "wss://api.impulsedetroit.net/socket/websocket"
   "ws://localhost:4091/socket/websocket"
+
+
+routeCmd : Route -> Cmd Msg
+routeCmd route =
+  let
+    string_ =
+      case route of
+        HomeRoute       -> ""
+        ShowsRoute      -> "Shows"
+        EpisodesRoute _ -> "Episodes"
+        EventsRoute _   -> "Events"
+        AboutRoute      -> "About"
+        NotFoundRoute   -> ""
+    string =
+      if String.length string_ > 0 then
+        string_ ++ " : "
+      else ""
+  in
+    Port.setTitle (string ++ "Impulse Detroit")
+
 
 startLoading : Model -> Model
 startLoading model =
