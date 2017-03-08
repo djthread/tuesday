@@ -1,7 +1,7 @@
 module Page.Shows.View exposing (root)
 
-import Html exposing (Html, h2, h3, h4, div, text, p, a)
-import Html.Attributes exposing (class, href)
+import Html exposing (Html, h2, h3, h4, div, text, p, a, figure, img)
+import Html.Attributes exposing (class, href, src)
 import Types exposing (..)
 import Data.Types exposing (Show, findShowBySlug)
 import TypeUtil exposing (RemoteData(Loaded))
@@ -31,16 +31,29 @@ buildShowList shows =
     , day "Friday"  [ getShow "wobblehead-radio"  |> buildShow ]
     ]
 
+-- showImage : String -> String
+-- showImage slug =
+--   case slug of
+--     "techno-tuesday" ->
+--       "https://impulsedetroit.net/images/showbtns/techno-tuesday.jpg"
+--     "wobblehead-radio" ->
+--       "https://impulsedetroit.net/images/showbtns/techno-tuesday.jpg"
+--     _ ->
+--       "https://impulsedetroit.net/images/showbtns/techno-tuesday.jpg"
+
 
 buildShow : Maybe Show -> Html Msg
 buildShow maybeShow =
   case maybeShow of
-    Nothing ->
-      p [] []
+    Nothing -> p [] []
     Just show ->
       a [ class "sh-show", href ("#shows/" ++ show.slug) ]
-        [ h4 [] [ text show.name ]
+        [
+          -- figure [ class "avatar avatar-xl" ]
+          --   [ img [ src (showImage show.slug) ] [] ]
+          h4 [] [ text show.name ]
         , p [] [ text show.tinyInfo ]
+        , p [ class "clearer" ] [ text "" ]
         ]
 
 

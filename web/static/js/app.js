@@ -25,6 +25,7 @@ idapp.ports.playEpisode.subscribe((messageFromElm) => {
   }
 
   theaudio = $("audio");
+  console.log(theaudio);
   theaudio.audioPlayer();
 });
 

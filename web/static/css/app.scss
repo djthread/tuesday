@@ -332,6 +332,10 @@ div.event-list div.event {
 div.episode-list div.episode {
     @include card;
 
+    h3 {
+        display: inline-block;
+        float: left;
+    }
     .stamp {
         clear: both;
         color: #999;
@@ -405,6 +409,43 @@ footer.container {
 
 .pagination {
     text-align: center;
+}
+
+
+div.page-shows {
+    h4 {
+        font-family: monospace;
+        margin: 0 0 0.2em 0;
+    }
+    .avatar {
+        float: right;
+        margin-left: 1em;
+    }
+    .sh-day {
+        margin-bottom: 1em;
+        a.sh-show {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.1));
+            padding: 0.3em 0.6em;
+            display: block;
+            border: 1px solid black;
+            text-decoration: none;
+            p {
+                margin: 0;
+                color: //#bbb;
+                desaturate(
+                    lighten($primary-color, 15%),
+                    65%);
+            }
+        }
+        a.sh-show:hover {
+            // background: black;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.2));
+            // border: 1px solid $primary-color;
+            p {
+                color: #fff;
+            }
+        }
+    }
 }
 
 
