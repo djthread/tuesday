@@ -48,4 +48,4 @@
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.1", "28a4d65b7f59893bc2c7de786dec1e1555bd742d336043fe644ae956c3497fbe", [:make, :rebar], []},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"},
   "timex": {:hex, :timex, "1.0.1"},
-  "tzdata": {:hex, :tzdata, "0.5.10", "087e8dfe8c0283473115ad8ca6974b898ecb55ca5c725427a142a79593391e90", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, optional: false]}]}}
+  "tzdata": {:hex, :tzdata, "0.5.11", "3d5469a9f46bdf4a8760333dbdabdcc4751325035c454b10521f71e7c611ae50", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, optional: false]}]}}

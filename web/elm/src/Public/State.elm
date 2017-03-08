@@ -196,7 +196,16 @@ initPage model =
     ( newModel, cmd ) =
       case model.route of
         HomeRoute ->
-          dataUpdate Data.Types.FetchNewStuff model
+          let
+            ( mymodel, mycmd ) =
+              dataUpdate Data.Types.FetchNewStuff model
+            portCmd =
+              Port.loadPhotos "srsly"
+            ( defModel, defCmd ) =
+              Defer.update (Defer.AddCmd portCmd) model.defer
+          in
+              { mymodel | defer = defModel }
+              ! [ mycmd, Cmd.map DeferMsg defCmd ]
 
         EpisodesRoute page ->
           dataUpdate (Data.Types.FetchEpisodes page) model

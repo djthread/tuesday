@@ -14,4 +14,6 @@ port getChatName : String -> Cmd msg
 port gotChatName : (String -> msg) -> Sub msg
 port setChatName : String -> Cmd msg
 
+port loadPhotos : String -> Cmd msg
+
 port setTitle : String -> Cmd msg

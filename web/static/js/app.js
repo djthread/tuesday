@@ -39,6 +39,28 @@ idapp.ports.setChatName.subscribe((chatname) => {
   localStorage.setItem("chatname", chatname || "");
 });
 
+idapp.ports.loadPhotos.subscribe((messageFromElm) => {
+  const
+    loadButton = document.getElementById('photo-more-link'),
+    feed = new Instafeed({
+      get:      'user',
+      userId:   '3231464724',
+      // clientId: 'e4f766d90a1340e69cbf31289b297a9a',
+      // accessToken: 'a9ca95e498c044d0ac696c0f38d0d544',
+      accessToken: '3231464724.1677ed0.b23842419da9474d8246a9fcabb0ba68',
+      limit:    4,
+      target:   'photo-feed'
+    });
+
+  loadButton.addEventListener('click', function(event) {
+    document.getElementById('photo-feed').innerHTML = '';
+    feed.next();
+    event.preventDefault();
+  });
+
+  feed.run();
+});
+
 idapp.ports.setTitle.subscribe((title) => {
   document.title = title;
 });

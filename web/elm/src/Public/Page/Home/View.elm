@@ -6,7 +6,7 @@ import Types exposing (..)
 import Chat.View
 import Data.EventListView
 import Data.EpisodeListView
-import ViewUtil
+import ViewUtil exposing (fa)
 import Routing
 
 
@@ -35,13 +35,13 @@ build model =
               [ thevideo model
               , div [ class "infobox" ]
                   [ p []
-                      [ ViewUtil.fa "music"
+                      [ fa "music"
                       , text " You can also tune in, audio only, via the "
                       , a [ href "https://impulsedetroit.net/id.pls" ]
                           [ text "MP3 stream" ]
                       , text "!"]
                   -- , p []
-                  --     [ ViewUtil.fa "question-circle"
+                  --     [ fa "question-circle"
                   --     , text " If you're having trouble, check out our "
                   --     , a [ href "#streaming-tips" ]
                   --         [ text "streaming tips" ]
@@ -57,6 +57,15 @@ build model =
               [ Html.map ChatMsg (Chat.View.root model)
               ]
           ]
+      ]
+  , div [ id "photo-widget", class "photo-widget" ]
+      [ div [ id "photo-feed" ] []
+      , p [ class "photo-more" ]
+          [ a [ id "photo-more-link", href "#" ]
+              [ text "Load Next Four" ]
+          , fa "long-arrow-right"
+          ]
+      , p [ class "clearer" ] []
       ]
   , div [ class "container" ]
       [ div [ class "columns" ]
@@ -121,7 +130,7 @@ thevideo model =
     False ->
       div [ class "video-button" ]
         [ a [ ViewUtil.myOnClick EnableVideo, href "#" ]
-            [ ViewUtil.fa "play-circle-o fa-5x" ]
+            [ fa "play-circle-o fa-5x" ]
         ]
     True ->
       -- div [class "video-responsive"]
