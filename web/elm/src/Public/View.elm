@@ -7,6 +7,7 @@ import Types exposing (..)
 import Routing exposing (Route(..))
 import Page.Home.View
 import Page.Shows.View
+import Page.Show.View
 import Page.Episodes.View
 import Page.Events.View
 import Page.About.View
@@ -37,6 +38,10 @@ render model =
     ShowsRoute ->
       d (Conf "page page-shows" True)
         (Page.Shows.View.root model)
+
+    ShowRoute slug ->
+      d (Conf "page page-show" True)
+        (Page.Show.View.root slug model)
 
     EpisodesRoute page ->
       d (Conf "page page-episodes" True)

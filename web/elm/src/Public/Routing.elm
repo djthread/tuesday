@@ -7,6 +7,7 @@ import UrlParser exposing (..)
 type Route
   = HomeRoute
   | ShowsRoute
+  | ShowRoute String
   | EpisodesRoute Int
   | EventsRoute Int
   | AboutRoute
@@ -18,6 +19,7 @@ matchers =
   oneOf
     [ map HomeRoute top
     , map ShowsRoute (s "shows")
+    , map ShowRoute (s "shows" </> string)
     , map (EpisodesRoute 1) (s "episodes")
     , map EpisodesRoute (s "episodes" </> int)
     , map (EventsRoute 1) (s "events")

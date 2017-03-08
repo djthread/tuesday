@@ -3,7 +3,7 @@ module StateUtil exposing (..)
 import Types exposing (..)
 import TypeUtil exposing (RemoteData(..))
 import Chat.Types
-import Data.Types
+import Data.Types exposing (findShowBySlug)
 import Json.Encode as JE
 import Phoenix.Socket
 import Phoenix.Channel
@@ -24,6 +24,7 @@ routeCmd route =
       case route of
         HomeRoute       -> ""
         ShowsRoute      -> "Shows"
+        ShowRoute _     -> "Show"
         EpisodesRoute _ -> "Episodes"
         EventsRoute _   -> "Events"
         AboutRoute      -> "About"
