@@ -7,7 +7,8 @@ defmodule Tuesday.UserSocket do
   channel "data", Tuesday.DataChannel
   channel "episode", Tuesday.EpisodeChannel
   channel "admin", Tuesday.AdminChannel
-  channel "photos", Tuesday.PhotosChannel
+  channel "instagram", Tuesday.InstagramChannel
+  # channel "photos", Tuesday.PhotosChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

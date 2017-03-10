@@ -39,32 +39,49 @@ idapp.ports.setChatName.subscribe((chatname) => {
   localStorage.setItem("chatname", chatname || "");
 });
 
-idapp.ports.loadPhotos.subscribe((messageFromElm) => {
-  const
-    loadButton = document.getElementById('photo-more-link'),
-    feed = new Instafeed({
-      get:      'user',
-      userId:   '3231464724',
-      // clientId: 'e4f766d90a1340e69cbf31289b297a9a',
-      // accessToken: 'a9ca95e498c044d0ac696c0f38d0d544',
-      accessToken: '3231464724.1677ed0.b23842419da9474d8246a9fcabb0ba68',
-      limit:    4,
-      target:   'photo-feed'
-    });
-
-  loadButton.addEventListener('click', function(event) {
-    document.getElementById('photo-feed').innerHTML = '';
-    feed.next();
-    event.preventDefault();
-  });
-
-  feed.run();
-});
-
 idapp.ports.setTitle.subscribe((title) => {
   document.title = title;
 });
 
+idapp.ports.setupLightbox.subscribe((title) => {
+  var lightbox, options = {
+    boxId:              'photo-feed',
+    dimensions:         true,
+    captions:           true,
+    prevImg:            false,
+    nextImg:            false,
+    hideCloseBtn:       false,
+    closeOnClick:       true,
+    loadingAnimation:   200,
+    animElCount:        4,
+    preload:            true,
+    carousel:           true,
+    animation:          400,
+    nextOnClick:        true,
+    responsive:         true,
+    maxImgSize:         0.8,
+    keyControls:        true,
+    // callbacks
+    onopen: function(){
+        // ...
+    },
+    onclose: function(){
+        // ...
+    },
+    onload: function(){
+        // ...
+    },
+    onresize: function(event){
+        // ...
+    },
+    onloaderror: function(event){
+        // ...
+    }
+  };
+
+  lightbox = new Lightbox();
+  lightbox.load(options);
+});
 
 // ty, http://stackoverflow.com/questions/1293367/how-to-detect-if-javascript-files-are-loaded
 function loadScript(path, callback) {

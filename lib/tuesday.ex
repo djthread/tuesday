@@ -8,9 +8,10 @@ defmodule Tuesday do
       supervisor(Tuesday.Endpoint, []),
       supervisor(Tuesday.Repo, []),
       supervisor(Tuesday.ChatLog, []),
+      supervisor(Tuesday.InstagramWorker, []),
       supervisor(Tuesday.StatWorker, []),
-      supervisor(Tuesday.PhotoWorker, []),
-      supervisor(Tuesday.PiwigoWorker, [])
+      # supervisor(Tuesday.PhotoWorker, []),
+      # supervisor(Tuesday.PiwigoWorker, [])
     ]
 
     opts = [strategy: :one_for_one, name: Tuesday.Supervisor]

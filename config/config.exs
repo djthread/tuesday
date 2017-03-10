@@ -23,6 +23,9 @@ config :tuesday, :piwigo_feed_url, "https://photos.impulsedetroit.net/ws.php?for
 config :tuesday, :piwigo_ws, "https://photos.impulsedetroit.net/ws.php"
 config :tuesday, :piwigo_catid, "5"
 
+config :tuesday, :instagram,
+  media_url: "https://www.instagram.com/impulsedetroit/media/"
+
 config :tuesday, ecto_repos: [Tuesday.Repo]
 
 # Configures Elixir's Logger

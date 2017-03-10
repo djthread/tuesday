@@ -4,28 +4,31 @@ defmodule Tuesday.Mixfile do
   def project do
     {result, _exit_code} = System.cmd("git", ["rev-parse", "HEAD"])
 
-    # We'll truncate the commit SHA to 7 chars. Feel free to change
+    # truncate the commit SHA to 7 chars
     git_sha = String.slice(result, 0, 7)
 
-    [app: :tuesday,
-     version: "0.0.1-#{git_sha}",
-     elixir: "~> 1.0",
-     elixirc_paths: elixirc_paths(Mix.env),
-     compilers: [:phoenix, :gettext] ++ Mix.compilers,
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     aliases: aliases(),
-     deps: deps()]
+    [ app: :tuesday,
+      version: "0.0.1-#{git_sha}",
+      elixir: "~> 1.0",
+      elixirc_paths: elixirc_paths(Mix.env),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers,
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      aliases: aliases(),
+      deps: deps()
+    ]
   end
 
   # Configuration for the OTP application.
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {Tuesday, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :phoenix_pubsub, :postgrex, :httpoison,
-                    :calecto, :sh, :exfswatch, :fs, :floki, :cors_plug]]
+    [ mod: {Tuesday, []},
+      applications: [ :phoenix, :phoenix_html, :cowboy, :logger, :gettext,
+                      :phoenix_ecto, :phoenix_pubsub, :postgrex, :httpoison,
+                      :calecto, :sh, :fs, :cors_plug
+                    ]
+    ]
   end
 
   # Specifies which paths to compile per environment.
@@ -49,8 +52,8 @@ defmodule Tuesday.Mixfile do
       {:calecto,             "~> 0.16.0"},
       {:sh,                  "~> 1.1.2"},
       # {:hackney, "~> 1.6.0", [optional: false, hex: :hackney]},
-      {:floki,               "~> 0.0"},
-      {:exfswatch,           "~> 0.2.0"},
+      # {:floki,               "~> 0.0"},
+      # {:exfswatch,           "~> 0.2.0"},
       # {:exrm,                "~> 1.0.0"},
       {:distillery,          "~> 0.9"},
       {:cors_plug,           "~> 1.1"}

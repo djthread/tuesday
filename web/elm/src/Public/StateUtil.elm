@@ -73,13 +73,18 @@ initSocket =
         |> Phoenix.Channel.onJoin onJoin
     ( phxSocket2, phxCmd2 ) =
       Phoenix.Socket.join channel2 phxSocket
+    channel3 =
+      Phoenix.Channel.init "instagram"
+    ( phxSocket3, phxCmd3 ) =
+      Phoenix.Socket.join channel3 phxSocket2
     cmd =
       Cmd.batch
         [ Cmd.map PhoenixMsg phxCmd
         , Cmd.map PhoenixMsg phxCmd2
+        , Cmd.map PhoenixMsg phxCmd3
         ]
   in
-    ( phxSocket2, cmd )
+    ( phxSocket3, cmd )
 
 
 

@@ -4,6 +4,7 @@ import Phoenix.Socket
 import Navigation exposing (Location)
 import Chat.Types
 import Data.Types
+import Photo.Types
 import Routing
 import Defer
 
@@ -13,6 +14,7 @@ type Msg
   | DeferMsg Defer.Msg
   | ChatMsg Chat.Types.Msg
   | DataMsg Data.Types.Msg
+  | PhotoMsg Photo.Types.Msg
   | EnableVideo
   | ClosePlayer
   | PlayEpisode String String
@@ -26,6 +28,7 @@ type alias Model =
   , idSocket : IDSocket
   , chat     : Chat.Types.Model
   , data     : Data.Types.Model
+  , photo    : Photo.Types.Model
   , player   : PlayerModel
   , video    : VideoModel
   , defer    : Defer.Model

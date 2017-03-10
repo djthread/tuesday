@@ -8,6 +8,7 @@ import Dom.Scroll
 import Port
 import Chat.State
 import Data.State
+import Photo.State
 import Phoenix.Socket
 import Phoenix.Channel
 import Phoenix.Push
@@ -33,6 +34,7 @@ init location =
       , idSocket = idSocket
       , chat     = chatModel
       , data     = Data.State.init
+      , photo    = Photo.State.init
       , player   = { track = Nothing }
       , video    = False
       , defer    = Defer.init []
@@ -58,7 +60,7 @@ update msg model =
         ( model2, initCmd ) =
           initPage model1
       in
-        ( model2, Cmd.batch [initCmd, routeCmd] )
+        model2 ! [initCmd, routeCmd]
 
     NavigateTo url ->
       ( model, Navigation.newUrl url )
@@ -70,12 +72,8 @@ update msg model =
         ( deferModel, deferCmd ) =
           Defer.update (Defer.AddCmd cmd) model.defer
       in
-        ( { model
-          | video = True
-          , defer = deferModel
-          }
-        , Cmd.map DeferMsg deferCmd
-        )
+        { model | video = True, defer = deferModel }
+        ! [ Cmd.map DeferMsg deferCmd ]
 
     PlayEpisode url title ->
       let
@@ -96,9 +94,8 @@ update msg model =
         )
 
     ClosePlayer ->
-      ( { model | player = { track = Nothing } }
-      , Cmd.none
-      )
+      { model | player = { track = Nothing } }
+      ! []
 
     PhoenixMsg msg ->
       let
@@ -106,9 +103,8 @@ update msg model =
           StateUtil.handlePhoenixMsg msg
             model.idSocket
       in
-        ( { model | idSocket = newSocket }
-        , cmd
-        )
+        { model | idSocket = newSocket }
+        ! [ cmd ]
 
     SocketInitialized ->
       let
@@ -125,16 +121,15 @@ update msg model =
         ( model3, cmd ) =
           initPage model2
       in
-        ( model3, Cmd.batch [ dataCmd, cmd ] )
+        model3 ! [ dataCmd, cmd ]
 
     DeferMsg deferMsg ->
       let
         ( deferModel, deferCmd ) =
           Defer.update deferMsg model.defer
       in
-        ( { model | defer = deferModel }
-        , Cmd.map DeferMsg deferCmd
-        )
+        { model | defer = deferModel }
+        ! [ Cmd.map DeferMsg deferCmd ]
 
 
     ChatMsg chatMsg ->
@@ -143,26 +138,26 @@ update msg model =
           Chat.State.update chatMsg model.chat
             model.idSocket
       in
-        ( { model
-          | chat = chatModel
-          , idSocket = newSocket
-          }
-        , chatCmd
-        )
+        { model | chat = chatModel, idSocket = newSocket }
+        ! [ chatCmd ]
 
     DataMsg dataMsg ->
       let
         ( dataModel, dataCmd, newSocket ) =
           Data.State.update dataMsg model.data
             model.idSocket
-          -- |> Debug.log "WTFFFFF"
       in
-        ( { model
-          | data = dataModel
-          , idSocket = newSocket
-        }
-        , dataCmd
-        )
+        { model | data = dataModel, idSocket = newSocket }
+        ! [ dataCmd ]
+
+    PhotoMsg photoMsg ->
+      let
+        ( photoModel, photoCmd, newSocket ) =
+          Photo.State.update photoMsg model.photo
+            model.idSocket
+      in
+        { model | photo = photoModel, idSocket = newSocket }
+        ! [ photoCmd ]
 
     NoOp ->
       ( model, Cmd.none )
@@ -196,16 +191,7 @@ initPage model =
     ( newModel, cmd ) =
       case model.route of
         HomeRoute ->
-          let
-            ( mymodel, mycmd ) =
-              dataUpdate Data.Types.FetchNewStuff model
-            portCmd =
-              Port.loadPhotos "srsly"
-            ( defModel, defCmd ) =
-              Defer.update (Defer.AddCmd portCmd) model.defer
-          in
-              { mymodel | defer = defModel }
-              ! [ mycmd, Cmd.map DeferMsg defCmd ]
+          dataUpdate Data.Types.FetchNewStuff model
 
         EpisodesRoute page ->
           dataUpdate (Data.Types.FetchEpisodes page) model

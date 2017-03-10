@@ -7,6 +7,7 @@ import Chat.View
 import Data.EventListView
 import Data.EpisodeListView
 import ViewUtil exposing (fa)
+import Photo.WidgetView
 import Routing
 
 
@@ -58,16 +59,10 @@ build model =
               ]
           ]
       ]
-  , div [ id "photo-widget", class "photo-widget" ]
-      [ div [ id "photo-feed" ] []
-      , p [ class "photo-more" ]
-          [ a [ id "photo-more-link", href "#" ]
-              [ text "Load Next Four" ]
-          , fa "long-arrow-right"
-          ]
-      , p [ class "clearer" ] []
-      ]
-  , div [ class "container" ]
+  ]
+  ++ Photo.WidgetView.root model.photo
+  ++
+  [ div [ class "container" ]
       [ div [ class "columns" ]
           [ div [ class "column col-sm-12 col-6" ]
               ( [ h2 [] [ text "Upcoming Events" ]
