@@ -15,6 +15,14 @@ type Msg
   -- | GotChatName String
   -- | NoOp
 
+type alias Model =
+  RemoteData Photos
+
+type alias Photos =
+  { list : List Photo
+  , page : Int
+  }
+
 type alias Photo =
   { created   : Date
   , caption   : String
@@ -28,9 +36,4 @@ type alias Image =
   { url    : String
   , width  : Int
   , height : Int
-  }
-
-type alias Model =
-  { photos : RemoteData (List Photo)
-  , page   : Int
   }

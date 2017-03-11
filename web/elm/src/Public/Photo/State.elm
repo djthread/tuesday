@@ -14,7 +14,7 @@ import StateUtil exposing (pushMessage)
 
 init : Model
 init =
-  { photos = NotAsked, page = 0 }
+  NotAsked
 
 update : Msg -> Model -> IDSocket
       -> ( Model, Cmd Types.Msg, IDSocket )
@@ -23,7 +23,7 @@ update msg model idSocket =
     ReceiveLastFour raw ->
       case decodeValue photoListDecoder raw of
         Ok list ->
-          ( { model | photos = Loaded list, page = 1 }
+          ( Loaded { list = list, page = 1 }
           , Cmd.none
           , idSocket
           )
