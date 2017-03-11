@@ -83,26 +83,3 @@ update msg model idSocket =
 subscriptions : Types.Model -> Sub Msg
 subscriptions model =
   Sub.none
-
-
-
--- pushChatMessage : Model -> IDSocket
---                -> ( Model, Cmd Types.Msg, IDSocket )
--- pushChatMessage model idSocket =
---   let
---     payload =
---       JE.object
---         [ ( "user", JE.string model.name )
---         , ( "body", JE.string model.msg )
---         ]
---     configurator =
---       (\p -> p |> Phoenix.Push.withPayload payload)
---     ( newSocket, cmd ) =
---       pushMessage "new:msg" "rooms:lobby" configurator idSocket
---     setChatName =
---       Port.setChatName model.name
---   in
---     ( { model | msg = "" }
---     , Cmd.batch [cmd, setChatName]
---     , newSocket
---     )

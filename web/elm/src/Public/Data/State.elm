@@ -3,7 +3,7 @@ module Data.State exposing (init, update, subscriptions)
 import Types exposing (IDSocket)
 import Data.Types exposing (..)
 import Data.Codec exposing (..)
-import StateUtil exposing (pushMessage)
+import StateUtil exposing (pushMsg, pushMsgWithConfigurator)
 import TypeUtil exposing (RemoteData(..))
 -- import Port
 import Json.Decode exposing (decodeValue)
@@ -24,8 +24,9 @@ update : Msg -> Model -> IDSocket
 update msg model idSocket =
   case msg of
     SocketInitialized ->
-      pushDataMsg
-        "shows" "data" model idSocket ReceiveShows
+      finishPush model <| pushMsg
+        "shows" "data" idSocket
+          (\a -> Types.DataMsg <| ReceiveShows a)
 
     ReceiveShows raw ->
       case decodeValue showsDecoder raw of
@@ -41,22 +42,25 @@ update msg model idSocket =
 
     FetchNewStuff ->
       let
-        ( model1, cmd1, socket1 ) =
-          pushDataMsg
-            "episodes" "data" model idSocket ReceiveEpisodes
-        ( model2, cmd2, socket2 ) =
-          pushDataMsg
-            "events" "data" model1 socket1 ReceiveEvents
+        ( cmd1, socket1 ) =
+          pushMsg
+            "episodes" "data" idSocket
+            (\a -> Types.DataMsg <| ReceiveEpisodes a)
+        ( cmd2, socket2 ) =
+          pushMsg
+            "events" "data" socket1
+            (\a -> Types.DataMsg <| ReceiveEvents a)
       in
-        ( model2, Cmd.batch [cmd1, cmd2], socket2 )
+        ( model, Cmd.batch [cmd1, cmd2], socket2 )
 
     FetchEpisodes page ->
       let
         payload =
           JE.object [ ("page", JE.int page) ]
       in
-        pushDataMsgWithConfigurator
-          "episodes" "data" model idSocket ReceiveEpisodes
+        finishPush model <| pushMsgWithConfigurator
+          "episodes" "data" idSocket
+          (\a -> Types.DataMsg <| ReceiveEpisodes a)
           (\p -> p |> Phoenix.Push.withPayload payload)
 
     FetchEvents page ->
@@ -64,8 +68,9 @@ update msg model idSocket =
         payload =
           JE.object [ ("page", JE.int page) ]
       in
-        pushDataMsgWithConfigurator
-          "events" "data" model idSocket ReceiveEvents
+        finishPush model <| pushMsgWithConfigurator
+          "events" "data" idSocket
+          (\a -> Types.DataMsg <| ReceiveEvents a)
           (\p -> p |> Phoenix.Push.withPayload payload)
 
     ReceiveEpisodes raw ->
@@ -102,26 +107,8 @@ subscriptions model =
   Sub.none
 
 
-pushDataMsg : String -> String -> Model -> IDSocket
-           -> (JE.Value -> Msg)
-           -> ( Model, Cmd Types.Msg, IDSocket )
-pushDataMsg message channel model idSocket msg =
-  pushDataMsgWithConfigurator
-    message channel model idSocket msg (\a -> a)
+finishPush : Model -> ( Cmd Types.Msg, IDSocket )
+          -> ( Model, Cmd Types.Msg, IDSocket )
+finishPush model (msg, socket) =
+  ( model, msg, socket )
 
-pushDataMsgWithConfigurator : String -> String
-           -> Model -> IDSocket -> (JE.Value -> Msg)
-           -> (Phoenix.Push.Push Types.Msg
-              -> Phoenix.Push.Push Types.Msg )
-           -> ( Model, Cmd Types.Msg, IDSocket )
-pushDataMsgWithConfigurator
-  message channel model idSocket msg configurator =
-  let
-    retDataMsg =
-      (\d -> Types.DataMsg (msg d))
-    configurator2 =
-      (\p -> p |> Phoenix.Push.onOk retDataMsg |> configurator)
-    ( newSocket, cmd ) =
-      pushMessage message channel configurator2 idSocket
-  in
-    ( model, cmd, newSocket )

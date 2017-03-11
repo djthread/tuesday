@@ -99,6 +99,34 @@ handlePhoenixMsg msg idSocket =
 
 
 
+pushMsg : String -> String -> IDSocket
+           -> (JE.Value -> Msg)
+           -> ( Cmd Types.Msg, IDSocket )
+pushMsg message channel idSocket msg =
+  pushMsgWithConfigurator
+    message channel idSocket msg (\a -> a)
+
+
+
+pushMsgWithConfigurator : String -> String
+  -> IDSocket -> (JE.Value -> Types.Msg)
+  -> ( Phoenix.Push.Push Types.Msg
+      -> Phoenix.Push.Push Types.Msg )
+  -> ( Cmd Types.Msg, IDSocket )
+pushMsgWithConfigurator
+  message channel idSocket retMsg configurator =
+  let
+    -- retDataMsg =
+    --   (\d -> wrapperMsg (msg d))
+    configurator2 =
+      (\p -> p |> Phoenix.Push.onOk retMsg |> configurator)
+    ( newSocket, cmd ) =
+      pushMessage message channel configurator2 idSocket
+  in
+    ( cmd, newSocket )
+
+
+
 pushMessage : String -> String
            -> (Phoenix.Push.Push Msg -> Phoenix.Push.Push Msg)
            -> IDSocket
