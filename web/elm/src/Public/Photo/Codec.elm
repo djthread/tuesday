@@ -6,6 +6,14 @@ import Photo.Types exposing (..)
 -- import TypeUtil exposing (Pager)
 
 
+lastFourDecoder : Decoder LastFour
+lastFourDecoder =
+  succeed
+    LastFour
+    |: (at ["last_four"] photoListDecoder)
+    |: (at ["total"] int)
+
+
 photoListDecoder : Decoder (List Photo)
 photoListDecoder =
   list photoDecoder

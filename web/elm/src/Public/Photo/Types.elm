@@ -5,7 +5,8 @@ import Date exposing (Date)
 import TypeUtil exposing (RemoteData)
 
 type Msg
-  = ReceiveLastFour JE.Value
+  = FetchLastFour
+  | ReceiveLastFour JE.Value
   | NoOp
 
   --   ReceiveNewMsg JE.Value
@@ -19,8 +20,9 @@ type alias Model =
   RemoteData Photos
 
 type alias Photos =
-  { list : List Photo
-  , page : Int
+  { list  : List Photo
+  , page  : Int
+  , total : Int
   }
 
 type alias Photo =
@@ -36,4 +38,9 @@ type alias Image =
   { url    : String
   , width  : Int
   , height : Int
+  }
+
+type alias LastFour =
+  { last_four : List Photo
+  , total     : Int
   }

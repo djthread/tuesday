@@ -43,20 +43,17 @@ update msg model idSocket =
     FetchNewStuff ->
       let
         ( cmd1, socket1 ) =
-          pushMsg
-            "episodes" "data" idSocket
+          pushMsg "episodes" "data" idSocket
             (\a -> Types.DataMsg <| ReceiveEpisodes a)
         ( cmd2, socket2 ) =
-          pushMsg
-            "events" "data" socket1
+          pushMsg "events" "data" socket1
             (\a -> Types.DataMsg <| ReceiveEvents a)
       in
         ( model, Cmd.batch [cmd1, cmd2], socket2 )
 
     FetchEpisodes page ->
       let
-        payload =
-          JE.object [ ("page", JE.int page) ]
+        payload = JE.object [ ("page", JE.int page) ]
       in
         finishPush model <| pushMsgWithConfigurator
           "episodes" "data" idSocket
@@ -65,8 +62,7 @@ update msg model idSocket =
 
     FetchEvents page ->
       let
-        payload =
-          JE.object [ ("page", JE.int page) ]
+        payload = JE.object [ ("page", JE.int page) ]
       in
         finishPush model <| pushMsgWithConfigurator
           "events" "data" idSocket

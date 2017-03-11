@@ -7,15 +7,16 @@ defmodule Tuesday.InstagramChannel do
     {:ok, socket}
   end
 
-  def handle_call(:last_four, socket) do
-    {:reply, InstagramWorker.last_four() |> IO.inspect, socket}
+  def handle_in("last_four", %{}, socket) do
+    IO.puts "YEA"
+    {:reply, {:ok, InstagramWorker.last_four()}, socket}
   end
   # def handle_info(:last_four, socket) do
   #   push socket, "last_four", InstagramWorker.last_four
   #   {:noreply, socket}
   # end
 
-  def handle_call(:all_photos, socket) do
-    {:reply, InstagramWorker.all_photos(), socket}
+  def handle_in("all_photos", %{}, socket) do
+    {:reply, {:ok, InstagramWorker.all_photos()}, socket}
   end
 end

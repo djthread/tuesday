@@ -27,7 +27,7 @@ defmodule Tuesday.InstagramWorker do
   def handle_call(:last_four, _from, state) do
     ret = %{
       last_four: Enum.take(state, 4),
-      count:     length(state)
+      total:     length(state)
     }
 
     {:reply, ret, state}
@@ -60,9 +60,16 @@ defmodule Tuesday.InstagramWorker do
     Poison.decode!(body)
     |> Map.get("items")
     |> Enum.map(fn item ->
+
       imgs = item["images"]
+      created =
+        item["created_time"]
+        |> String.to_integer
+        |> DateTime.from_unix!
+        |> DateTime.to_iso8601
+
       %{caption: item["caption"]["text"],
-        created: item["created_time"],
+        created: created,
         link:    item["link"],
         thumb: %{
           url:    imgs["thumbnail"]["url"],

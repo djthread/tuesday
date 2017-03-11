@@ -3,13 +3,13 @@ module Photo.State exposing (init, update, subscriptions)
 import Types exposing (IDSocket)
 import TypeUtil exposing (RemoteData(..))
 import Photo.Types exposing (..)
-import Photo.Codec exposing (photoListDecoder)
+import Photo.Codec exposing (lastFourDecoder)
 -- import Port
 import Json.Decode exposing (decodeValue)
 import Json.Encode as JE
 -- import Dom.Scroll
 -- import Task
-import StateUtil exposing (pushMessage)
+import StateUtil exposing (pushMsg)
 -- import Phoenix.Push
 
 init : Model
@@ -19,16 +19,30 @@ init =
 update : Msg -> Model -> IDSocket
       -> ( Model, Cmd Types.Msg, IDSocket )
 update msg model idSocket =
-  case msg of
+  case Debug.log "PHOTOUPDATE" msg of
+    FetchLastFour ->
+      let
+        ( cmd, socket ) =
+          pushMsg "last_four" "instagram" idSocket
+            (\a -> Types.PhotoMsg <| ReceiveLastFour a)
+      in
+        ( model, cmd, socket )
+
     ReceiveLastFour raw ->
-      case decodeValue photoListDecoder raw of
-        Ok list ->
-          ( Loaded { list = list, page = 1 }
+      case decodeValue lastFourDecoder raw of
+        Ok l4 ->
+          ( Loaded
+              { list = l4.last_four
+              , total = l4.total
+              , page = 1
+              }
           , Cmd.none
           , idSocket
           )
+
         Err error ->
-          ( model, Cmd.none, idSocket )
+          let _ = Debug.log "ReceiveLastFour Error" error
+          in ( model, Cmd.none, idSocket )
 
     -- ReceiveNewMsg raw ->
     --   case decodeValue newMsgDecoder raw of

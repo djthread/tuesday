@@ -3,6 +3,7 @@ module State exposing (init, update, subscriptions)
 import Routing exposing (parseLocation, Route, Route(..))
 import Types exposing (..)
 import Data.Types
+import Photo.Types
 import Navigation exposing (Location, newUrl)
 import Dom.Scroll
 import Port
@@ -50,7 +51,7 @@ init location =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case Debug.log "msg" msg of
+  case msg of
     OnLocationChange location ->
       let
         model1 =
@@ -60,7 +61,7 @@ update msg model =
         ( model2, initCmd ) =
           initPage model1
       in
-        model2 ! [initCmd, routeCmd]
+        model2 ! [routeCmd, initCmd]
 
     NavigateTo url ->
       ( model, Navigation.newUrl url )
@@ -191,7 +192,13 @@ initPage model =
     ( newModel, cmd ) =
       case model.route of
         HomeRoute ->
-          dataUpdate Data.Types.FetchNewStuff model
+          let
+            ( m1, c1 ) =
+              dataUpdate Data.Types.FetchNewStuff model
+            ( m2, c2 ) =
+              photoUpdate Photo.Types.FetchLastFour m1
+          in
+            m2 ! [ c1, c2 ]
 
         EpisodesRoute page ->
           dataUpdate (Data.Types.FetchEpisodes page) model
@@ -202,7 +209,7 @@ initPage model =
         _ ->
           ( model, Cmd.none )
   in
-    ( newModel, Cmd.batch [topCmd, cmd] )
+    newModel ! [topCmd, cmd]
 
 
 dataUpdate : Data.Types.Msg -> Model -> ( Model, Cmd Msg )
@@ -211,6 +218,14 @@ dataUpdate msg model =
     ( dataModel, cmd, idSocket ) =
       Data.State.update msg model.data model.idSocket
   in
-    ( { model | data = dataModel, idSocket = idSocket }
-    , cmd
-    )
+    { model | data = dataModel, idSocket = idSocket }
+    ! [ cmd ]
+
+photoUpdate : Photo.Types.Msg -> Model -> ( Model, Cmd Msg )
+photoUpdate msg model =
+  let
+    ( photoModel, cmd, idSocket ) =
+      Photo.State.update msg model.photo model.idSocket
+  in
+    { model | photo = photoModel, idSocket = idSocket }
+    ! [ cmd ]
