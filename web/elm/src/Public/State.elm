@@ -54,6 +54,10 @@ update msg model =
   case msg of
     OnLocationChange location ->
       let
+        topCmd =
+          Task.attempt
+            (\_ -> Types.NoOp)
+            (Dom.Scroll.toTop "body")
         model1 =
           { model | route = parseLocation location }
         routeCmd =
@@ -61,7 +65,7 @@ update msg model =
         ( model2, initCmd ) =
           initPage model1
       in
-        model2 ! [routeCmd, initCmd]
+        model2 ! [topCmd, routeCmd, initCmd]
 
     NavigateTo url ->
       ( model, Navigation.newUrl url )
@@ -184,32 +188,24 @@ subscriptions model =
 
 initPage : Model -> ( Model, Cmd Msg )
 initPage model =
-  let
-    topCmd =
-      Task.attempt
-        (\_ -> Types.NoOp)
-        (Dom.Scroll.toTop "body")
-    ( newModel, cmd ) =
-      case model.route of
-        HomeRoute ->
-          let
-            ( m1, c1 ) =
-              dataUpdate Data.Types.FetchNewStuff model
-            ( m2, c2 ) =
-              photoUpdate Photo.Types.FetchLastFour m1
-          in
-            m2 ! [ c1, c2 ]
+  case model.route of
+    HomeRoute ->
+      let
+        ( m1, c1 ) =
+          dataUpdate Data.Types.FetchNewStuff model
+        ( m2, c2 ) =
+          photoUpdate Photo.Types.FetchLastFour m1
+      in
+        m2 ! [ c1, c2 ]
 
-        EpisodesRoute page ->
-          dataUpdate (Data.Types.FetchEpisodes page) model
+    EpisodesRoute page ->
+      dataUpdate (Data.Types.FetchEpisodes page) model
 
-        EventsRoute page ->
-          dataUpdate (Data.Types.FetchEvents page) model
+    EventsRoute page ->
+      dataUpdate (Data.Types.FetchEvents page) model
 
-        _ ->
-          ( model, Cmd.none )
-  in
-    newModel ! [topCmd, cmd]
+    _ ->
+      ( model, Cmd.none )
 
 
 dataUpdate : Data.Types.Msg -> Model -> ( Model, Cmd Msg )
