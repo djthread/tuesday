@@ -6,7 +6,7 @@ import Photo.Types exposing (Model)
 import TypeUtil exposing (RemoteData(Loaded))
 import Photo.Types exposing (Model, Photos)
 import Html exposing (Html, div, text, input, p, span, img, a)
-import Html.Attributes exposing (class, src, width, height, href, id)
+import Html.Attributes exposing (attribute, class, src, width, height, href, id, alt, target)
 import ViewUtil exposing (fa, waiting)
 -- import Html.Events exposing (on, onInput, keyCode)
 
@@ -43,12 +43,15 @@ actualPhotos photos =
     set   = List.drop start photos.list
               |> List.take numPerPage
     build ph =
-      let
-        thumb = ph.thumb
+      let thumb = ph.thumb
       in
-        a [ href "#" ]
+        a [ href ph.link, target "_blank" ]
           [ img
-              [ src thumb.url
+              [ class "jslightbox-thmb"
+              , src thumb.url
+              , alt ph.caption
+              , attribute "data-lghtbox" ph.standard.url
+              , attribute "data-jghtbox-group" "one"
               , width thumb.width
               , height thumb.height
               ]

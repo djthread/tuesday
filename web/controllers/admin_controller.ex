@@ -8,7 +8,8 @@ defmodule Tuesday.AdminController do
       case params["password"] == @api_pass do
         true ->
           # Fire & forget
-          Task.start(&Tuesday.PhotoWorker.refresh/0)
+          Task.start(&Tuesday.InstagramWorker.refresh/0)
+          # Task.start(&Tuesday.PhotoWorker.refresh/0)
 
           {200, %{status: :ok}}
         _ ->

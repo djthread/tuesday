@@ -27,7 +27,6 @@ photoDecoder =
     |: (at ["caption"] string)
     |: (at ["link"] string)
     |: (at ["thumb"] imageDecoder)
-    |: (at ["low"] imageDecoder)
     |: (at ["standard"] imageDecoder)
 
 

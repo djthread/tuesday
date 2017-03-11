@@ -30,7 +30,6 @@ type alias Photo =
   , caption   : String
   , link      : String
   , thumb     : Image
-  , low       : Image
   , standard  : Image
   }
 
