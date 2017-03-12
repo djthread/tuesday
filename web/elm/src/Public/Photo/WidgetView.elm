@@ -62,6 +62,12 @@ actualPhotos photos =
               , alt ph.caption
               , attribute "data-jslghtbx" ph.full_url
               , attribute "data-jslghtbx-group" "one"
+              , attribute "data-jslghtbx-caption"
+                  ( ph.caption
+                    ++ " <span>[<a href=\"" ++ ph.link
+                    ++ "\" target=\"_blank\">"
+                    ++ "Instagram</a>]</span>"
+                  )
               , width thumb.width
               , height thumb.height
               ]
