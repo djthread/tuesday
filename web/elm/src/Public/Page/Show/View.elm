@@ -3,28 +3,33 @@ module Page.Show.View exposing (root)
 import Html exposing (Html, h2, h3, h4, div, text, p, a, figure, img)
 -- import Html.Attributes exposing (class, href, src)
 import Types exposing (..)
-import Data.Types exposing (Show, findShowBySlug)
+import Data.Types exposing (Show, ShowDetail, findShowBySlug)
+import Data.EventsEpisodesColumnsView
 import TypeUtil exposing (RemoteData(Loaded))
-import ViewUtil exposing (waiting)
+import ViewUtil
+import Routing
 
 
 root : String -> Model -> ( Crumbs, List (Html Msg) )
 root slug model =
-  let
-    ( crumbs, msgs ) =
-      case model.data.shows of
-        Loaded shows ->
-          let
-            crumbs =
-              case findShowBySlug shows slug of
-                Nothing   -> []
-                Just show -> [ ( show.name, "" ) ]
-          in
-            ( crumbs, [] )
-        _ ->
-          ( [], [ waiting ] )
-  in
-    ( crumbs, msgs )
+  case model.data.shows of
+    Loaded shows ->
+      case model.data.showDetail of
+        Loaded showDetail ->
+          case findShowBySlug shows slug of
+            Just show ->
+              ( [( show.name, "" )], build show model )
+            _ -> waiting
+        _ -> waiting
+    _ -> waiting
 
 
+waiting : ( Crumbs, List (Html Msg) )
+waiting = ( [], [ ViewUtil.waiting ] )
 
+
+build : Show -> Model -> List (Html Msg)
+build show model =
+  Data.EventsEpisodesColumnsView.root model.data model.player
+    (Routing.showEventsPageUrl show.slug 1)
+    (Routing.showEpisodesPageUrl show.slug 1)

@@ -21,7 +21,7 @@ defmodule Tuesday.ShowView do
       tiny_info:  show.tiny_info,
     }
     |> Map.merge(
-      case params[:full] do
+      case params[:full] do  # deprecated
         true ->
           %{ short_info: show.short_info,
              full_info:  show.full_info
@@ -46,6 +46,12 @@ defmodule Tuesday.ShowView do
           map
       end
     end.()
+  end
+
+  def render("show_detail.json", params = %{show: show}) do
+    %{short_info: show.short_info,
+      full_info:  show.full_info
+    }
   end
 
   def render("feed.xml", %{show: show}) do

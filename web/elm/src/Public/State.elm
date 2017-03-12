@@ -113,6 +113,7 @@ update msg model =
 
     SocketInitialized ->
       let
+        _ = Debug.log "SocketInitialized" "Yeah!"
         ( dataModel, dataCmd, newSocket ) =
           Data.State.update
             Data.Types.SocketInitialized
@@ -183,13 +184,10 @@ initPage : Model -> ( Model, Cmd Msg )
 initPage model =
   case model.route of
     HomeRoute ->
-      let
-        ( m1, c1 ) =
-          dataUpdate Data.Types.FetchNewStuff model
-        ( m2, c2 ) =
-          photoUpdate Photo.Types.FetchLastFour m1
-      in
-        m2 ! [ c1, c2 ]
+      updateMap model
+        [ dataUpdate Data.Types.FetchNewStuff
+        , photoUpdate Photo.Types.FetchLastFour
+        ]
 
     EpisodesRoute page ->
       dataUpdate (Data.Types.FetchEpisodes page) model
@@ -198,10 +196,26 @@ initPage model =
       dataUpdate (Data.Types.FetchEvents page) model
 
     ShowRoute slug ->
-      dataUpdate (Data.Types.FetchShowDetail slug) model
+      updateMap model
+        [ dataUpdate (Data.Types.FetchShowDetail slug)
+        , dataUpdate (Data.Types.FetchShowEvents slug 1)
+        , dataUpdate (Data.Types.FetchShowEpisodes slug 1)
+        ]
 
     _ ->
       ( model, Cmd.none )
+
+
+updateMap : Model -> List (Model -> ( Model, Cmd Msg ))
+         -> ( Model, Cmd Msg )
+updateMap model list =
+  let
+    func =
+      \updateFn ( m1, c1 ) ->
+        let ( m2, c2 ) = updateFn m1
+        in  m2 ! [c1, c2]
+  in
+    List.foldr func ( model, Cmd.none ) list
 
 
 dataUpdate : Data.Types.Msg -> Model -> ( Model, Cmd Msg )

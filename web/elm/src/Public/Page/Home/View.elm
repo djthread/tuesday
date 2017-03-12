@@ -4,8 +4,7 @@ import Html exposing (Html, Attribute, div, h2, a, p, i, text, footer, video, so
 import Html.Attributes exposing (class, style, href, id, controls, preload, poster, src, type_, value, attribute)
 import Types exposing (..)
 import Chat.View
-import Data.EventListView
-import Data.EpisodeListView
+import Data.EventsEpisodesColumnsView
 import ViewUtil exposing (fa)
 import Photo.WidgetView
 import Routing
@@ -61,62 +60,9 @@ build model =
       ]
   ]
   ++ Photo.WidgetView.root model.photo
-  ++
-  [ div [ class "container" ]
-      [ div [ class "columns" ]
-          [ div [ class "column col-sm-12 col-6" ]
-              ( [ h2 [] [ text "Upcoming Events" ]
-                ]
-                ++
-                ( let options =
-                    { paginate = False, only = Just 5 }
-                  in Data.EventListView.root
-                    options model.data.shows model.data.events
-                )
-                ++
-                [ form []
-                    [ input
-                        [ type_ "button"
-                        , class "btn morebtn"
-                        , attribute "onClick"
-                            ( "parent.location='"
-                                ++ (Routing.eventsPageUrl 1)
-                                ++ "'"
-                            )
-                        , value "More Events"
-                        ]
-                        []
-                    ]
-                ]
-              )
-          , div [ class "column col-sm-12 col-6" ]
-              ( [ h2 [] [text "Recent Episodes"]
-                ]
-                ++
-                ( let options =
-                    { paginate = False, only = Just 5 }
-                  in Data.EpisodeListView.root
-                    options model.player model.data.shows model.data.episodes
-                )
-                ++
-                [ form []
-                    [ input
-                        [ type_ "button"
-                        , class "btn morebtn"
-                        , attribute "onClick"
-                            ( "parent.location='"
-                                ++ (Routing.episodesPageUrl 1)
-                                ++ "'"
-                            )
-                        , value "More Episodes"
-                        ]
-                        []
-                    ]
-                ]
-              )
-          ]
-      ]
-  ]
+  ++ Data.EventsEpisodesColumnsView.root model.data model.player
+      (Routing.eventsPageUrl 1)
+      (Routing.episodesPageUrl 1)
 
 
 thevideo : Model -> Html Msg

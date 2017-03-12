@@ -116,8 +116,6 @@ pushMsgWithConfigurator : String -> String
 pushMsgWithConfigurator
   message channel idSocket retMsg configurator =
   let
-    -- retDataMsg =
-    --   (\d -> wrapperMsg (msg d))
     configurator2 =
       (\p -> p |> Phoenix.Push.onOk retMsg |> configurator)
     ( newSocket, cmd ) =

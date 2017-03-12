@@ -21,6 +21,18 @@ defmodule Tuesday.DataChannel do
     end.()
   end
 
+  def handle_in("show_detail", %{"slug" => slug}, socket) do
+    Show
+    |> where(slug: ^slug)
+    |> Repo.one
+    |> fn(show) ->
+      render(ShowView, "show_detail.json", show: show)
+    end.()
+    |> fn(show_detail) ->
+      {:reply, {:ok, show_detail}, socket}
+    end.()
+  end
+
   # get the last 5 episodes and the next 5 events
   # def handle_in("new", _msg, socket) do
   #   episodes =
@@ -98,13 +110,16 @@ defmodule Tuesday.DataChannel do
 
   def handle_in("events", params, socket) do
     query =
-      case params["show_id"] do
-        show_id when is_integer(show_id) ->
+      case params do
+        %{"slug" => slug} ->
+          Logger.warn "EVENTS: FETCHING SLUG #{slug}"
           from e in Event,
-            where: e.show_id == ^show_id and
+            join: s in Show, on: s.id == e.show_id,
+            where: s.slug == ^slug and
                    e.happens_on > ago(2, "day"),
             order_by: e.happens_on
         _ ->
+          Logger.warn "EVENTS: FETCHING"
           from e in Event,
             where: e.happens_on > ago(2, "day"),
             order_by: e.happens_on
@@ -123,12 +138,15 @@ defmodule Tuesday.DataChannel do
 
   def handle_in("episodes", params, socket) do
     query =
-      case params["show_id"] do
-        show_id when is_integer(show_id) ->
+      case params do
+        %{"slug" => slug} ->
+          Logger.warn "EPISODES: FETCHING SLUG #{slug}"
           from e in Episode,
-            where: e.show_id == ^show_id,
+            join: s in Show, on: s.id == e.show_id,
+            where: s.slug == ^slug,
             order_by: [desc: e.inserted_at]
         _ ->
+          Logger.warn "EPISODES: FETCHING"
           from e in Episode,
             order_by: [desc: e.inserted_at]
       end

@@ -14,10 +14,10 @@ import Task
 
 init : Model
 init =
-  { shows     = NotAsked
-  , showExtra = NotAsked
-  , events    = NotAsked
-  , episodes  = NotAsked
+  { shows      = NotAsked
+  , showDetail = NotAsked
+  , events     = NotAsked
+  , episodes   = NotAsked
   }
 
 update : Msg -> Model -> IDSocket
@@ -26,6 +26,13 @@ update msg model socket =
   case msg of
     SocketInitialized ->
       getData "shows" noPayload model socket ReceiveShows
+
+    ReceiveShows raw ->
+      receiveData "ReceiveShows" showsDecoder raw model socket
+        (\shows ->
+            let model2 = { model | shows = Loaded shows }
+            in  ( model2, Cmd.none, socket )
+        )
 
     FetchNewStuff ->
       let
@@ -36,23 +43,27 @@ update msg model socket =
       in
         ( model, Cmd.batch [cmd1, cmd2], socket2 )
 
-    FetchEpisodes page ->
-      let payload = JE.object [ ("page", JE.int page) ]
-      in  getData "episodes" payload model socket ReceiveEpisodes
-
     FetchEvents page ->
       let payload = JE.object [ ("page", JE.int page) ]
       in  getData "events" payload model socket ReceiveEvents
 
-    FetchShowDetail slug ->
-      ( model, Cmd.none, socket )
+    FetchEpisodes page ->
+      let payload = JE.object [ ("page", JE.int page) ]
+      in  getData "episodes" payload model socket ReceiveEpisodes
 
-    ReceiveShows raw ->
-      receiveData "ReceiveShows" showsDecoder raw model socket
-        (\shows ->
-            let model2 = { model | shows = Loaded shows }
-            in  ( model2, Cmd.none, socket )
-        )
+    FetchShowEvents slug page ->
+      let
+        payload =
+          JE.object [ ("slug", JE.string slug), ("page", JE.int page) ]
+      in
+        getData "events" payload model socket ReceiveEvents
+
+    FetchShowEpisodes slug page ->
+      let
+        payload =
+          JE.object [ ("slug", JE.string slug), ("page", JE.int page) ]
+      in
+        getData "episodes" payload model socket ReceiveEpisodes
 
     ReceiveEpisodes raw ->
       receiveData "ReceiveEpisodes" episodePagerDecoder raw model socket
@@ -65,6 +76,17 @@ update msg model socket =
       receiveData "ReceiveEvents" eventPagerDecoder raw model socket
         (\events ->
             let model2 = { model | events = Loaded events }
+            in  ( model2, Cmd.none, socket )
+        )
+
+    FetchShowDetail slug ->
+      let payload = JE.object [ ("slug", JE.string slug) ]
+      in  getData "show_detail" payload model socket ReceiveShowDetail
+
+    ReceiveShowDetail raw ->
+      receiveData "ReceiveShowDetail" showDetailDecoder raw model socket
+        (\detail ->
+            let model2 = { model | showDetail = Loaded detail }
             in  ( model2, Cmd.none, socket )
         )
 

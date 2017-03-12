@@ -51,3 +51,13 @@ episodesPageUrl page =
 eventsPageUrl : Int -> String
 eventsPageUrl page =
   "#events/" ++ (toString page)
+
+
+showEventsPageUrl : String -> Int -> String
+showEventsPageUrl slug page =
+  "#shows/" ++ slug ++ "/events/" ++ (toString page)
+
+
+showEpisodesPageUrl : String -> Int -> String
+showEpisodesPageUrl slug page =
+  "#shows/" ++ slug ++ "/episodes/" ++ (toString page)

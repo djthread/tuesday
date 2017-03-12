@@ -19,6 +19,15 @@ showDecoder =
     |: (at ["slug"] string)
     |: (at ["tiny_info"] string)
 
+
+showDetailDecoder : Decoder ShowDetail
+showDetailDecoder =
+  succeed
+    ShowDetail
+    |: (at ["short_info"] string)
+    |: (at ["full_info"] string)
+
+
 eventPagerDecoder : Decoder EventListing
 eventPagerDecoder =
   succeed

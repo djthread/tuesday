@@ -7,19 +7,22 @@ import Json.Encode as JE
 type Msg
   = ReceiveShows JE.Value
   | FetchNewStuff
-  | FetchEpisodes Int
-  | FetchEvents Int
   | FetchShowDetail String
+  | FetchEpisodes Int
+  | FetchShowEpisodes String Int
+  | FetchEvents Int
+  | FetchShowEvents String Int
   | ReceiveEpisodes JE.Value
   | ReceiveEvents JE.Value
+  | ReceiveShowDetail JE.Value
   | SocketInitialized
   | NoOp
 
 type alias Model =
-  { shows     : RemoteData (List Show)
-  , showExtra : RemoteData ShowExtra
-  , events    : RemoteData EventListing
-  , episodes  : RemoteData EpisodeListing
+  { shows      : RemoteData (List Show)
+  , showDetail : RemoteData ShowDetail
+  , events     : RemoteData EventListing
+  , episodes   : RemoteData EpisodeListing
   }
 
 type alias EventListing =
@@ -39,7 +42,7 @@ type alias Show =
   , tinyInfo  : String
   }
 
-type alias ShowExtra =
+type alias ShowDetail =
   { shortInfo : String
   , fullInfo  : String
   }

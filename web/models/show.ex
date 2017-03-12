@@ -61,13 +61,17 @@ defmodule Tuesday.Show do
        ))
   end
 
-  def preload_episodes_and_events(shows) do
-    shows
-    |> Repo.preload(episodes: from(ep in Episode, order_by: [desc: ep.number]))
-    |> Repo.preload(events:   from(ev in Event,
+  def preload_episodes_and_events(show) do
+    show
+    |> Repo.preload(
+      episodes: from(ep in Episode, order_by: [desc: ep.number])
+    )
+    |> Repo.preload(
+      events: from(ev in Event,
         where:    ev.happens_on > ago(2, "day"),
         order_by: ev.happens_on
-       ))
+      )
+    )
   end
 
 
