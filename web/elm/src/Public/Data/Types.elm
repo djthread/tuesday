@@ -9,6 +9,7 @@ type Msg
   | FetchNewStuff
   | FetchEpisodes Int
   | FetchEvents Int
+  | FetchShowDetail String
   | ReceiveEpisodes JE.Value
   | ReceiveEvents JE.Value
   | SocketInitialized
@@ -31,10 +32,12 @@ type alias EpisodeListing =
   }
 
 type alias Show =
-  { id       : Int
-  , name     : String
-  , slug     : String
-  , tinyInfo : String
+  { id        : Int
+  , name      : String
+  , slug      : String
+  , tinyInfo  : String
+  -- , shortInfo : String
+  -- , fullInfo  : String
   }
 
 type alias NewStuff =

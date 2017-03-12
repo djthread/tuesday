@@ -197,6 +197,9 @@ initPage model =
     EventsRoute page ->
       dataUpdate (Data.Types.FetchEvents page) model
 
+    ShowRoute slug ->
+      dataUpdate (Data.Types.FetchShowDetail slug) model
+
     _ ->
       ( model, Cmd.none )
 
