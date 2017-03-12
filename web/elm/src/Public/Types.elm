@@ -1,5 +1,6 @@
 module Types exposing (..)
 
+import Json.Encode as JE
 import Phoenix.Socket
 import Navigation exposing (Location)
 import Chat.Types
@@ -51,3 +52,6 @@ type alias IDSocket =
 
 type alias Crumbs =
   List ( String,  String )
+
+noPayload : JE.Value
+noPayload = JE.string ""

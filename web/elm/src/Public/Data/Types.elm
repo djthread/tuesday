@@ -16,9 +16,10 @@ type Msg
   | NoOp
 
 type alias Model =
-  { shows    : RemoteData (List Show)
-  , events   : RemoteData EventListing
-  , episodes : RemoteData EpisodeListing
+  { shows     : RemoteData (List Show)
+  , showExtra : RemoteData ShowExtra
+  , events    : RemoteData EventListing
+  , episodes  : RemoteData EpisodeListing
   }
 
 type alias EventListing =
@@ -36,8 +37,11 @@ type alias Show =
   , name      : String
   , slug      : String
   , tinyInfo  : String
-  -- , shortInfo : String
-  -- , fullInfo  : String
+  }
+
+type alias ShowExtra =
+  { shortInfo : String
+  , fullInfo  : String
   }
 
 type alias NewStuff =
