@@ -136,7 +136,6 @@ update msg model =
         { model | defer = deferModel }
         ! [ Cmd.map DeferMsg deferCmd ]
 
-
     ChatMsg chatMsg ->
       let
         ( chatModel, chatCmd, newSocket ) =
@@ -156,13 +155,7 @@ update msg model =
         ! [ dataCmd ]
 
     PhotoMsg photoMsg ->
-      let
-        ( photoModel, photoCmd, newSocket ) =
-          Photo.State.update photoMsg model.photo
-            model.idSocket
-      in
-        { model | photo = photoModel, idSocket = newSocket }
-        ! [ photoCmd ]
+      photoUpdate photoMsg model
 
     NoOp ->
       ( model, Cmd.none )
@@ -220,8 +213,13 @@ dataUpdate msg model =
 photoUpdate : Photo.Types.Msg -> Model -> ( Model, Cmd Msg )
 photoUpdate msg model =
   let
-    ( photoModel, cmd, idSocket ) =
+    ( photoModel, cmd, idSocket, newDefer ) =
       Photo.State.update msg model.photo model.idSocket
+        model.defer
   in
-    { model | photo = photoModel, idSocket = idSocket }
-    ! [ cmd ]
+    { model
+    | photo    = photoModel
+    , idSocket = idSocket
+    , defer    = newDefer
+    }
+      ! [ cmd ]

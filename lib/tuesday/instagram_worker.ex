@@ -10,11 +10,10 @@ defmodule Tuesday.InstagramWorker do
   @media_url Keyword.get(@config, :media)
   @name      __MODULE__
 
-  def last_four,  do: GenServer.call(@name, :last_four)
-  def all_photos, do: GenServer.call(@name, :all_photos)
-  def refresh,    do: GenServer.call(@name, :refresh)
+  def photos,  do: GenServer.call(@name, :photos)
+  def refresh, do: GenServer.call(@name, :refresh)
 
-  def start_link() do
+  def start_link do
     opts = [name: @name]
 
     GenServer.start_link(@name, [], opts)
@@ -24,16 +23,7 @@ defmodule Tuesday.InstagramWorker do
     {:ok, do_refresh []}
   end
 
-  def handle_call(:last_four, _from, state) do
-    ret = %{
-      last_four: Enum.take(state, 4),
-      total:     length(state)
-    }
-
-    {:reply, ret, state}
-  end
-
-  def handle_call(:all_photos, _from, state) do
+  def handle_call(:photos, _from, state) do
     {:reply, state, state}
   end
 
@@ -68,23 +58,25 @@ defmodule Tuesday.InstagramWorker do
         |> DateTime.from_unix!
         |> DateTime.to_iso8601
 
-      %{caption: item["caption"]["text"],
-        created: created,
-        link:    item["link"],
+      full_url =
+        imgs["standard_resolution"]["url"]
+        |> fn s ->
+          ~r{/s640x640/[a-z][a-z]\d\.\d\d/}
+          |> Regex.replace(s, "/")
+        end.()
+        |> fn s ->
+          ~r{/((?:s|e)\d\d)/c[\d\.]+/}
+          |> Regex.replace(s, "/\\g{1}/")
+        end.()
+
+      %{caption:  item["caption"]["text"],
+        created:  created,
+        link:     item["link"],
+        full_url: full_url,
         thumb: %{
           url:    imgs["thumbnail"]["url"],
           width:  imgs["thumbnail"]["width"],
           height: imgs["thumbnail"]["height"]
-        },
-        low: %{
-          url:    imgs["low_resolution"]["url"],
-          width:  imgs["low_resolution"]["width"],
-          height: imgs["low_resolution"]["height"]
-        },
-        standard: %{
-          url:    imgs["standard_resolution"]["url"],
-          width:  imgs["standard_resolution"]["width"],
-          height: imgs["standard_resolution"]["height"]
         }
       }
     end)

@@ -6,21 +6,31 @@ import Photo.Types exposing (Model)
 import TypeUtil exposing (RemoteData(Loaded))
 import Photo.Types exposing (Model, Photos)
 import Html exposing (Html, div, text, input, p, span, img, a)
-import Html.Attributes exposing (attribute, class, src, width, height, href, id, alt, target)
-import ViewUtil exposing (fa, waiting)
--- import Html.Events exposing (on, onInput, keyCode)
+import Html.Attributes exposing (attribute, class, style, src, width, height, href, id, alt, target)
+import ViewUtil exposing (fa, waiting, myOnClick)
 
 
 root : Photo.Types.Model -> List (Html Msg)
 root model =
   [ div [ class "photo-widget" ]
-      [ div [ class "photo-feed" ] (photos model)
+      [ div [ id "photo-feed", class "photo-feed" ] (photos model)
       , p [ class "photo-more" ]
-          [ a [ href "#" ]
-              [ text "Load Next Four" ]
-          , fa "long-arrow-right"
+          [ a [ class "btn btn-sm"
+              , href "https://www.instagram.com/impulsedetroit"
+              , target "_blank"
+              ]
+              [ text "Impulse Detroit on Instagram "
+              , fa "instagram"
+              ]
+          , text " "
+          , a [ class "btn btn-sm"
+              , href "#"
+              , myOnClick (Types.PhotoMsg Photo.Types.ShowNextFour)
+              ]
+              [ text "Load Next Four "
+              , fa "long-arrow-right"
+              ]
           ]
-      , p [ class "clearer" ] []
       ]
    ]
 
@@ -47,11 +57,11 @@ actualPhotos photos =
       in
         a [ href ph.link, target "_blank" ]
           [ img
-              [ class "jslightbox-thmb"
+              [ class "jslghtbx-thmb"
               , src thumb.url
               , alt ph.caption
-              , attribute "data-lghtbox" ph.standard.url
-              , attribute "data-jghtbox-group" "one"
+              , attribute "data-jslghtbx" ph.full_url
+              , attribute "data-jslghtbx-group" "one"
               , width thumb.width
               , height thumb.height
               ]
@@ -59,13 +69,3 @@ actualPhotos photos =
           ]
   in
     List.map build set
-
-  -- , div [ id "photo-widget", class "photo-widget" ]
-  --     [ div [ id "photo-feed" ] []
-  --     , p [ class "photo-more" ]
-  --         [ a [ id "photo-more-link", href "#" ]
-  --             [ text "Load Next Four" ]
-  --         , fa "long-arrow-right"
-  --         ]
-  --     , p [ class "clearer" ] []
-  --     ]

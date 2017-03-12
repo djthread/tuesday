@@ -14,6 +14,13 @@ lastFourDecoder =
     |: (at ["total"] int)
 
 
+restListDecoder : Decoder Rest
+restListDecoder =
+  succeed
+    Rest
+    |: (at ["rest"] photoListDecoder)
+
+
 photoListDecoder : Decoder (List Photo)
 photoListDecoder =
   list photoDecoder
@@ -26,8 +33,8 @@ photoDecoder =
     |: (at ["created"] date)
     |: (at ["caption"] string)
     |: (at ["link"] string)
+    |: (at ["full_url"] string)
     |: (at ["thumb"] imageDecoder)
-    |: (at ["standard"] imageDecoder)
 
 
 imageDecoder : Decoder Image

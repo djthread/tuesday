@@ -27,9 +27,9 @@ exports.config = {
           "web/static/css/app.scss"
         ]
       }
-    },
-    templates: {
-      joinTo: "js/app.js"
+    // },
+    // templates: {
+    //   joinTo: "js/app.js"
     }
   },
 

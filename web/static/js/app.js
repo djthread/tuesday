@@ -43,9 +43,9 @@ idapp.ports.setTitle.subscribe((title) => {
   document.title = title;
 });
 
-idapp.ports.setupLightbox.subscribe((title) => {
+idapp.ports.activateLightbox.subscribe((title) => {
   var lightbox, options = {
-    boxId:              'photo-feed',
+    // boxId:              'photo-feed',
     dimensions:         true,
     captions:           true,
     prevImg:            false,
@@ -78,6 +78,10 @@ idapp.ports.setupLightbox.subscribe((title) => {
         // ...
     }
   };
+
+  var g = document.getElementById('photo-feed');
+  // g.innerHTML = '';
+  console.log('photo-feed', g);
 
   lightbox = new Lightbox();
   lightbox.load(options);

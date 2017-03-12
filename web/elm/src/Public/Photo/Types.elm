@@ -7,14 +7,9 @@ import TypeUtil exposing (RemoteData)
 type Msg
   = FetchLastFour
   | ReceiveLastFour JE.Value
+  | ShowNextFour
+  | ReceiveRest JE.Value
   | NoOp
-
-  --   ReceiveNewMsg JE.Value
-  -- | InputUser String
-  -- | InputMsg String
-  -- | OnKeyPress Int
-  -- | GotChatName String
-  -- | NoOp
 
 type alias Model =
   RemoteData Photos
@@ -26,11 +21,11 @@ type alias Photos =
   }
 
 type alias Photo =
-  { created   : Date
-  , caption   : String
-  , link      : String
-  , thumb     : Image
-  , standard  : Image
+  { created  : Date
+  , caption  : String
+  , link     : String
+  , full_url : String
+  , thumb    : Image
   }
 
 type alias Image =
@@ -42,4 +37,8 @@ type alias Image =
 type alias LastFour =
   { last_four : List Photo
   , total     : Int
+  }
+
+type alias Rest =
+  { rest : List Photo
   }

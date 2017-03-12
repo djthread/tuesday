@@ -3,20 +3,27 @@ defmodule Tuesday.InstagramChannel do
   alias Tuesday.InstagramWorker
 
   def join("instagram", _params, socket) do
-    # send(self(), :last_four)
     {:ok, socket}
   end
 
   def handle_in("last_four", %{}, socket) do
-    IO.puts "YEA"
-    {:reply, {:ok, InstagramWorker.last_four()}, socket}
-  end
-  # def handle_info(:last_four, socket) do
-  #   push socket, "last_four", InstagramWorker.last_four
-  #   {:noreply, socket}
-  # end
+    photos = InstagramWorker.photos()
 
-  def handle_in("all_photos", %{}, socket) do
-    {:reply, {:ok, InstagramWorker.all_photos()}, socket}
+    ret = %{
+      last_four: photos |> Enum.take(4),
+      total:     length(photos)
+    }
+
+    {:reply, {:ok, ret}, socket}
+  end
+
+  def handle_in("rest", %{}, socket) do
+    photos = InstagramWorker.photos()
+
+    ret = %{
+      rest: photos |> Enum.slice(4..-1)
+    }
+
+    {:reply, {:ok, ret}, socket}
   end
 end

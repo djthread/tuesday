@@ -25,5 +25,6 @@ erl_crash.dump
 /config/*.secret.exs
 
 /web/elm/elm-stuff
-/web/static/vendor/*
+# /web/static/vendor/*   # shuold this be ignored???
+/web/static/vendor/elm.js
 /web/elm/priv
