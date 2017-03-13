@@ -5,7 +5,7 @@ defmodule Tuesday do
     import Supervisor.Spec, warn: false
 
     children = [
-      supervisor(Tuesday.Endpoint, []),
+      supervisor(Tuesday.Web.Endpoint, []),
       supervisor(Tuesday.Repo, []),
       supervisor(Tuesday.ChatLog, []),
       supervisor(Tuesday.InstagramWorker, []),
@@ -19,7 +19,7 @@ defmodule Tuesday do
   end
 
   def config_change(changed, _new, removed) do
-    Tuesday.Endpoint.config_change(changed, removed)
+    Tuesday.Web.Endpoint.config_change(changed, removed)
     :ok
   end
 end

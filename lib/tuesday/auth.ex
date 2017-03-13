@@ -1,8 +1,8 @@
 defmodule Tuesday.Auth do
-  import Tuesday.Util, only: [get_now: 0]
+  import Tuesday.Web.Util, only: [get_now: 0]
 
   @expire_minutes 60
-  @secret Application.get_env(:tuesday, Tuesday.Endpoint)
+  @secret Application.get_env(:tuesday, Tuesday.Web.Endpoint)
           |> Keyword.get(:auth_secret)
 
   # def authenticate({user, pass}) do

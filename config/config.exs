@@ -6,11 +6,14 @@
 use Mix.Config
 
 # Configures the endpoint
-config :tuesday, Tuesday.Endpoint,
+config :tuesday, Tuesday.Web.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "q65SZ5X4yWwBZvRmOIgDv3x5qg0CoIV1jmPRsYNVQkG/je1sJmo2Pxc8/hoFAJVo",
-  render_errors: [accepts: ~w(html json)],
+  render_errors:
+    [ view: Tuesday.Web.ErrorView,
+      accepts: ~w(html json)
+    ],
   pubsub: [name: Tuesday.PubSub,
            adapter: Phoenix.PubSub.PG2]
 

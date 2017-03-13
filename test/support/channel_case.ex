@@ -1,4 +1,4 @@
-defmodule Tuesday.ChannelCase do
+defmodule Tuesday.Web.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -27,7 +27,7 @@ defmodule Tuesday.ChannelCase do
 
 
       # The default endpoint for testing
-      @endpoint Tuesday.Endpoint
+      @endpoint Tuesday.Web.Endpoint
     end
   end
 

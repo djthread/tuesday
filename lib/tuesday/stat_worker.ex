@@ -57,13 +57,13 @@ defmodule Tuesday.StatWorker do
       end
 
     new_state = Map.put(state, :online, state.online + 1)
-    Tuesday.Endpoint.broadcast! "rooms:stat", "update", new_state
+    Tuesday.Web.Endpoint.broadcast! "rooms:stat", "update", new_state
     {:reply, new_state, new_state}
   end
 
   def handle_call(:user_left_lobby, _from, state) do
     new_state = Map.put(state, :online, state.online - 1)
-    Tuesday.Endpoint.broadcast! "rooms:stat", "update", new_state
+    Tuesday.Web.Endpoint.broadcast! "rooms:stat", "update", new_state
     {:reply, new_state, new_state}
   end
 
@@ -123,6 +123,6 @@ defmodule Tuesday.StatWorker do
   defp maybe_broadcast_state(_old_state, new_state) do
     # PubSub.publish(new_state.update_topic, new_state)
     # Logger.info "New state: #{new_state |> inspect}"
-    Tuesday.Endpoint.broadcast! "rooms:stat", "update", new_state
+    Tuesday.Web.Endpoint.broadcast! "rooms:stat", "update", new_state
   end
 end

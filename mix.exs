@@ -32,23 +32,23 @@ defmodule Tuesday.Mixfile do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
-  defp elixirc_paths(_),     do: ["lib", "web"]
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_),     do: ["lib"]
 
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [ {:phoenix,             "~> 1.2.0"},
+    [ {:phoenix,             "~> 1.3.0-rc"},
       {:phoenix_pubsub,      "~> 1.0"},
-      {:phoenix_ecto,        "~> 3.0"},
+      {:phoenix_ecto,        "~> 3.2"},
       {:postgrex,            ">= 0.0.0"},
       {:scrivener_ecto,      "~> 1.0"},
-      {:phoenix_html,        "~> 2.6.2"},
+      {:phoenix_html,        "~> 2.6"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext,             "~> 0.11"},
       {:cowboy,              "~> 1.0"},
-      {:httpoison,           "~> 0.9.0"},
+      {:httpoison,           "~> 0.11.0"},
       {:calecto,             "~> 0.16.0"},
       {:sh,                  "~> 1.1.2"},
       # {:hackney, "~> 1.6.0", [optional: false, hex: :hackney]},
@@ -56,7 +56,8 @@ defmodule Tuesday.Mixfile do
       # {:exfswatch,           "~> 0.2.0"},
       # {:exrm,                "~> 1.0.0"},
       {:distillery,          "~> 0.9"},
-      {:cors_plug,           "~> 1.1"}
+      {:cors_plug,           "~> 1.1"},
+      {:wallaby,             "~> 0.16.1"}
 # <<<<<<< dfb6bd034e25e6b5f5f354d2e75c99d1461c1271
 #       {:phoenix_pubsub,      "~> 1.0"},
 #       {:phoenix_ecto,        "~> 3.0"},

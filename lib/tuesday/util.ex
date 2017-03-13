@@ -1,6 +1,6 @@
-defmodule Tuesday.Util do
+defmodule Tuesday.Web.Util do
   @secret :tuesday
-          |> Application.get_env(Tuesday.Endpoint)
+          |> Application.get_env(Tuesday.Web.Endpoint)
           |> Keyword.get(:auth_secret)
 
   @doc "Get the dir of episode mp3s, given a slug"

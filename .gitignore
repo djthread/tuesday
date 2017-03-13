@@ -9,7 +9,7 @@
 erl_crash.dump
 
 # Static artifacts
-/node_modules
+/assets/node_modules
 
 # Since we are building assets from web/static,
 # we ignore priv/static. You may want to comment
@@ -24,7 +24,8 @@ erl_crash.dump
 # variables.
 /config/*.secret.exs
 
-/web/elm/elm-stuff
 # /web/static/vendor/*   # shuold this be ignored???
-/web/static/vendor/elm.js
-/web/elm/priv
+
+/assets/elm/elm-stuff
+/assets/vendor/elm.js
+/assets/elm/priv

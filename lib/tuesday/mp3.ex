@@ -1,6 +1,8 @@
 defmodule Tuesday.MP3 do
   alias Tuesday.MP3
-  alias Tuesday.{Show, Episode, Util}
+  alias Tuesday.Show
+  alias Tuesday.Episode
+  alias Tuesday.Web.Util
 
   defstruct filename: nil, size_mb: nil,      time: nil, codec: nil, kbps: nil,
             hz: nil,       stereo: nil,       id3v: nil, title: nil, artist: nil,
