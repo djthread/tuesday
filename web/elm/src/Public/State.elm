@@ -202,6 +202,12 @@ initPage model =
         , dataUpdate (Data.Types.FetchShowEpisodes slug 1)
         ]
 
+    ShowEpisodesRoute slug page ->
+      dataUpdate (Data.Types.FetchShowEpisodes slug page) model
+
+    ShowEventsRoute slug page ->
+      dataUpdate (Data.Types.FetchShowEvents slug page) model
+
     _ ->
       ( model, Cmd.none )
 

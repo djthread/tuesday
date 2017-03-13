@@ -30,6 +30,6 @@ waiting = ( [], [ ViewUtil.waiting ] )
 
 build : Show -> Model -> List (Html Msg)
 build show model =
-  Data.EventsEpisodesColumnsView.root model.data model.player
-    (Routing.showEventsPageUrl show.slug 1)
-    (Routing.showEpisodesPageUrl show.slug 1)
+  Data.EventsEpisodesColumnsView.root model.data model.player show.slug
+    (Routing.eventsUrl (Just show) 1)
+    (Routing.episodesUrl (Just show) 1)

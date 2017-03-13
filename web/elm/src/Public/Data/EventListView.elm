@@ -9,38 +9,28 @@ import ViewUtil exposing (waiting, formatDate)
 import Routing
 import Markdown
 
-root : ListConfig -> RemoteData (List Show) -> RemoteData EventListing
+root : ListConfig -> List Show -> EventListing
     -> List (Html Msg)
-root conf rdShows rdEvents =
+root conf shows listing =
   let
+    pager =
+      if conf.paginate && listing.pager.totalPages > 1 then
+        ViewUtil.paginator
+          (Routing.episodesUrl conf.show)
+          listing.pager
+      else []
     content =
-      case rdShows of
-        Loaded shows ->
-          case rdEvents of
-            Loaded lsEvents ->
-              let
-                pager =
-                  if conf.paginate
-                      && lsEvents.pager.totalPages > 1
-                      then
-                        ViewUtil.paginator
-                          Routing.eventsPageUrl
-                          lsEvents.pager
-                    else []
-                entries = 
-                  case conf.only of
-                    Nothing -> lsEvents.entries
-                    Just n  -> List.take n lsEvents.entries
-              in
-                if List.length(entries) > 0 then
-                  List.map (buildEvent shows) entries
-                  ++ pager
-                else
-                  [ div [] [ text "no events" ] ]
-            _ -> 
-              [ waiting ]
-        _ ->
-          [ waiting ]
+      let
+        entries = 
+          case conf.only of
+            Nothing -> listing.entries
+            Just n  -> List.take n listing.entries
+      in
+        if List.length(entries) > 0 then
+          List.map (buildEvent shows) entries
+          ++ pager
+        else
+          [ div [] [ text "no events" ] ]
   in
     [ div [ class "event-list" ] content ]
 

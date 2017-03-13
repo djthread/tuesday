@@ -22,13 +22,15 @@ routeCmd route =
   let
     string_ =
       case route of
-        HomeRoute       -> ""
-        ShowsRoute      -> "Shows"
-        ShowRoute _     -> "Show"
-        EpisodesRoute _ -> "Episodes"
-        EventsRoute _   -> "Events"
-        AboutRoute      -> "About"
-        NotFoundRoute   -> ""
+        HomeRoute             -> ""
+        ShowsRoute            -> "Shows"
+        ShowRoute _           -> "Show"
+        EpisodesRoute _       -> "Episodes"
+        EventsRoute _         -> "Events"
+        ShowEpisodesRoute _ _ -> "Episodes"
+        ShowEventsRoute _ _   -> "Events"
+        AboutRoute            -> "About"
+        NotFoundRoute         -> ""
     string =
       if String.length string_ > 0 then
         string_ ++ " : "
@@ -57,7 +59,7 @@ initSocket =
     initSocket =
       wsUrl
         |> Phoenix.Socket.init
-        |> Phoenix.Socket.withDebug
+        -- |> Phoenix.Socket.withDebug
         |> Phoenix.Socket.on "new:msg" "rooms:lobby"
             (\m -> ChatMsg (Chat.Types.ReceiveNewMsg m))
         |> Phoenix.Socket.on "shows" "data"

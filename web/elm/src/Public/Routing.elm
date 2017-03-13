@@ -2,6 +2,7 @@ module Routing exposing (..)
 
 import Navigation exposing (Location)
 import UrlParser exposing (..)
+import Data.Types exposing (Show)
 
 
 type Route
@@ -10,6 +11,8 @@ type Route
   | ShowRoute String
   | EpisodesRoute Int
   | EventsRoute Int
+  | ShowEpisodesRoute String Int
+  | ShowEventsRoute String Int
   | AboutRoute
   | NotFoundRoute
 
@@ -24,6 +27,8 @@ matchers =
     , map EpisodesRoute (s "episodes" </> int)
     , map (EventsRoute 1) (s "events")
     , map EventsRoute (s "events" </> int)
+    , map ShowEpisodesRoute (s "shows" </> string </> s "episodes" </> int)
+    , map ShowEventsRoute (s "shows" </> string </> s "events" </> int)
     , map AboutRoute (s "about")
     ]
 
@@ -38,26 +43,26 @@ parseLocation location =
       NotFoundRoute
 
 
+episodesUrl : Maybe Show -> Int -> String
+episodesUrl maybeShow page =
+  case maybeShow of
+    Just show ->
+      "#shows/" ++ show.slug
+        ++ "/episodes/" ++ (toString page)
+    Nothing ->
+      "#episodes/" ++ (toString page)
+
+
+eventsUrl : Maybe Show -> Int -> String
+eventsUrl maybeShow page =
+  case maybeShow of
+    Just show ->
+      "#shows/" ++ show.slug
+        ++ "/events/" ++ (toString page)
+    Nothing ->
+      "#events/" ++ (toString page)
+
+
 showUrl : String -> String
 showUrl slug =
   "#shows/" ++ slug
-
-
-episodesPageUrl : Int -> String
-episodesPageUrl page =
-  "#episodes/" ++ (toString page)
-
-
-eventsPageUrl : Int -> String
-eventsPageUrl page =
-  "#events/" ++ (toString page)
-
-
-showEventsPageUrl : String -> Int -> String
-showEventsPageUrl slug page =
-  "#shows/" ++ slug ++ "/events/" ++ (toString page)
-
-
-showEpisodesPageUrl : String -> Int -> String
-showEpisodesPageUrl slug page =
-  "#shows/" ++ slug ++ "/episodes/" ++ (toString page)

@@ -112,14 +112,12 @@ defmodule Tuesday.DataChannel do
     query =
       case params do
         %{"slug" => slug} ->
-          Logger.warn "EVENTS: FETCHING SLUG #{slug}"
           from e in Event,
             join: s in Show, on: s.id == e.show_id,
             where: s.slug == ^slug and
                    e.happens_on > ago(2, "day"),
             order_by: e.happens_on
         _ ->
-          Logger.warn "EVENTS: FETCHING"
           from e in Event,
             where: e.happens_on > ago(2, "day"),
             order_by: e.happens_on
@@ -140,13 +138,11 @@ defmodule Tuesday.DataChannel do
     query =
       case params do
         %{"slug" => slug} ->
-          Logger.warn "EPISODES: FETCHING SLUG #{slug}"
           from e in Episode,
             join: s in Show, on: s.id == e.show_id,
             where: s.slug == ^slug,
             order_by: [desc: e.inserted_at]
         _ ->
-          Logger.warn "EPISODES: FETCHING"
           from e in Episode,
             order_by: [desc: e.inserted_at]
       end

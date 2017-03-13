@@ -10,39 +10,29 @@ import ViewUtil exposing (waiting)
 import Routing
 import Markdown
 
-root : ListConfig -> PlayerModel -> RemoteData (List Show)
-    -> RemoteData EpisodeListing
+root : PlayerModel -> ListConfig
+    -> List Show -> EpisodeListing
     -> List (Html Msg)
-root conf playerModel rdShows rdEpisodes =
+root playerModel conf shows listing =
   let
+    pager =
+      if conf.paginate && listing.pager.totalPages > 1 then
+        ViewUtil.paginator
+          (Routing.episodesUrl conf.show)
+          listing.pager
+      else []
     content =
-      case rdShows of
-        Loaded shows ->
-          case rdEpisodes of
-            Loaded lsEpisodes ->
-              let
-                pager =
-                  if conf.paginate
-                      && lsEpisodes.pager.totalPages > 1
-                      then
-                        ViewUtil.paginator
-                          Routing.episodesPageUrl
-                          lsEpisodes.pager
-                    else []
-                entries = 
-                  case conf.only of
-                    Nothing -> lsEpisodes.entries
-                    Just n  -> List.take n lsEpisodes.entries
-              in
-                if List.length(entries) > 0 then
-                  List.map (buildEpisode playerModel shows) entries
-                  ++ pager
-                else
-                  [ div [] [ text "no episodes" ] ]
-            _ -> 
-              [ waiting ]
-        _ ->
-          [ waiting ]
+      let
+        entries = 
+          case conf.only of
+            Nothing -> listing.entries
+            Just n  -> List.take n listing.entries
+      in
+        if List.length(entries) > 0 then
+          List.map (buildEpisode playerModel shows) entries
+          ++ pager
+        else
+          [ div [] [ text "no episodes" ] ]
   in
     [ div [ class "episode-list" ] content ]
 
@@ -50,15 +40,12 @@ root conf playerModel rdShows rdEpisodes =
 buildEpisode : PlayerModel -> List Show -> Episode -> Html Msg
 buildEpisode playerModel shows episode =
   let
-    maybeShow =
+    show =
       Data.Types.findShow shows episode.show_id
     content =
-      case maybeShow of
-        Nothing ->
-          [ text "Sumn broke.." ]
-
-        Just show ->
-          actuallyBuildEpisode playerModel show episode
+      case show of
+        Just s  -> actuallyBuildEpisode playerModel s episode
+        Nothing -> []
   in
     div [ class "episode" ] content
 

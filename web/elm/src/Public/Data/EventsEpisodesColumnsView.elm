@@ -7,14 +7,15 @@ import Data.Types
 import Data.EventListView
 import Data.EpisodeListView
 import TypeUtil exposing (RemoteData(Loaded))
--- import ViewUtil
+import PagerViewUtil
 
 
-root : Data.Types.Model -> PlayerModel -> String -> String
+root : Data.Types.Model -> PlayerModel
+    -> String -> String -> String
     -> List (Html Msg)
-root model player moreEventsUrl moreEpisodesUrl =
+root model player slug moreEventsUrl moreEpisodesUrl =
   let
-    _ = model |> Debug.log "MODEL"
+    -- _ = model |> Debug.log "MODEL"
     moreButton words url =
       [ form []
           [ input
@@ -32,40 +33,54 @@ root model player moreEventsUrl moreEpisodesUrl =
       ]
     thereAreMore remoteListing =
       case remoteListing of
-        Loaded listing -> List.length listing.entries > 5
-        _ -> False
+        Loaded listing ->
+          List.length listing.entries > 5
+        _ ->
+          False
+    eventList =
+      let
+        ( _, content ) =
+          PagerViewUtil.buildEventList
+            model slug 1
+            { paginate = False
+            , show = Nothing
+            , only = Just 5 }
+      in
+        content
+    episodeList =
+      let
+        ( _, content ) =
+          PagerViewUtil.buildEpisodeList
+            model player slug 1
+            { paginate = False
+            , show = Nothing
+            , only = Just 5 }
+      in
+        content
   in
     [ div [ class "container" ]
         [ div [ class "columns" ]
             [ div [ class "column col-sm-12 col-6" ]
-                ( [ h2 [] [ text "Upcoming Events" ]
-                  ]
+                ( [ h2 [] [ text "Upcoming Events" ] ]
                   ++
-                  ( let options =
-                      { paginate = False, only = Just 5 }
-                    in Data.EventListView.root
-                      options model.shows model.events
-                  )
+                  eventList
+                  -- let options =
+                  --   { paginate = False, show = Nothing, only = Just 5 }
+                  -- in Data.EventListView.root
+                  --   options model.shows model.events
                   ++
-                  ( if thereAreMore model.events then
-                      moreButton "More Events" moreEventsUrl
-                    else []
-                  )
+                  if thereAreMore model.events then
+                    moreButton "More Events" moreEventsUrl
+                  else []
                 )
             , div [ class "column col-sm-12 col-6" ]
-                ( [ h2 [] [text "Recent Episodes"]
-                  ]
+                ( [ h2 [] [text "Recent Episodes"] ]
                   ++
-                  ( let options =
-                      { paginate = False, only = Just 5 }
-                    in Data.EpisodeListView.root
-                      options player model.shows model.episodes
-                  )
+                  episodeList
                   ++
-                  ( if thereAreMore model.episodes then
-                      moreButton "More Episodes" moreEpisodesUrl
-                    else []
-                  )
+                  if thereAreMore model.episodes then
+                    moreButton "More Episodes" moreEpisodesUrl
+                  else []
                 )
             ]
         ]

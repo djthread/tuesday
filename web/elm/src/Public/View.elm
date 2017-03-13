@@ -45,11 +45,19 @@ render model =
 
     EpisodesRoute page ->
       d (Conf "page page-episodes" True)
-        (Page.Episodes.View.root model)
+        (Page.Episodes.View.root model "" page)
 
     EventsRoute page ->
       d (Conf "page page-events" True)
-        (Page.Events.View.root model)
+        (Page.Events.View.root model "" page)
+
+    ShowEpisodesRoute slug page ->
+      d (Conf "page page-episodes" True)
+        (Page.Episodes.View.root model slug page)
+
+    ShowEventsRoute slug page ->
+      d (Conf "page page-events" True)
+        (Page.Events.View.root model slug page)
 
     AboutRoute ->
       d (Conf "page page-about" True)

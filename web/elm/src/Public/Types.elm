@@ -51,7 +51,10 @@ type alias IDSocket =
   Phoenix.Socket.Socket Msg
 
 type alias Crumbs =
-  List ( String,  String )
+  List Crumb
+
+type alias Crumb =
+  ( String,  String )
 
 noPayload : JE.Value
 noPayload = JE.string ""
