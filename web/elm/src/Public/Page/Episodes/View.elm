@@ -1,12 +1,8 @@
 module Page.Episodes.View exposing (root)
 
-import Data.EpisodeListView
 import Html exposing (Html)
 import Types exposing (..)
-import TypeUtil exposing (RemoteData(Loaded))
-import ViewUtil
 import PagerViewUtil
-import Routing
 
 root : Model -> String -> Int -> ( Crumbs, List (Html Msg) )
 root model slug page =
