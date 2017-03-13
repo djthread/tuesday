@@ -34,9 +34,9 @@ defmodule Tuesday.Web.ConnCase do
 
   setup tags do
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(Tuesday.Repo, [])
+      # Ecto.Adapters.SQL.restart_test_transaction(Tuesday.Repo, [])
     end
 
-    {:ok, conn: Phoenix.ConnTest.conn()}
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

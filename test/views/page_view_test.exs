@@ -1,3 +1,3 @@
 defmodule Tuesday.PageViewTest do
-  use Tuesday.ConnCase, async: true
+  use Tuesday.Web.ConnCase, async: true
 end

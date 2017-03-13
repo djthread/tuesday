@@ -10,7 +10,7 @@ defmodule Tuesday.AcceptanceCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import Tuesdar.Router.Helpers
+      import Tuesday.Web.Router.Helpers
     end
   end
 

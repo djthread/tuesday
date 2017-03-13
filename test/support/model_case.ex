@@ -27,7 +27,7 @@ defmodule Tuesday.ModelCase do
 
   setup tags do
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(Tuesday.Repo, [])
+      # Ecto.Adapters.SQL.restart_test_transaction(Tuesday.Repo, [])
     end
 
     :ok

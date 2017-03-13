@@ -17,3 +17,9 @@ config :tuesday, Tuesday.Repo,
   database: "tuesday_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :wallaby, :base_url, "http://localhost:4001"
+config :wallaby, screenshot_on_failure: true
+
+
+import_config "dev.secret.exs"
