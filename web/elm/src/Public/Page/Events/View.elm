@@ -8,7 +8,7 @@ import PagerViewUtil
 root : Model -> String -> Int -> ( Crumbs, List (Html Msg) )
 root model slug page =
   let
-    ( maybeShow, content ) =
+    ( maybeShow, _, content ) =
       PagerViewUtil.buildEventList
         model.data slug page
         { paginate = True, show = Nothing, only = Nothing }

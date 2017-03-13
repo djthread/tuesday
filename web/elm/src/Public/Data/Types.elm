@@ -12,9 +12,13 @@ type Msg
   | FetchShowEpisodes String Int
   | FetchEvents Int
   | FetchShowEvents String Int
+  | FetchEvent String String
+  | FetchEpisode String String
   | ReceiveEpisodes JE.Value
   | ReceiveEvents JE.Value
   | ReceiveShowDetail JE.Value
+  | ReceiveEvent JE.Value
+  | ReceiveEpisode JE.Value
   | SocketInitialized
   | NoOp
 

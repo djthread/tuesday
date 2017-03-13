@@ -29,8 +29,11 @@ routeCmd route =
         EventsRoute _         -> "Events"
         ShowEpisodesRoute _ _ -> "Episodes"
         ShowEventsRoute _ _   -> "Events"
+        EventRoute _ _        -> ""
+        EpisodeRoute _ _      -> ""
         AboutRoute            -> "About"
         NotFoundRoute         -> ""
+        _                     -> ""
     string =
       if String.length string_ > 0 then
         string_ ++ " : "

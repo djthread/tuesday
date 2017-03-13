@@ -1,12 +1,12 @@
 module Data.EventListView exposing (root)
 
-import Html exposing (Html, div, span, text, h3, p, table, tr, td)
-import Html.Attributes exposing (class, colspan)
+import Html exposing (Html, div, span, text, h3, p, table, tr, td, a)
+import Html.Attributes exposing (class, colspan, href)
 import Types exposing (Msg)
 import Data.Types exposing (Show, Event, Performance, EventListing, ListConfig)
 import TypeUtil exposing (RemoteData, RemoteData(..))
 import ViewUtil exposing (waiting, formatDate)
-import Routing
+import Routing exposing (eventUrl)
 import Markdown
 
 root : ListConfig -> List Show -> EventListing
@@ -71,7 +71,10 @@ actuallyBuildEvent show event =
       else
         []
   in
-    [ h3 [] [ text event.title ]
+    [ h3 []
+        [ a [ href (eventUrl show event) ]
+            [ text event.title ]
+        ]
     , div [ class "colorbox" ]
       [ p [ class "showname" ] [ text show.name ]
       , p [ class "stamp" ] [ text happens_on ]

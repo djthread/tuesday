@@ -208,6 +208,19 @@ initPage model =
     ShowEventsRoute slug page ->
       dataUpdate (Data.Types.FetchShowEvents slug page) model
 
+    EventRoute slug evSlug ->
+      dataUpdate (Data.Types.FetchEvent slug evSlug) model
+
+    EpisodeRoute slug epSlug ->
+      dataUpdate (Data.Types.FetchEpisode slug epSlug) model
+
+    LegacyPodcastRoute slug epSlug ->
+      let
+        url =
+          ("#shows/" ++ slug ++ "/episodes/" ++ epSlug)
+      in
+        ( model, Navigation.newUrl url )
+
     _ ->
       ( model, Cmd.none )
 

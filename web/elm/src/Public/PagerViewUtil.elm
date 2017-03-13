@@ -40,36 +40,44 @@ setup rdShows slug page conf =
 
 buildEpisodeList : Data.Types.Model -> PlayerModel
                  -> String -> Int -> Data.Types.ListConfig
-                 -> ( Maybe Data.Types.Show, List (Html Msg) )
+                 -> ( Maybe Data.Types.Show
+                    , Maybe Data.Types.EpisodeListing
+                    , List (Html Msg) )
 buildEpisodeList dataModel playerModel slug page conf =
   let
     ( conf2, shows ) =
       setup dataModel.shows slug page conf
-    content =
+    ( episodes, content ) =
       case dataModel.episodes of
         Loaded listing ->
-          Data.EpisodeListView.root playerModel conf2 shows listing
+          ( Just listing
+          , Data.EpisodeListView.root playerModel conf2 shows listing
+          )
         _ ->
-          [ ViewUtil.waiting ]
+          ( Nothing, [ ViewUtil.waiting ] )
   in
-    ( conf2.show, content )
+    ( conf2.show, episodes, content )
 
 
 buildEventList : Data.Types.Model
                  -> String -> Int -> Data.Types.ListConfig
-                 -> ( Maybe Data.Types.Show, List (Html Msg) )
+                 -> ( Maybe Data.Types.Show
+                    , Maybe Data.Types.EventListing
+                    , List (Html Msg) )
 buildEventList dataModel slug page conf =
   let
     ( conf2, shows ) =
       setup dataModel.shows slug page conf
-    content =
+    ( events, content ) =
       case dataModel.events of
         Loaded listing ->
-          Data.EventListView.root conf2 shows listing
+          ( Just listing
+          , Data.EventListView.root conf2 shows listing
+          )
         _ ->
-          [ ViewUtil.waiting ]
+          ( Nothing, [ ViewUtil.waiting ] )
   in
-    ( conf2.show, content )
+    ( conf2.show, events, content )
 
 
 buildCrumbs : Maybe Data.Types.Show -> Int -> Crumbs
@@ -83,13 +91,15 @@ crumbs : Data.Types.Show -> Int -> Crumbs
 crumbs show page =
   [ (show.name, showUrl show.slug)
   , ("Episodes", episodesUrl (Just show) 1)
-  , pageCrumb page
   ]
+  ++ pageCrumb page
 
 
-pageCrumb : Int -> Crumb
+pageCrumb : Int -> Crumbs
 pageCrumb page =
-  ("Page " ++ toString page, "")
+  if page == 0 then []
+  else
+    [("Page " ++ toString page, "")]
 
 
 genericCrumbs : Int -> Crumbs
@@ -98,4 +108,4 @@ genericCrumbs page =
     ep = [ ("Episodes", "#episodes") ]
   in
     if page == 1 then ep else
-      ep ++ [ pageCrumb page ]
+      ep ++ pageCrumb page

@@ -76,7 +76,8 @@ actuallyBuildEpisode playerModel show episode =
         [ span [ class "num" ]
             [ text (toString episode.number ++ ". ")
             ]
-        , a [ href "#" ] [ text episode.title ]
+        , a [ href (Routing.episodeUrl show episode) ]
+            [ text episode.title ]
         ]
     , div [ class "colorbox" ]
         [ p [ class "showname" ]

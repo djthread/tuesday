@@ -10,6 +10,8 @@ import Page.Shows.View
 import Page.Show.View
 import Page.Episodes.View
 import Page.Events.View
+import Page.Episode.View
+import Page.Event.View
 import Page.About.View
 import Page.NotFound.View
 import Layout
@@ -59,11 +61,23 @@ render model =
       d (Conf "page page-events" True)
         (Page.Events.View.root model slug page)
 
+    EventRoute slug evSlug ->
+      d (Conf "page page-event" True)
+        (Page.Event.View.root model slug evSlug)
+
+    EpisodeRoute slug epSlug ->
+      d (Conf "page page-event" True)
+        (Page.Episode.View.root model slug epSlug)
+
     AboutRoute ->
       d (Conf "page page-about" True)
         (Page.About.View.root model)
 
     NotFoundRoute ->
+      d (Conf "Page page-notfound" False)
+        (Page.NotFound.View.root model)
+
+    LegacyPodcastRoute _ _ ->
       d (Conf "Page page-notfound" False)
         (Page.NotFound.View.root model)
 

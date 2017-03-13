@@ -39,7 +39,7 @@ root model player slug moreEventsUrl moreEpisodesUrl =
           False
     eventList =
       let
-        ( _, content ) =
+        ( _, _, content ) =
           PagerViewUtil.buildEventList
             model slug 1
             { paginate = False
@@ -49,7 +49,7 @@ root model player slug moreEventsUrl moreEpisodesUrl =
         content
     episodeList =
       let
-        ( _, content ) =
+        ( _, _, content ) =
           PagerViewUtil.buildEpisodeList
             model player slug 1
             { paginate = False

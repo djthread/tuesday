@@ -70,20 +70,39 @@ defmodule Tuesday.DataChannel do
   #   end.()
   # end
 
-  # def handle_in("episode", %{"slug" => slug, "num" => num}, socket)
-  # when is_number(num)
-  # do
-  #   Show
-  #   |> where(slug: ^slug)
-  #   |> Repo.one
-  #   |> Repo.preload(episodes: from(ep in Episode, where: ep.number == ^num))
-  #   |> fn(show = %Show{episodes: [ep | _]}) ->
-  #     render(EpisodeView, "show.json", episode: ep, show: show)
-  #   end.()
-  #   |> fn(ep) ->
-  #     {:reply, {:ok, %{episode: ep}}, socket}
-  #   end.()
-  # end
+  def handle_in("episode", %{"slug" => slug, "epSlug" => ep_slug}, socket) do
+    num = slug_to_num(ep_slug)
+
+    Show
+    |> where(slug: ^slug)
+    |> Repo.one
+    |> Repo.preload(episodes: from(ep in Episode, where: ep.number == ^num))
+    |> fn
+        (show = %Show{episodes: [ep | _]}) ->
+          render(EpisodeView, "show.json", episode: ep, show: show)
+        (show = %Show{}) ->
+          %{}
+    end.()
+    |> fn(ep) ->
+      {:reply, {:ok, ep}, socket}
+    end.()
+  end
+
+  def handle_in("event", %{"slug" => slug, "evSlug" => ev_slug}, socket) do
+    num = slug_to_num(ev_slug)
+
+    Show
+    |> where(slug: ^slug)
+    |> Repo.one
+    |> Repo.preload(events: from(ev in Event, where: ev.id == ^num))
+    |> fn(%Show{events: [ev | _]}) ->
+      render(EventView, "show.json", event: ev)
+    end.()
+    |> fn(ev) ->
+      {:reply, {:ok, ev}, socket}
+    end.()
+  end
+
 
   # def handle_in("episodes", %{"slug" => slug, "page" => page}, socket) do
   #   listing =
@@ -164,6 +183,12 @@ defmodule Tuesday.DataChannel do
       total_pages:   listing.total_pages,
       total_entries: listing.total_entries
     }
+  end
+
+  defp slug_to_num(slug) do
+    [_, num] = Regex.run(~r/^(\d+)-/, slug)
+
+    num
   end
 
 

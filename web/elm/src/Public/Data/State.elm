@@ -8,9 +8,10 @@ import TypeUtil exposing (RemoteData(..))
 -- import Port
 import Json.Decode exposing (Decoder, decodeValue)
 import Phoenix.Push
-import Json.Encode as JE
+import Json.Encode as JE exposing (int, string, object)
 -- import Task
 import Task
+import Navigation
 
 init : Model
 init =
@@ -23,7 +24,7 @@ init =
 update : Msg -> Model -> IDSocket
       -> ( Model, Cmd Types.Msg, IDSocket )
 update msg model socket =
-  case msg of
+  case Debug.log "DATAMSG" msg of
     SocketInitialized ->
       getData "shows" noPayload model socket ReceiveShows
 
@@ -44,24 +45,38 @@ update msg model socket =
         ( model, Cmd.batch [cmd1, cmd2], socket2 )
 
     FetchEvents page ->
-      let payload = JE.object [ ("page", JE.int page) ]
+      let payload = object [ ("page", int page) ]
       in  getData "events" payload model socket ReceiveEvents
 
     FetchEpisodes page ->
-      let payload = JE.object [ ("page", JE.int page) ]
+      let payload = object [ ("page", int page) ]
       in  getData "episodes" payload model socket ReceiveEpisodes
+
+    FetchEvent slug evSlug ->
+      let
+        payload =
+          object [ ("slug", string slug), ("evSlug", string evSlug) ]
+      in
+        getData "event" payload model socket ReceiveEvent
+
+    FetchEpisode slug evSlug ->
+      let
+        payload =
+          object [ ("slug", string slug), ("epSlug", string evSlug) ]
+      in
+        getData "episode" payload model socket ReceiveEpisode
 
     FetchShowEvents slug page ->
       let
         payload =
-          JE.object [ ("slug", JE.string slug), ("page", JE.int page) ]
+          object [ ("slug", string slug), ("page", int page) ]
       in
         getData "events" payload model socket ReceiveEvents
 
     FetchShowEpisodes slug page ->
       let
         payload =
-          JE.object [ ("slug", JE.string slug), ("page", JE.int page) ]
+          object [ ("slug", string slug), ("page", int page) ]
       in
         getData "episodes" payload model socket ReceiveEpisodes
 
@@ -80,7 +95,7 @@ update msg model socket =
         )
 
     FetchShowDetail slug ->
-      let payload = JE.object [ ("slug", JE.string slug) ]
+      let payload = object [ ("slug", string slug) ]
       in  getData "show_detail" payload model socket ReceiveShowDetail
 
     ReceiveShowDetail raw ->
@@ -88,6 +103,28 @@ update msg model socket =
         (\detail ->
             let model2 = { model | showDetail = Loaded detail }
             in  ( model2, Cmd.none, socket )
+        )
+
+    ReceiveEpisode raw ->
+      receiveData "ReceiveEpisodeDetail" episodeDecoder raw model socket
+        (\episode ->
+            let
+              pager  = TypeUtil.Pager 0 0 0 0
+              episodes = Loaded { entries = [episode], pager = pager }
+              model2 = { model | episodes = episodes }
+            in
+              ( model2, Cmd.none, socket )
+        )
+
+    ReceiveEvent raw ->
+      receiveData "ReceiveEventDetail" eventDecoder raw model socket
+        (\event ->
+            let
+              pager  = TypeUtil.Pager 0 0 0 0
+              events = Loaded { entries = [event], pager = pager }
+              model2 = { model | events = events }
+            in
+              ( model2, Cmd.none, socket )
         )
 
     NoOp ->
@@ -115,7 +152,11 @@ getData messageStr payload model idSocket retMsg =
 finishPush : Model -> ( Cmd Types.Msg, IDSocket )
           -> ( Model, Cmd Types.Msg, IDSocket )
 finishPush model (msg, socket) =
-  ( model, msg, socket )
+  let
+    newModel =
+      { model | events = Loading, episodes = Loading }
+  in
+    ( newModel, msg, socket )
 
 
 receiveData : String -> Decoder a -> JE.Value -> Model -> IDSocket
@@ -127,5 +168,7 @@ receiveData name decoder raw model idSocket happyFn =
       happyFn value
 
     Err error ->
-      let _ = Debug.log (name ++ " Error") error
-      in ( model, Cmd.none, idSocket )
+      let
+        _ = Debug.log (name ++ " Error") error
+        cmd = Navigation.newUrl "#404"
+      in ( model, cmd, idSocket )
