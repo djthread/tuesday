@@ -23,7 +23,7 @@ defmodule Tuesday.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [ mod: {Tuesday, []},
+    [ mod: {Tuesday.Application, []},
       applications: [ :phoenix, :phoenix_html, :cowboy, :logger, :gettext,
                       :phoenix_ecto, :phoenix_pubsub, :postgrex, :httpoison,
                       :calecto, :sh, :cors_plug
