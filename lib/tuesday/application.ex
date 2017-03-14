@@ -1,4 +1,4 @@
-defmodule Tuesday do
+defmodule Tuesday.Application do
   use Application
 
   def start(_type, _args) do
