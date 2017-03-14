@@ -1,6 +1,6 @@
 module Data.Types exposing (..)
 
-import TypeUtil exposing (RemoteData, Pager)
+import TypeUtil exposing (RemoteData(Loaded), Pager)
 import Date exposing (Date)
 import Json.Encode as JE
 
@@ -42,9 +42,15 @@ type alias EpisodeListing =
 type alias Show =
   { id        : Int
   , name      : String
-  , slug      : String
+  , slug      : Slug
   , tinyInfo  : String
   }
+
+type alias Shows =
+  List Show
+
+type alias Slug =
+  String
 
 type alias ShowDetail =
   { shortInfo : String
@@ -109,3 +115,16 @@ findShowBySlug shows slug =
       List.filter (\s -> s.slug == slug) shows
   in
     List.head maybeOne
+
+
+doShowThingOr : RemoteData Shows
+             -> a -> (Show -> a) -> Slug
+             -> a
+doShowThingOr rdShows sadVal happyFn slug =
+  case rdShows of
+    Loaded shows ->
+      case findShowBySlug shows slug of
+        Just show ->
+          happyFn show
+        _ -> sadVal
+    _ -> sadVal

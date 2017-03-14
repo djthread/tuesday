@@ -3,7 +3,7 @@ module StateUtil exposing (..)
 import Types exposing (..)
 import TypeUtil exposing (RemoteData(..))
 import Chat.Types
-import Data.Types exposing (findShowBySlug)
+import Data.Types exposing (doShowThingOr)
 import Json.Encode as JE
 import Phoenix.Socket
 import Phoenix.Channel
@@ -17,29 +17,70 @@ wsUrl =
   "ws://localhost:4091/socket/websocket"
 
 
-routeCmd : Route -> Cmd Msg
-routeCmd route =
+routeCmd : Route -> RemoteData Data.Types.Shows
+        -> RemoteData Data.Types.EventListing
+        -> RemoteData Data.Types.EpisodeListing
+        -> ( NavSection, Cmd Msg )
+routeCmd route rdShows rdEvents rdEpisodes =
   let
-    string_ =
+    showBit =
+      doShowThingOr rdShows ""
+        (\show -> show.name ++ " : ")
+    ( section, pageBit ) =
       case route of
-        HomeRoute             -> ""
-        ShowsRoute            -> "Shows"
-        ShowRoute _           -> "Show"
-        EpisodesRoute _       -> "Episodes"
-        EventsRoute _         -> "Events"
-        ShowEpisodesRoute _ _ -> "Episodes"
-        ShowEventsRoute _ _   -> "Events"
-        EventRoute _ _        -> ""
-        EpisodeRoute _ _      -> ""
-        AboutRoute            -> "About"
-        NotFoundRoute         -> ""
-        _                     -> ""
-    string =
-      if String.length string_ > 0 then
-        string_ ++ " : "
-      else ""
+        HomeRoute ->
+          ( None, "" )
+        ShowsRoute ->
+          ( Shows, "Shows" )
+        ShowRoute slug ->
+          ( Shows, showBit slug )
+        EpisodesRoute page ->
+          ( Episodes
+          , "Episodes p." ++ (toString page) )
+        EventsRoute page ->
+          ( Events
+          , "Events p." ++ (toString page) )
+        ShowEpisodesRoute slug page ->
+          ( Shows
+          , "Episodes p ." ++ (toString page)
+            ++ " : " ++ showBit slug )
+        ShowEventsRoute slug page ->
+          ( Events
+          , "Events p ." ++ (toString page)
+            ++ " : " ++ showBit slug )
+        EventRoute slug evSlug ->
+          let
+            evBit =
+              case rdEvents of
+                Loaded listing ->
+                  case List.head listing.entries of
+                    Just ev -> ev.title ++ " : "
+                    Nothing -> ""
+                _ -> ""
+        in
+          ( Events, evBit ++ showBit slug )
+        EpisodeRoute slug epSlug ->
+          let
+            epBit =
+              case rdEpisodes of
+                Loaded listing ->
+                  case List.head listing.entries of
+                    Just ep -> ep.title ++ " : "
+                    Nothing -> ""
+                _ -> ""
+        in
+          ( Episodes, epBit ++ showBit slug )
+        AboutRoute ->
+          ( About, "About : " )
+        NotFoundRoute ->
+          ( None, "404 : " )
+        _ ->
+          ( None, "" )
   in
-    Port.setTitle (string ++ "Impulse Detroit")
+    ( section
+    , Port.setTitle (pageBit ++ "Impulse Detroit")
+    )
+
 
 
 startLoading : Model -> Model

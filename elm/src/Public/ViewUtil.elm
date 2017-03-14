@@ -103,9 +103,12 @@ breadcrumber items =
       in
         li [ class "breadcrumb-item" ] [ inner ]
   in
-    [ ul [ class "breadcrumb" ]
-      (home ++ (List.map render items))
-    ]
+    if List.length items > 0 then
+      [ ul [ class "breadcrumb" ]
+        (home ++ (List.map render items))
+      ]
+    else
+      []
 
 
 paginator : (Int -> String) -> Pager -> List (Html Msg)

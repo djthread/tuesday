@@ -27,6 +27,6 @@ erl_crash.dump
 
 # /web/static/vendor/*   # shuold this be ignored???
 
-/assets/elm/elm-stuff
-/assets/vendor/elm.js
-/assets/elm/priv
+/elm/elm-stuff
+/elm/priv
+assets/vendor/elm.js

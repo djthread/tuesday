@@ -24,7 +24,7 @@ init =
 update : Msg -> Model -> IDSocket
       -> ( Model, Cmd Types.Msg, IDSocket )
 update msg model socket =
-  case Debug.log "DATAMSG" msg of
+  case msg of
     SocketInitialized ->
       getData "shows" noPayload model socket ReceiveShows
 

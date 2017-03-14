@@ -46,31 +46,35 @@ shmegal =
 
 myheader : Model -> Html Msg
 myheader model =
-  header [ class "navbar" ]
-    [ section [ class "navbar-section" ]
-        [ div [ class "loading", ViewUtil.toggle False] []
-        -- [ div [ class "loading", toggle (model.loading != 0) ] []
-        , a [ href "#", class "navbar-brand" ]
-            [ span [ class "idi" ] [ text "I" ]
-            , text "mpulse Detroit"
-            ]
-        , a [ href "#shows", class "btn btn-link" ]
-            [ text "Shows" ]
-        , a [ href "#events", class "btn btn-link" ]
-            [ text "Events" ]
-        , a [ href "#episodes", class "btn btn-link" ]
-            [ text "Episodes" ]
-        , a [ href "#about", class "btn btn-link" ]
-            [ text "About" ]
-        , a [ href "//photos.impulsedetroit.net"
-            , class "btn btn-link"
-            , target "_blank"
-            ]
-            [ text "Photos"
-            , sup [ class "ext" ] [ fa "external-link" ]
-            ]
-        ]
-    ]
+  let
+    activeOf section =
+      class (if model.section == section then "active" else "")
+  in
+    header [ class "navbar" ]
+      [ section [ class "navbar-section" ]
+          [ div [ class "loading", ViewUtil.toggle False] []
+          -- [ div [ class "loading", toggle (model.loading != 0) ] []
+          , a [ href "#", class "navbar-brand" ]
+              [ span [ class "idi" ] [ text "I" ]
+              , text "mpulse Detroit"
+              ]
+          , a [ href "#shows", class "btn btn-link", activeOf Shows ]
+              [ text "Shows" ]
+          , a [ href "#events", class "btn btn-link", activeOf Events ]
+              [ text "Events" ]
+          , a [ href "#episodes", class "btn btn-link", activeOf Episodes ]
+              [ text "Episodes" ]
+          , a [ href "#about", class "btn btn-link", activeOf About ]
+              [ text "About" ]
+          -- , a [ href "//photos.impulsedetroit.net"
+          --     , class "btn btn-link"
+          --     , target "_blank"
+          --     ]
+          --     [ text "Photos"
+          --     , sup [ class "ext" ] [ fa "external-link" ]
+          --     ]
+          ]
+      ]
 
 footerColumn1 : List (Html Msg)
 footerColumn1 =

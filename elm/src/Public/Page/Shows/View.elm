@@ -6,6 +6,7 @@ import Types exposing (..)
 import Data.Types exposing (Show, findShowBySlug)
 import TypeUtil exposing (RemoteData(Loaded))
 import ViewUtil exposing (waiting)
+import Markdown
 
 
 root : Model -> ( Crumbs, List (Html Msg) )
@@ -31,6 +32,7 @@ buildShowList shows =
     , day "Friday"  [ getShow "wobblehead-radio"  |> buildShow ]
     ]
 
+
 -- showImage : String -> String
 -- showImage slug =
 --   case slug of
@@ -52,7 +54,7 @@ buildShow maybeShow =
           -- figure [ class "avatar avatar-xl" ]
           --   [ img [ src (showImage show.slug) ] [] ]
           h4 [] [ text show.name ]
-        , p [] [ text show.tinyInfo ]
+        , Markdown.toHtml [] show.tinyInfo
         , p [ class "clearer" ] [ text "" ]
         ]
 

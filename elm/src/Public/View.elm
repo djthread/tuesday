@@ -20,7 +20,6 @@ import ViewUtil
 
 type alias Conf =
   { classes : String
-  , crumbs  : Bool
   }
 
 
@@ -34,59 +33,59 @@ render : Model -> Html Msg
 render model =
   case model.route of
     HomeRoute ->
-      d (Conf "page-home" False)
+      d (Conf "page-home")
         (Page.Home.View.root model)
 
     ShowsRoute ->
-      d (Conf "page page-shows" True)
+      d (Conf "page page-shows")
         (Page.Shows.View.root model)
 
     ShowRoute slug ->
-      d (Conf "page page-show" True)
+      d (Conf "page page-show")
         (Page.Show.View.root slug model)
 
     EpisodesRoute page ->
-      d (Conf "page page-episodes" True)
+      d (Conf "page page-episodes")
         (Page.Episodes.View.root model "" page)
 
     EventsRoute page ->
-      d (Conf "page page-events" True)
+      d (Conf "page page-events")
         (Page.Events.View.root model "" page)
 
     ShowEpisodesRoute slug page ->
-      d (Conf "page page-episodes" True)
+      d (Conf "page page-episodes")
         (Page.Episodes.View.root model slug page)
 
     ShowEventsRoute slug page ->
-      d (Conf "page page-events" True)
+      d (Conf "page page-events")
         (Page.Events.View.root model slug page)
 
     EventRoute slug evSlug ->
-      d (Conf "page page-event" True)
+      d (Conf "page page-event")
         (Page.Event.View.root model slug evSlug)
 
     EpisodeRoute slug epSlug ->
-      d (Conf "page page-event" True)
+      d (Conf "page page-event")
         (Page.Episode.View.root model slug epSlug)
 
     AboutRoute ->
-      d (Conf "page page-about" True)
+      d (Conf "page page-about")
         (Page.About.View.root model)
 
     NotFoundRoute ->
-      d (Conf "Page page-notfound" False)
+      d (Conf "Page page-notfound")
         (Page.NotFound.View.root model)
 
     LegacyPodcastRoute _ _ ->
-      d (Conf "Page page-notfound" False)
+      d (Conf "Page page-notfound")
         (Page.NotFound.View.root model)
 
-d : Conf -> ( Crumbs, List (Html Msg) ) -> Html Msg
+
+d : Conf -> ( Crumbs, List (Html Msg) )
+ -> Html Msg
 d conf ( crumbs, list ) =
   let
     thecrumbs =
-      case conf.crumbs of
-        True  -> ViewUtil.breadcrumber crumbs
-        False -> []
+      ViewUtil.breadcrumber crumbs
   in
     div [ class conf.classes ] (thecrumbs ++ list)

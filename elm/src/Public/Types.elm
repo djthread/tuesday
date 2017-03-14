@@ -2,6 +2,7 @@ module Types exposing (..)
 
 import Json.Encode as JE
 import Phoenix.Socket
+import Html exposing (Html)
 import Navigation exposing (Location)
 import Chat.Types
 import Data.Types
@@ -23,8 +24,16 @@ type Msg
   | SocketInitialized
   | NoOp
 
+type NavSection
+  = Shows
+  | Events
+  | Episodes
+  | About
+  | None
+
 type alias Model =
   { route    : Routing.Route
+  , section  : NavSection
   , loading  : Int
   , idSocket : IDSocket
   , chat     : Chat.Types.Model

@@ -43,7 +43,7 @@ exports.config = {
   // Phoenix paths configuration
   paths: {
     // Dependencies and current project directories to watch
-    watched: ["static", "css", "js", "vendor"],
+    watched: ["../elm", "static", "css", "js", "vendor"],
 
     // Where to compile files to
     public: "../priv/static"
@@ -52,11 +52,11 @@ exports.config = {
   // Configure your plugins
   plugins: {
     elmBrunch: {
-      elmFolder: "elm",
+      elmFolder: "../elm",
       mainModules: ["src/Public/Public.elm"],
-      outputFolder: "../vendor",
+      outputFolder: "../assets/vendor",
       outputFile: "elm.js",
-      executablePath: "../node_modules/elm/binwrappers"
+      executablePath: "../assets/node_modules/elm/binwrappers"
     },
     uglify: {
       global_defs: {

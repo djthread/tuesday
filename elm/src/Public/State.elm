@@ -23,30 +23,36 @@ init location =
   let
     route =
       parseLocation location
-    routeCmd =
-      StateUtil.routeCmd route
+    data =
+      Data.State.init
     ( idSocket, phxCmd ) =
       StateUtil.initSocket
     ( chatModel, chatCmd ) =
       Chat.State.init
-  in
-    ( { route    = route
+    ( section, routeCmd ) =
+      StateUtil.routeCmd
+        route data.shows data.events data.episodes
+    model =
+      { route    = route
+      , section  = section
       , loading  = 0
       , idSocket = idSocket
       , chat     = chatModel
-      , data     = Data.State.init
+      , data     = data
       , photo    = Photo.State.init
       , player   = { track = Nothing }
       , video    = False
       , defer    = Defer.init []
       }
-    , Cmd.batch
+    cmd =
+      Cmd.batch
         [ phxCmd
         , chatCmd
         , routeCmd
         , Port.getChatName "fo srs"
         ]
-    )
+  in
+    ( model, cmd )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -60,12 +66,15 @@ update msg model =
             (Dom.Scroll.toTop "body")
         model1 =
           { model | route = parseLocation location }
-        routeCmd =
-          StateUtil.routeCmd model1.route
+        ( section, routeCmd ) =
+          StateUtil.routeCmd
+            model.route model.data.shows
+            model.data.events model.data.episodes
         ( model2, initCmd ) =
           initPage model1
       in
-        model2 ! [topCmd, routeCmd, initCmd]
+        { model2 | section = section }
+        ! [topCmd, routeCmd, initCmd]
 
     NavigateTo url ->
       ( model, Navigation.newUrl url )
