@@ -27,9 +27,11 @@ root playerModel conf shows listing =
           case conf.only of
             Nothing -> listing.entries
             Just n  -> List.take n listing.entries
+        episodeBuilder =
+          buildEpisode conf.linkTitle playerModel shows
       in
         if List.length(entries) > 0 then
-          List.map (buildEpisode playerModel shows) entries
+          List.map episodeBuilder entries
           ++ pager
         else
           [ div [] [ text "no episodes" ] ]
@@ -37,21 +39,26 @@ root playerModel conf shows listing =
     [ div [ class "episode-list" ] content ]
 
 
-buildEpisode : PlayerModel -> List Show -> Episode -> Html Msg
-buildEpisode playerModel shows episode =
+buildEpisode : Bool -> PlayerModel -> List Show -> Episode
+            -> Html Msg
+buildEpisode linkTitle playerModel shows episode =
   let
     show =
       Data.Types.findShow shows episode.show_id
     content =
       case show of
-        Just s  -> actuallyBuildEpisode playerModel s episode
-        Nothing -> []
+        Just s  ->
+          actuallyBuildEpisode
+            linkTitle playerModel s episode
+        Nothing ->
+          []
   in
     div [ class "episode" ] content
 
 
-actuallyBuildEpisode : PlayerModel -> Show -> Episode -> List (Html Msg)
-actuallyBuildEpisode playerModel show episode =
+actuallyBuildEpisode : Bool -> PlayerModel -> Show -> Episode
+                    -> List (Html Msg)
+actuallyBuildEpisode linkTitle playerModel show episode =
   let
     description =
       if not (String.isEmpty episode.description) then
@@ -71,14 +78,22 @@ actuallyBuildEpisode playerModel show episode =
         Nothing -> ""
         Just track ->
           if track.src == epUrl then " active" else ""
+    titleContent =
+      let
+        num =
+          [ span [ class "num" ]
+              [ text (toString episode.number ++ ". ") ]
+          ]
+        title =
+          [ text episode.title ]
+        anchor =
+          [ a [ href (Routing.episodeUrl show episode) ] title ]
+      in
+        case linkTitle of
+          True  -> num ++ anchor
+          False -> num ++ title
   in
-    [ h3 [ class "title" ]
-        [ span [ class "num" ]
-            [ text (toString episode.number ++ ". ")
-            ]
-        , a [ href (Routing.episodeUrl show episode) ]
-            [ text episode.title ]
-        ]
+    [ h3 [ class "title" ] titleContent
     , div [ class "colorbox" ]
         [ p [ class "showname" ]
             [ text show.name ]

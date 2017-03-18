@@ -12,7 +12,11 @@ root model slug epSlug =
     ( maybeShow, maybeEpisodes, content ) =
       PagerViewUtil.buildEpisodeList
         model.data model.player slug 0
-        { paginate = False, show = Nothing, only = Nothing }
+        { paginate = False
+        , show = Nothing
+        , only = Nothing
+        , linkTitle = False
+        }
     crumbs =
       PagerViewUtil.buildCrumbs Episodes maybeShow 0
   in

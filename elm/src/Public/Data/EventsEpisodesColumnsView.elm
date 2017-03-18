@@ -44,7 +44,9 @@ root model player slug moreEventsUrl moreEpisodesUrl =
             model slug 1
             { paginate = False
             , show = Nothing
-            , only = Just 5 }
+            , only = Just 5
+            , linkTitle = True
+            }
       in
         content
     episodeList =
@@ -54,7 +56,9 @@ root model player slug moreEventsUrl moreEpisodesUrl =
             model player slug 1
             { paginate = False
             , show = Nothing
-            , only = Just 5 }
+            , only = Just 5
+            , linkTitle = True
+            }
       in
         content
   in

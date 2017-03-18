@@ -25,9 +25,11 @@ root conf shows listing =
           case conf.only of
             Nothing -> listing.entries
             Just n  -> List.take n listing.entries
+        eventBuilder =
+          buildEvent conf.linkTitle shows
       in
         if List.length(entries) > 0 then
-          List.map (buildEvent shows) entries
+          List.map eventBuilder entries
           ++ pager
         else
           [ div [] [ text "no events" ] ]
@@ -35,8 +37,8 @@ root conf shows listing =
     [ div [ class "event-list" ] content ]
 
 
-buildEvent : List Show -> Event -> Html Msg
-buildEvent shows event =
+buildEvent : Bool -> List Show -> Event -> Html Msg
+buildEvent linkTitle shows event =
   let
     maybeShow =
       Data.Types.findShow shows event.show_id
@@ -46,13 +48,13 @@ buildEvent shows event =
           [ text "Sumn broke.." ]
 
         Just show ->
-          actuallyBuildEvent show event
+          actuallyBuildEvent linkTitle show event
   in
     div [ class "event" ] content
 
 
-actuallyBuildEvent : Show -> Event -> List (Html Msg)
-actuallyBuildEvent show event =
+actuallyBuildEvent : Bool -> Show -> Event -> List (Html Msg)
+actuallyBuildEvent linkTitle show event =
   let
     happens_on =
       formatDate event.happens_on
@@ -70,11 +72,17 @@ actuallyBuildEvent show event =
         [ div [ class "description" ] [ text event.description ] ]
       else
         []
+    titleContent =
+      let
+        title = [ text event.title ]
+      in
+        case linkTitle of
+          True ->
+            [ a [ href (eventUrl show event) ] title ]
+          False ->
+            title
   in
-    [ h3 []
-        [ a [ href (eventUrl show event) ]
-            [ text event.title ]
-        ]
+    [ h3 [] titleContent
     , div [ class "colorbox" ]
       [ p [ class "showname" ] [ text show.name ]
       , p [ class "stamp" ] [ text happens_on ]

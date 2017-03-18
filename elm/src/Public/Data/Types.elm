@@ -93,9 +93,10 @@ type alias Episode =
   }
 
 type alias ListConfig =
-  { paginate : Bool
-  , show     : Maybe Show
-  , only     : Maybe Int
+  { paginate  : Bool
+  , show      : Maybe Show
+  , only      : Maybe Int
+  , linkTitle : Bool
   }
 
 

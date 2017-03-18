@@ -10,7 +10,11 @@ root model slug page =
     ( maybeShow, _, content ) =
       PagerViewUtil.buildEpisodeList
         model.data model.player slug page
-        { paginate = True, show = Nothing, only = Nothing }
+        { paginate = True
+        , show = Nothing
+        , only = Nothing
+        , linkTitle = True
+        }
     crumbs =
       PagerViewUtil.buildCrumbs Episodes maybeShow page
   in

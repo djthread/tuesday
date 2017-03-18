@@ -15,6 +15,7 @@ root model slug page =
         { paginate = True
         , show = Nothing
         , only = Nothing
+        , linkTitle = True
         }
     crumbs =
       PagerViewUtil.buildCrumbs

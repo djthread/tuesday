@@ -12,7 +12,11 @@ root model slug evSlug =
     ( maybeShow, maybeEvents, content ) =
       PagerViewUtil.buildEventList
         model.data slug 0
-        { paginate = False, show = Nothing, only = Nothing }
+        { paginate = False
+        , show = Nothing
+        , only = Nothing
+        , linkTitle = False
+        }
     crumbs =
       PagerViewUtil.buildCrumbs Events maybeShow 0
   in
