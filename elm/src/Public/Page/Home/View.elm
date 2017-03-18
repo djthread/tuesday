@@ -61,8 +61,8 @@ build model =
   ]
   ++ Photo.WidgetView.root model.photo
   ++ Data.EventsEpisodesColumnsView.root model.data model.player ""
-      (Routing.eventsUrl Nothing 1)
-      (Routing.episodesUrl Nothing 1)
+      (Routing.eventsUrl 1)
+      (Routing.episodesUrl 1)
 
 
 thevideo : Model -> Html Msg

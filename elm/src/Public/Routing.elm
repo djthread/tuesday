@@ -51,24 +51,36 @@ parseLocation location =
       NotFoundRoute
 
 
-episodesUrl : Maybe Show -> Int -> String
-episodesUrl maybeShow page =
+episodesUrl : Int -> String
+episodesUrl page =
+  "#episodes/" ++ (toString page)
+
+showEpisodesUrl : Show -> Int -> String
+showEpisodesUrl show page =
+  "#shows/" ++ show.slug
+    ++ "/episodes/" ++ (toString page)
+
+maybeShowEpisodesUrl : Maybe Show -> Int -> String
+maybeShowEpisodesUrl maybeShow page =
   case maybeShow of
-    Just show ->
-      "#shows/" ++ show.slug
-        ++ "/episodes/" ++ (toString page)
-    Nothing ->
-      "#episodes/" ++ (toString page)
+    Just show -> showEpisodesUrl show page
+    Nothing   -> episodesUrl page
 
 
-eventsUrl : Maybe Show -> Int -> String
-eventsUrl maybeShow page =
+eventsUrl : Int -> String
+eventsUrl page =
+  "#events/" ++ (toString page)
+
+showEventsUrl : Show -> Int -> String
+showEventsUrl show page =
+  "#shows/" ++ show.slug
+    ++ "/events/" ++ (toString page)
+
+maybeShowEventsUrl : Maybe Show -> Int -> String
+maybeShowEventsUrl maybeShow page =
   case maybeShow of
-    Just show ->
-      "#shows/" ++ show.slug
-        ++ "/events/" ++ (toString page)
-    Nothing ->
-      "#events/" ++ (toString page)
+    Just show -> showEventsUrl show page
+    Nothing   -> eventsUrl page
 
 
 showUrl : String -> String

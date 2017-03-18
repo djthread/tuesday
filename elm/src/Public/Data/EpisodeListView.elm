@@ -18,7 +18,7 @@ root playerModel conf shows listing =
     pager =
       if conf.paginate && listing.pager.totalPages > 1 then
         ViewUtil.paginator
-          (Routing.episodesUrl conf.show)
+          (Routing.maybeShowEpisodesUrl conf.show)
           listing.pager
       else []
     content =

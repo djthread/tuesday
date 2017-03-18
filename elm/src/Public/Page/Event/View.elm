@@ -14,6 +14,6 @@ root model slug evSlug =
         model.data slug 0
         { paginate = False, show = Nothing, only = Nothing }
     crumbs =
-      PagerViewUtil.buildCrumbs maybeShow 0
+      PagerViewUtil.buildCrumbs Events maybeShow 0
   in
     ( crumbs, content )

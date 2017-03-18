@@ -18,10 +18,6 @@ import Routing exposing (..)
 import TypeUtil exposing (RemoteData(Loaded))
 
 
--- type ViewType
---   = Episodes
---   | Events
-
 
 setup : RemoteData (List Data.Types.Show) -> String -> Int
      -> Data.Types.ListConfig
@@ -80,18 +76,34 @@ buildEventList dataModel slug page conf =
     ( conf2.show, events, content )
 
 
-buildCrumbs : Maybe Data.Types.Show -> Int -> Crumbs
-buildCrumbs maybeShow page =
+buildCrumbs : NavSection
+           -> Maybe Data.Types.Show -> Int
+           -> Crumbs
+buildCrumbs navSection maybeShow page =
   case maybeShow of
-    Just show -> crumbs show page
-    Nothing   -> genericCrumbs page
+    Just show ->
+      let
+        crumb =
+          case navSection of
+            Episodes -> ("Episodes", showEpisodesUrl show 1)
+            _        -> ("Events",   showEventsUrl   show 1)
+      in
+        showCrumbs crumb show page
+
+    Nothing ->
+      let
+        crumb =
+          case navSection of
+            Episodes -> ("Episodes", "#episodes")
+            _        -> ("Events",   "#events")
+      in
+        genericCrumbs crumb page
 
 
-crumbs : Data.Types.Show -> Int -> Crumbs
-crumbs show page =
-  [ (show.name, showUrl show.slug)
-  , ("Episodes", episodesUrl (Just show) 1)
-  ]
+showCrumbs : Crumb -> Data.Types.Show -> Int -> Crumbs
+showCrumbs crumb show page =
+  [( show.name, showUrl show.slug )]
+  ++ [crumb]
   ++ pageCrumb page
 
 
@@ -102,10 +114,7 @@ pageCrumb page =
     [("Page " ++ toString page, "")]
 
 
-genericCrumbs : Int -> Crumbs
-genericCrumbs page =
-  let
-    ep = [ ("Episodes", "#episodes") ]
-  in
-    if page == 1 then ep else
-      ep ++ pageCrumb page
+genericCrumbs : Crumb -> Int -> Crumbs
+genericCrumbs crumb page =
+  if page == 1 then [crumb] else
+    [crumb] ++ pageCrumb page
