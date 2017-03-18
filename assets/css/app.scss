@@ -136,7 +136,7 @@ header.navbar a.btn-link {
 }
 
 header.navbar {
-    a.btn-link:hover, header.navbar a.active.btn-link {
+    a.btn-link:hover, a.active.btn-link {
         border-bottom: 3px solid $primary-color;
     }
     a.btn-link:hover {
