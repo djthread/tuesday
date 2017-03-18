@@ -135,8 +135,10 @@ header.navbar a.btn-link {
     border-bottom: 3px solid transparent;
 }
 
-header.navbar a.btn-link:hover {
+header.navbar a.btn-link:hover, header.navbar a.active.btn-link {
     border-bottom: 3px solid $primary-color;
+}
+header.navbar a.btn-link:hover {
     color: lighten($primary-color, 15%);
 }
 

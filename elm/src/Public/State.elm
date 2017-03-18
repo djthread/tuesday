@@ -66,15 +66,10 @@ update msg model =
             (Dom.Scroll.toTop "body")
         model1 =
           { model | route = parseLocation location }
-        ( section, routeCmd ) =
-          StateUtil.routeCmd
-            model.route model.data.shows
-            model.data.events model.data.episodes
         ( model2, initCmd ) =
           initPage model1
       in
-        { model2 | section = section }
-        ! [topCmd, routeCmd, initCmd]
+        model2 ! [topCmd, initCmd]
 
     NavigateTo url ->
       ( model, Navigation.newUrl url )
@@ -191,6 +186,21 @@ subscriptions model =
 
 initPage : Model -> ( Model, Cmd Msg )
 initPage model =
+  let
+    ( model1, cmd1 ) =
+      doInitPage model
+    ( section, routeCmd ) =
+      StateUtil.routeCmd
+        model1.route model1.data.shows
+        model1.data.events model1.data.episodes
+      |> Debug.log "sectioroutecmd"
+  in
+    { model1 | section = section }
+    ! [cmd1, routeCmd]
+
+
+doInitPage : Model -> ( Model, Cmd Msg )
+doInitPage model =
   case model.route of
     HomeRoute ->
       updateMap model

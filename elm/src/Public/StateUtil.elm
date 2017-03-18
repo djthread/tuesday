@@ -36,10 +36,12 @@ routeCmd route rdShows rdEvents rdEpisodes =
           ( Shows, showBit slug )
         EpisodesRoute page ->
           ( Episodes
-          , "Episodes p." ++ (toString page) )
+          , "Episodes p." ++ (toString page) ++ " : "
+          )
         EventsRoute page ->
           ( Events
-          , "Events p." ++ (toString page) )
+          , "Events p." ++ (toString page) ++ " : "
+          )
         ShowEpisodesRoute slug page ->
           ( Shows
           , "Episodes p ." ++ (toString page)
