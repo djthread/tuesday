@@ -170,5 +170,5 @@ receiveData name decoder raw model idSocket happyFn =
     Err error ->
       let
         _ = Debug.log (name ++ " Error") error
-        cmd = Navigation.newUrl "#404"
+        cmd = Navigation.modifyUrl "#404"
       in ( model, cmd, idSocket )

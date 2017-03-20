@@ -42,7 +42,8 @@ build : Slug -> Model -> ShowScreen -> Show
      -> List (Html Msg)
 build slug model screen show =
   let
-    tabs = tabber slug screen
+    tabs =
+      tabber slug screen
     listings =
       Data.EventsEpisodesColumnsView.root
         model.data model.player show.slug

@@ -4,7 +4,7 @@ import Routing exposing (parseLocation, Route, Route(..))
 import Types exposing (..)
 import Data.Types
 import Photo.Types
-import Navigation exposing (Location, newUrl)
+import Navigation exposing (Location)
 import Dom.Scroll
 import Port
 import Chat.State
@@ -254,7 +254,7 @@ doInitPage model =
 
 goto : Model -> String -> ( Model, Cmd Msg )
 goto model url =
-  ( model, Navigation.newUrl url )
+  ( model, Navigation.modifyUrl url )
 
 
 updateMap : Model -> List (Model -> ( Model, Cmd Msg ))
