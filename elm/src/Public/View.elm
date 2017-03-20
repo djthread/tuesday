@@ -42,7 +42,9 @@ render model =
 
     ShowRoute slug ->
       d (Conf "page page-show")
-        (Page.Show.View.root slug model)
+        ( Page.Show.View.root slug model
+          Page.Show.View.Home
+        )
 
     EpisodesRoute page ->
       d (Conf "page page-episodes")
@@ -79,6 +81,9 @@ render model =
     LegacyPodcastRoute _ _ ->
       d (Conf "Page page-notfound")
         (Page.NotFound.View.root model)
+
+    _ ->
+      d (Conf "") ( [], [] )
 
 
 d : Conf -> ( Crumbs, List (Html Msg) )

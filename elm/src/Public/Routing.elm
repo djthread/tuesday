@@ -10,6 +10,8 @@ type Route
   = HomeRoute
   | ShowsRoute
   | ShowRoute String
+  | EpisodesRedirectorRoute
+  | EventsRedirectorRoute
   | EpisodesRoute Int
   | EventsRoute Int
   | ShowEpisodesRoute String Int
@@ -18,6 +20,8 @@ type Route
   | EpisodeRoute String String
   | AboutRoute
   | NotFoundRoute
+  | ShowEpisodesRedirectorRoute String
+  | ShowEventsRedirectorRoute String
   | LegacyPodcastRoute String String
 
 
@@ -27,11 +31,13 @@ matchers =
     [ map HomeRoute top
     , map ShowsRoute (s "shows")
     , map ShowRoute (s "shows" </> string)
-    , map (EpisodesRoute 1) (s "episodes")
+    , map EpisodesRedirectorRoute (s "episodes")
     , map EpisodesRoute (s "episodes" </> int)
-    , map (EventsRoute 1) (s "events")
+    , map EventsRedirectorRoute (s "events")
     , map EventsRoute (s "events" </> int)
+    , map ShowEpisodesRedirectorRoute (s "shows" </> string </> s "episodes")
     , map ShowEpisodesRoute (s "shows" </> string </> s "episodes" </> int)
+    , map ShowEventsRedirectorRoute (s "shows" </> string </> s "events")
     , map ShowEventsRoute (s "shows" </> string </> s "events" </> int)
     , map EpisodeRoute (s "shows" </> string </> s "episodes" </> string)
     , map EventRoute (s "shows" </> string </> s "events" </> string)

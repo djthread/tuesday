@@ -41,7 +41,7 @@ buildMarkdown =
 
   ## Why?
 
-  Hi! I'm Adam Bellinson, and I am a drum & bass addict. Having mixed the genre, exclusively, since 2005, I decided to continue a weekly show some friends were throwing, but had lost the venue for. I've been hosting Techno Tuesday at the Urban Bean since January 2015.
+  Hi! I'm Adam Bellinson, and I am a drum & bass addict. Having mixed the genre, exclusively, since 2005, I decided to continue a weekly show some friends were throwing, but had lost the venue for. I've been hosting [Techno Tuesday](#/shows/techno-tuesday) at the Urban Bean since January 2015.
 
   In January 2016, I had a Rocket Fiber internet connection installed to my home. In thinking of new applications for my symmetric 1 Gb/s connection, I soon launched a website to host Techno Tuesday. A couple months later, we've launched Impulse Detroit -- a group of internet shows, dedicated to bringing quality choonage to your ear-holes.
 

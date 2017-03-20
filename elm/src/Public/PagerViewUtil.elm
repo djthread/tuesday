@@ -80,24 +80,32 @@ buildCrumbs : NavSection
            -> Maybe Data.Types.Show -> Int
            -> Crumbs
 buildCrumbs navSection maybeShow page =
-  case maybeShow of
-    Just show ->
-      let
-        crumb =
-          case navSection of
-            Episodes -> ("Episodes", showEpisodesUrl show 1)
-            _        -> ("Events",   showEventsUrl   show 1)
-      in
-        showCrumbs crumb show page
+  let
+    pgOneOr str =
+      if page == 1 then "" else str
+  in
+    case maybeShow of
+      Just show ->
+        let
+          crumb =
+            case navSection of
+              Episodes ->
+                ( "Episodes", pgOneOr (showEpisodesUrl show 1) )
+              _ ->
+                ( "Events", pgOneOr (showEventsUrl show 1) )
+        in
+          showCrumbs crumb show page
 
-    Nothing ->
-      let
-        crumb =
-          case navSection of
-            Episodes -> ("Episodes", "#episodes")
-            _        -> ("Events",   "#events")
-      in
-        genericCrumbs crumb page
+      Nothing ->
+        let
+          crumb =
+            case navSection of
+              Episodes ->
+                ( "Episodes", pgOneOr "#episodes" )
+              _ ->
+                ( "Events", pgOneOr "#events" )
+        in
+          genericCrumbs crumb page
 
 
 showCrumbs : Crumb -> Data.Types.Show -> Int -> Crumbs

@@ -30,6 +30,7 @@ buildShowList shows =
     [ day "Monday"  [ getShow "sub-therapy-radio" |> buildShow ]
     , day "Tuesday" [ getShow "techno-tuesday"    |> buildShow ]
     , day "Friday"  [ getShow "wobblehead-radio"  |> buildShow ]
+    , day "Also,"   [ getShow "specials"          |> buildShow ]
     ]
 
 

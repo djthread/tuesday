@@ -233,15 +233,28 @@ doInitPage model =
     EpisodeRoute slug epSlug ->
       dataUpdate (Data.Types.FetchEpisode slug epSlug) model
 
+    EpisodesRedirectorRoute ->
+      goto model "#episodes/1"
+
+    EventsRedirectorRoute ->
+      goto model "#events/1"
+
+    ShowEpisodesRedirectorRoute slug ->
+      goto model ("#shows/" ++ slug ++ "/episodes/1")
+
+    ShowEventsRedirectorRoute slug ->
+      goto model ("#shows/" ++ slug ++ "/events/1")
+
     LegacyPodcastRoute slug epSlug ->
-      let
-        url =
-          ("#shows/" ++ slug ++ "/episodes/" ++ epSlug)
-      in
-        ( model, Navigation.newUrl url )
+      goto model ("#shows/" ++ slug ++ "/episodes/" ++ epSlug)
 
     _ ->
       ( model, Cmd.none )
+
+
+goto : Model -> String -> ( Model, Cmd Msg )
+goto model url =
+  ( model, Navigation.newUrl url )
 
 
 updateMap : Model -> List (Model -> ( Model, Cmd Msg ))
