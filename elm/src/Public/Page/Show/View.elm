@@ -9,6 +9,7 @@ import TypeUtil exposing (RemoteData(Loaded))
 import ViewUtil
 import Page.Show.ViewUtil exposing (tabber, ShowScreen(HomeScreen))
 import Routing
+import Markdown
 
 
 
@@ -22,23 +23,28 @@ root slug model =
           case findShowBySlug shows slug of
             Just show ->
               ( [( show.name, "" )]
-              , build slug model show
+              , build slug model show showDetail
               )
             _ -> ViewUtil.wait
         _ -> ViewUtil.wait
     _ -> ViewUtil.wait
 
 
-build : Slug -> Model -> Show
+build : Slug -> Model -> Show -> ShowDetail
      -> List (Html Msg)
-build slug model show =
+build slug model show detail =
   let
     tabs =
       tabber slug HomeScreen
+    shortInfo =
+      [ Markdown.toHtml
+          [ class "the-show-short" ]
+          detail.shortInfo
+      ]
     listings =
       Data.EventsEpisodesColumnsView.root
         model.data model.player show.slug
         (Routing.showEventsUrl show 1)
         (Routing.showEpisodesUrl show 1)
   in
-    tabs ++ listings
+    tabs ++ shortInfo ++ listings
