@@ -253,6 +253,8 @@ div.chat {
 
 h2 {
     font-size: 160%;
+    color: #999;
+    padding-bottom: 0.5rem;
     // margin-bottom
     // margin: 0 0 1rem 0;
 }
@@ -369,6 +371,7 @@ div.episode-list div.episode {
 }
 
 footer.container {
+    clear: both;
     padding: 3em 1em;
     line-height: 1.5em;
 
@@ -467,6 +470,10 @@ div.page-shows {
     }
 }
 
+img.righty {
+    float: right;
+    margin: 0 0 0.5rem 0.5rem;
+}
 
 
 // .btn { font-size: 1.6rem; }
