@@ -265,6 +265,16 @@ h3 {
     color: #fff;
 }
 
+/*
+li.tab-item a {
+    background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.0));
+}
+*/
+
+li.tab-item a:hover {
+    background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.3));
+}
+
 @mixin card {
     background-color: $contentbg-color;
     padding: 0.7em 0.75em;
@@ -467,6 +477,15 @@ div.page-shows {
                 color: #fff;
             }
         }
+    }
+}
+
+div.page-info {
+    h3 {
+        margin: 1.5rem 0 0.5rem 0;
+    }
+    div.the-show-info {
+        padding: 0 2rem 1rem 2rem;
     }
 }
 

@@ -1,4 +1,4 @@
-module Page.About.View exposing (..)
+module Page.About.View exposing (root)
 
 import Html exposing (Html, div, p, a, text, footer, img)
 import Html.Attributes exposing (class, href, alt, src )
@@ -10,7 +10,7 @@ root : Model -> ( Crumbs, List (Html Msg) )
 root model =
   let
     crumbs =
-      [("About", "#about")]
+      [("About", "")]
   in
     ( crumbs, build )
 

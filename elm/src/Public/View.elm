@@ -8,6 +8,9 @@ import Routing exposing (Route(..))
 import Page.Home.View
 import Page.Shows.View
 import Page.Show.View
+import Page.Show.Episodes.View
+import Page.Show.Events.View
+import Page.Show.Info.View
 import Page.Episodes.View
 import Page.Events.View
 import Page.Episode.View
@@ -16,6 +19,7 @@ import Page.About.View
 import Page.NotFound.View
 import Layout
 import ViewUtil
+import Page.Show.ViewUtil exposing (ShowScreen(..))
 
 
 type alias Conf =
@@ -42,25 +46,27 @@ render model =
 
     ShowRoute slug ->
       d (Conf "page page-show")
-        ( Page.Show.View.root slug model
-          Page.Show.View.Home
-        )
+        (Page.Show.View.root slug model)
 
     EpisodesRoute page ->
       d (Conf "page page-episodes")
-        (Page.Episodes.View.root model "" page)
+        (Page.Episodes.View.root model page)
 
     EventsRoute page ->
       d (Conf "page page-events")
-        (Page.Events.View.root model "" page)
+        (Page.Events.View.root model page)
 
     ShowEpisodesRoute slug page ->
       d (Conf "page page-episodes")
-        (Page.Episodes.View.root model slug page)
+        (Page.Show.Episodes.View.root model slug page)
 
     ShowEventsRoute slug page ->
       d (Conf "page page-events")
-        (Page.Events.View.root model slug page)
+        (Page.Show.Events.View.root model slug page)
+
+    ShowInfoRoute slug ->
+      d (Conf "page page-info")
+        (Page.Show.Info.View.root model slug)
 
     EventRoute slug evSlug ->
       d (Conf "page page-event")

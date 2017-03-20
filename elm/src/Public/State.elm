@@ -193,7 +193,6 @@ initPage model =
       StateUtil.routeCmd
         model1.route model1.data.shows
         model1.data.events model1.data.episodes
-      |> Debug.log "sectioroutecmd"
   in
     { model1 | section = section }
     ! [cmd1, routeCmd]
@@ -226,6 +225,9 @@ doInitPage model =
 
     ShowEventsRoute slug page ->
       dataUpdate (Data.Types.FetchShowEvents slug page) model
+
+    ShowInfoRoute slug ->
+      dataUpdate (Data.Types.FetchShowDetail slug) model
 
     EventRoute slug evSlug ->
       dataUpdate (Data.Types.FetchEvent slug evSlug) model

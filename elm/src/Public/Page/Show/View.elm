@@ -1,4 +1,4 @@
-module Page.Show.View exposing (root, ShowScreen(..))
+module Page.Show.View exposing (root)
 
 import Html exposing (Html, text, ul, li, a)
 import Html.Attributes exposing (class, href)
@@ -7,19 +7,14 @@ import Data.Types exposing (Slug, Show, ShowDetail, findShowBySlug)
 import Data.EventsEpisodesColumnsView
 import TypeUtil exposing (RemoteData(Loaded))
 import ViewUtil
+import Page.Show.ViewUtil exposing (tabber, ShowScreen(HomeScreen))
 import Routing
 
 
-type ShowScreen
-  = Home
-  | Episodes
-  | Events
-  | Info
 
-
-root : String -> Model -> ShowScreen
+root : String -> Model
     -> ( Crumbs, List (Html Msg) )
-root slug model screen =
+root slug model =
   case model.data.shows of
     Loaded shows ->
       case model.data.showDetail of
@@ -27,23 +22,19 @@ root slug model screen =
           case findShowBySlug shows slug of
             Just show ->
               ( [( show.name, "" )]
-              , build slug model screen show
+              , build slug model show
               )
-            _ -> waiting
-        _ -> waiting
-    _ -> waiting
+            _ -> ViewUtil.wait
+        _ -> ViewUtil.wait
+    _ -> ViewUtil.wait
 
 
-waiting : ( Crumbs, List (Html Msg) )
-waiting = ( [], [ ViewUtil.waiting ] )
-
-
-build : Slug -> Model -> ShowScreen -> Show
+build : Slug -> Model -> Show
      -> List (Html Msg)
-build slug model screen show =
+build slug model show =
   let
     tabs =
-      tabber slug screen
+      tabber slug HomeScreen
     listings =
       Data.EventsEpisodesColumnsView.root
         model.data model.player show.slug
@@ -51,28 +42,3 @@ build slug model screen show =
         (Routing.showEpisodesUrl show 1)
   in
     tabs ++ listings
-
-
-tabber : Slug -> ShowScreen -> List (Html Msg)
-tabber slug screen =
-  let
-    showUrl =
-      "#shows/" ++ slug
-    items =
-      [ ( "Home", showUrl, Home )
-      , ( "Episodes", showUrl ++ "/episodes", Episodes )
-      , ( "Events", showUrl ++ "/events", Events )
-      , ( "Info", showUrl ++ "/info", Info )
-      ]
-        |> List.map mapfunc
-    mapfunc ( name, url, curscreen ) =
-      let
-        bit =
-          case curscreen == screen of
-            True  -> " active"
-            False -> ""
-      in
-        li [ class ("tab-item" ++ bit) ]
-          [ a [ href url ] [ text name ] ]
-  in
-    [ ul [ class "tab tab-block" ] items ]

@@ -50,6 +50,8 @@ routeCmd route rdShows rdEvents rdEpisodes =
           ( Events
           , "Events p ." ++ (toString page)
             ++ " : " ++ showBit slug )
+        -- ShowInfoRoute slug ->
+        --   ( Shows
         EventRoute slug evSlug ->
           let
             evBit =

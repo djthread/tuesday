@@ -5,13 +5,13 @@ import Html.Attributes exposing (class)
 import Types exposing (..)
 import PagerViewUtil
 
-root : Model -> String -> Int
+root : Model -> Int
     -> ( Crumbs, List (Html Msg) )
-root model slug page =
+root model page =
   let
     ( maybeShow, _, content ) =
       PagerViewUtil.buildEventList
-        model.data slug page
+        model.data "" page
         { paginate = True
         , show = Nothing
         , only = Nothing

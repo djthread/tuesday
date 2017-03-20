@@ -16,6 +16,9 @@ formatDate date =
   Date.Format.format "%A, %B %d" date
 
 
+wait : ( Crumbs, List (Html Msg) )
+wait = ( [], [ waiting ] )
+
 waiting : Html Msg
 waiting =
   div [ class "loading" ]

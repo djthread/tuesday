@@ -4,6 +4,7 @@ import Navigation exposing (Location)
 import UrlParser exposing (..)
 import Data.Types exposing (Show, Episode, Event)
 import Regex exposing (regex, replace, HowMany(All))
+import Data.Types exposing (Slug)
 
 
 type Route
@@ -16,6 +17,7 @@ type Route
   | EventsRoute Int
   | ShowEpisodesRoute String Int
   | ShowEventsRoute String Int
+  | ShowInfoRoute String
   | EventRoute String String
   | EpisodeRoute String String
   | AboutRoute
@@ -39,6 +41,7 @@ matchers =
     , map ShowEpisodesRoute (s "shows" </> string </> s "episodes" </> int)
     , map ShowEventsRedirectorRoute (s "shows" </> string </> s "events")
     , map ShowEventsRoute (s "shows" </> string </> s "events" </> int)
+    , map ShowInfoRoute (s "shows" </> string </> s "info")
     , map EpisodeRoute (s "shows" </> string </> s "episodes" </> string)
     , map EventRoute (s "shows" </> string </> s "events" </> string)
     , map AboutRoute (s "about")
@@ -89,9 +92,14 @@ maybeShowEventsUrl maybeShow page =
     Nothing   -> eventsUrl page
 
 
-showUrl : String -> String
+showUrl : Slug -> String
 showUrl slug =
   "#shows/" ++ slug
+
+
+showInfoUrl : Slug -> String
+showInfoUrl slug =
+  "#shows/" ++ slug ++ "/info"
 
 
 episodeUrl : Show -> Episode -> String
