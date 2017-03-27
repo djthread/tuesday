@@ -84,12 +84,12 @@ update msg model =
         { model | video = True, defer = deferModel }
         ! [ Cmd.map DeferMsg deferCmd ]
 
-    PlayEpisode url title ->
+    PlayEpisode url episode ->
       let
         player =
           model.player
         track =
-          Just (Track url title)
+          Just (Track url episode)
         cmd =
           Port.playEpisode "x"
         ( deferModel, deferCmd ) =

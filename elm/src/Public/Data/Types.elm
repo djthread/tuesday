@@ -109,6 +109,15 @@ findShow shows show_id =
     List.head maybeOne
 
 
+findShowFromRDList : RemoteData (List Show) -> Int -> Maybe Show
+findShowFromRDList rdShows show_id =
+  case rdShows of
+    Loaded shows ->
+      findShow shows show_id
+    _ ->
+      Nothing
+
+
 findShowBySlug : List Show -> String -> Maybe Show
 findShowBySlug shows slug =
   let

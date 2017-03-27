@@ -19,7 +19,7 @@ type Msg
   | PhotoMsg Photo.Types.Msg
   | EnableVideo
   | ClosePlayer
-  | PlayEpisode String String
+  | PlayEpisode String Data.Types.Episode
   | PhoenixMsg (Phoenix.Socket.Msg Msg)
   | SocketInitialized
   | NoOp
@@ -49,8 +49,8 @@ type alias PlayerModel =
   }
 
 type alias Track =
-  { src   : String
-  , title : String
+  { src     : String
+  , episode : Data.Types.Episode
   }
 
 type alias VideoModel =

@@ -103,7 +103,7 @@ actuallyBuildEpisode linkTitle playerModel show episode =
     ++
     [ div [ class "btn-group btn-group-block" ]
         [ a [ class ("btn btn-sm" ++ active)
-            , ViewUtil.myOnClick (PlayEpisode epUrl episode.filename)
+            , ViewUtil.myOnClick (PlayEpisode epUrl episode)
             ]
             [ ViewUtil.fa "play-circle"
             , text " Listen"

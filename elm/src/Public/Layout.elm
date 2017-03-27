@@ -5,7 +5,9 @@ import Html exposing (Html, Attribute,
 import Html.Attributes exposing (class, href, attribute, title, style, src, type_, id, target)
 -- import Html.Events exposing (onClick)
 import Types exposing (..)
+import Data.Types
 import ViewUtil exposing (fa)
+import Routing
 -- import String exposing (concat)
 -- import Routing exposing (Route(..))
 -- import Page.Home.View
@@ -115,12 +117,24 @@ footerColumn2 =
 player : Model -> Html Msg
 player model =
   let
-    (display, thesrc, thetitle) =
+    nada =
+      ( "none", "", "", "#" )
+    (display, thesrc, thetitle, url) =
       case model.player.track of
         Just track ->
-          ("block", track.src, track.title)
+          let ep = track.episode
+          in
+            case Data.Types.findShowFromRDList model.data.shows ep.show_id of
+              Just show ->
+                let
+                  line = show.name ++ " " ++ toString ep.number ++ " - " ++ ep.title
+                  url = Routing.episodeUrl show ep
+                in
+                  ( "block", track.src, line, url )
+              _ ->
+                nada
         Nothing ->
-          ("none", "", "")
+          nada
   in
     div [ class "dock", style [("display", display)] ]
       [ div [ class "close" ]
@@ -128,8 +142,8 @@ player model =
               [ fa "window-close-o" ]
           ]
       , p []
-          [ text "Now Playing "
-          , span [] [ text thetitle ]
+          [ text "Now Playing: "
+          , a [ href url ] [ text thetitle ]
           ]
       , audio
           [ --attribute "ref" "audio"
