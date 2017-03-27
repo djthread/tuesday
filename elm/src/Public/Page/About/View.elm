@@ -57,5 +57,5 @@ buildMarkdown =
 
   ## The Nerdy
 
-  Because it bears mentioning, a huge impetus for this project has been my own passion to learn the best ways to build websites and other software. [Elixir](http://elixir-lang.org/) is the backend technology that has changed the way I think about software, and [Elm](http://elm-lang.org/) has more recently proven to have a similar affect!
+  Because it bears mentioning, a huge impetus for this project has been my own passion to learn the best ways to build websites and other software. [Elixir](http://elixir-lang.org/) is the backend technology that has changed the way I think about building software, and [Elm](http://elm-lang.org/) has more recently proven to have a similar affect!
   """
