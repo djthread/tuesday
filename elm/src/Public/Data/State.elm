@@ -31,8 +31,8 @@ update msg model socket =
     ReceiveShows raw ->
       receiveData "ReceiveShows" showsDecoder raw model socket
         (\shows ->
-            let model2 = { model | shows = Loaded shows }
-            in  ( model2, Cmd.none, socket )
+          let model2 = { model | shows = Loaded shows }
+          in  ( model2, Cmd.none, socket )
         )
 
     FetchNewStuff ->

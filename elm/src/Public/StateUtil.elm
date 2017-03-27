@@ -44,11 +44,11 @@ routeCmd route rdShows rdEvents rdEpisodes =
           )
         ShowEpisodesRoute slug page ->
           ( Shows
-          , "Episodes p ." ++ (toString page)
+          , "Episodes p." ++ (toString page)
             ++ " : " ++ showBit slug )
         ShowEventsRoute slug page ->
           ( Events
-          , "Events p ." ++ (toString page)
+          , "Events p." ++ (toString page)
             ++ " : " ++ showBit slug )
         -- ShowInfoRoute slug ->
         --   ( Shows
