@@ -127,7 +127,7 @@ player model =
             case Data.Types.findShowFromRDList model.data.shows ep.show_id of
               Just show ->
                 let
-                  line = show.name ++ " " ++ toString ep.number ++ " - " ++ ep.title
+                  line = ep.title ++ " - " ++ show.name ++ " " ++ toString ep.number
                   url = Routing.episodeUrl show ep
                 in
                   ( "block", track.src, line, url )
