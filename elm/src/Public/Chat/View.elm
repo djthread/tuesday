@@ -1,5 +1,6 @@
 module Chat.View exposing (root)
 
+import Date exposing (Date)
 import Date.Format
 import Types exposing (Model, Msg)
 import Chat.Types exposing (Msg(..), Line)
@@ -20,7 +21,8 @@ root model =
     lines =
       case model.chat.lines of
         Just lines ->
-          List.map buildLine lines
+          List.foldl expander ("", []) lines
+            |> Tuple.second
         Nothing ->
           [text ""]
   in
@@ -59,6 +61,30 @@ root model =
               []
           ]
       ]
+
+
+expander : Line
+        -> ( String, List (Html Chat.Types.Msg) )
+        -> ( String, List (Html Chat.Types.Msg) )
+expander line ( lastDate, accList ) =
+  let
+    thisDate =
+      Date.Format.format "%Y%m%d" line.stamp
+    splitter =
+      case thisDate == lastDate of
+        True  -> []
+        False -> [ daySplitter line.stamp ]
+  in
+    ( thisDate, accList ++ splitter ++ [buildLine line] )
+
+
+daySplitter : Date -> Html Chat.Types.Msg
+daySplitter date =
+  let
+    str = Date.Format.format "%A, %b %d" date
+  in
+    div [ class "splitter" ] [ text str ]
+
 
 buildLine : Line -> Html Chat.Types.Msg
 buildLine line =

@@ -78,9 +78,9 @@ defmodule Tuesday.Web.DataChannel do
     |> Repo.one
     |> Repo.preload(episodes: from(ep in Episode, where: ep.number == ^num))
     |> fn
-        (show = %Show{episodes: [ep | _]}) ->
+        show = %Show{episodes: [ep | _]} ->
           render(EpisodeView, "show.json", episode: ep, show: show)
-        (show = %Show{}) ->
+        show = %Show{} ->
           %{}
     end.()
     |> fn(ep) ->
