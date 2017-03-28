@@ -6,7 +6,6 @@ import Types exposing (Model, Msg)
 import Chat.Types exposing (Msg(..), Line)
 import Html exposing (Html, div, text, input, p, span)
 import Html.Attributes exposing (class, value, type_, disabled, placeholder, id)
--- import Html.Events exposing (onInput, onClick)
 import Html.Events exposing (on, onInput, keyCode)
 import Json.Decode as JD
 
@@ -21,8 +20,7 @@ root model =
     lines =
       case model.chat.lines of
         Just lines ->
-          List.foldl expander ("", []) lines
-            |> Tuple.second
+          buildMessages lines
         Nothing ->
           [text ""]
   in
@@ -63,19 +61,41 @@ root model =
       ]
 
 
+buildMessages : List Line -> List (Html Chat.Types.Msg)
+buildMessages lines =
+  let
+    -- endSplitter =
+    --   case List.tail lines of
+    --     Nothing -> []
+    --     Just line ->
+    --       case formatter line.stamp == formatter Date.now of
+    --         True  -> []
+    --         False -> [daySplitter Date.now]
+    lineHtmls =
+      List.foldl expander ("", []) lines
+        |> Tuple.second
+  in
+    -- lineHtmls ++ endSplitter
+    lineHtmls
+
+
 expander : Line
         -> ( String, List (Html Chat.Types.Msg) )
         -> ( String, List (Html Chat.Types.Msg) )
 expander line ( lastDate, accList ) =
   let
     thisDate =
-      Date.Format.format "%Y%m%d" line.stamp
+      formatter line.stamp
     splitter =
       case thisDate == lastDate of
         True  -> []
-        False -> [ daySplitter line.stamp ]
+        False -> [daySplitter line.stamp]
+    htmlList =
+      accList
+      ++ splitter
+      ++ [buildLine line]
   in
-    ( thisDate, accList ++ splitter ++ [buildLine line] )
+    ( thisDate, htmlList )
 
 
 daySplitter : Date -> Html Chat.Types.Msg
@@ -100,3 +120,8 @@ buildLine line =
       , span [ class "content" ]
           [ text line.body ]
       ]
+
+
+formatter : Date -> String
+formatter =
+  Date.Format.format "%Y%m%d"
