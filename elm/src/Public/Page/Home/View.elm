@@ -16,7 +16,8 @@ feedsrc =
 
 infotext : String
 infotext =
-  "Impulse Detroit is a ring of recurring DJ events around the city. Tune in live for the video, or subscribe and listen to the podcasts."
+  "Impulse Detroit is a ring of recurring DJ events around the city. "
+  ++ "Tune in live for the video, or subscribe and listen to the podcasts."
 
 
 root : Model -> ( Crumbs, List (Html Msg) )

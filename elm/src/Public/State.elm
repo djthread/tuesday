@@ -49,7 +49,6 @@ init location =
         [ phxCmd
         , chatCmd
         , routeCmd
-        , Port.getChatName "fo srs"
         ]
   in
     ( model, cmd )

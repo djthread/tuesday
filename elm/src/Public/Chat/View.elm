@@ -19,10 +19,8 @@ root model =
         _  -> False
     lines =
       case model.chat.lines of
-        Just lines ->
-          buildMessages lines
-        Nothing ->
-          [text ""]
+        Just lines -> buildMessages lines
+        Nothing -> [ text "" ]
   in
     div [ class "chat" ]
       [ div [ class "messages-outer" ]
@@ -31,7 +29,7 @@ root model =
               , id "chat-messages"
               ]
               lines
-      ]
+          ]
       , div [ class "inputs" ]
           [ input
               [ class "name"
@@ -51,32 +49,15 @@ root model =
                   (JD.map OnKeyPress keyCode)
               ]
               []
-          , input
-              [ type_ "submit"
-              -- , onClick Shout
-              , class "submit"
-              ]
-              []
+          , input [ type_ "submit", class "submit" ] []
           ]
       ]
 
 
 buildMessages : List Line -> List (Html Chat.Types.Msg)
 buildMessages lines =
-  let
-    -- endSplitter =
-    --   case List.tail lines of
-    --     Nothing -> []
-    --     Just line ->
-    --       case formatter line.stamp == formatter Date.now of
-    --         True  -> []
-    --         False -> [daySplitter Date.now]
-    lineHtmls =
-      List.foldl expander ("", []) lines
-        |> Tuple.second
-  in
-    -- lineHtmls ++ endSplitter
-    lineHtmls
+  List.foldl expander ("", []) lines
+    |> Tuple.second
 
 
 expander : Line
@@ -85,7 +66,7 @@ expander : Line
 expander line ( lastDate, accList ) =
   let
     thisDate =
-      formatter line.stamp
+      Date.Format.format "%Y%m%d" line.stamp
     splitter =
       case thisDate == lastDate of
         True  -> []
@@ -109,19 +90,10 @@ daySplitter date =
 buildLine : Line -> Html Chat.Types.Msg
 buildLine line =
   let
-    stamp =
-      Date.Format.format "%l:%M%P" line.stamp
+    stamp = Date.Format.format "%l:%M%P" line.stamp
   in
     div [ class "line"]
-      [ span [ class "stamp" ]
-          [ text stamp ]
-      , span [ class "user" ]
-          [ text line.user ]
-      , span [ class "content" ]
-          [ text line.body ]
+      [ span [ class "stamp" ] [ text stamp ]
+      , span [ class "user" ] [ text line.user ]
+      , span [ class "content" ] [ text line.body ]
       ]
-
-
-formatter : Date -> String
-formatter =
-  Date.Format.format "%Y%m%d"

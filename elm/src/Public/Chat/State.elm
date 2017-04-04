@@ -11,14 +11,16 @@ import Task
 import StateUtil exposing (pushMessage)
 import Phoenix.Push
 
+
 init : ( Model, Cmd Types.Msg )
 init =
   ( { name  = ""
     , msg   = ""
     , lines = Nothing
     }
-  , Cmd.none
+  , Port.getChatName "fo srs"
   )
+
 
 update : Msg -> Model -> IDSocket
       -> ( Model, Cmd Types.Msg, IDSocket )
@@ -73,13 +75,9 @@ update msg model idSocket =
       ( model, Cmd.none, idSocket )
 
 
-
 subscriptions : Types.Model -> Sub Msg
 subscriptions model =
-  Sub.batch
-    [ Port.gotChatName GotChatName
-    ]
-
+  Port.gotChatName GotChatName
 
 
 pushChatMessage : Model -> IDSocket
