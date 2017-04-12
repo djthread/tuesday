@@ -31,15 +31,12 @@ root model slug =
             _ -> ViewUtil.wait
         _ -> ViewUtil.wait
     tabs =
-      tabber slug InfoScreen
+      tabber slug InfoScreen True
   in
     ( crumbs, tabs ++ content )
 
 
 build : Show -> ShowDetail -> List (Html Msg)
 build show detail =
-  [ Markdown.toHtml
-      [ class "the-show-info"
-      ]
-      detail.fullInfo
+  [ Markdown.toHtml [ class "the-show-info" ] detail.fullInfo
   ]

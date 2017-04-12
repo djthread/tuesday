@@ -13,8 +13,8 @@ type ShowScreen
   | InfoScreen
 
 
-tabber : Slug -> ShowScreen -> List (Html Msg)
-tabber slug screen =
+tabber : Slug -> ShowScreen -> Bool -> List (Html Msg)
+tabber slug screen showInfo =
   let
     showUrl =
       "#shows/" ++ slug
@@ -22,9 +22,12 @@ tabber slug screen =
       [ ( "Home", showUrl, HomeScreen )
       , ( "Episodes", showUrl ++ "/episodes", EpisodeScreen )
       , ( "Events", showUrl ++ "/events", EventScreen )
-      , ( "Info", showUrl ++ "/info", InfoScreen )
       ]
-        |> List.map mapfunc
+      ++ case showInfo of
+        True -> [( "Info", showUrl ++ "/info", InfoScreen )]
+        False -> []
+    htmls =
+      List.map mapfunc items
     mapfunc ( name, url, curscreen ) =
       let
         bit =
@@ -35,5 +38,5 @@ tabber slug screen =
         li [ class ("tab-item" ++ bit) ]
           [ a [ href url ] [ text name ] ]
   in
-    [ ul [ class "tab tab-block" ] items ]
+    [ ul [ class "tab tab-block" ] htmls ]
 

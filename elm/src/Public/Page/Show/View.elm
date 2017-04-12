@@ -34,8 +34,10 @@ build : Slug -> Model -> Show -> ShowDetail
      -> List (Html Msg)
 build slug model show detail =
   let
+    hasInfo =
+      not <| String.isEmpty detail.fullInfo
     tabs =
-      tabber slug HomeScreen
+      tabber slug HomeScreen hasInfo
     shortInfo =
       [ Markdown.toHtml
           [ class "the-show-short" ]

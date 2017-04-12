@@ -4,6 +4,7 @@ import Html exposing (Html)
 import Types exposing (..)
 import PagerViewUtil
 import Page.Show.ViewUtil exposing (tabber, ShowScreen(EventScreen))
+import TypeUtil exposing (RemoteData(Loaded))
 
 root : Model -> String -> Int -> ( Crumbs, List (Html Msg) )
 root model slug page =
@@ -16,8 +17,17 @@ root model slug page =
         , only = Nothing
         , linkTitle = True
         }
+    hasInfo =
+      case model.data.showDetail of
+        Loaded detail ->
+          if String.isEmpty detail.fullInfo then
+            False
+          else
+            True
+        _ ->
+          False
     tabs =
-      tabber slug EventScreen
+      tabber slug EventScreen hasInfo
     crumbs =
       PagerViewUtil.buildCrumbs Events maybeShow page
   in

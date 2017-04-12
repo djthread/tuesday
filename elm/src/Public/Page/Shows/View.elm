@@ -27,10 +27,11 @@ buildShowList shows =
   let
     getShow = findShowBySlug shows
   in
-    [ day "Monday"  [ getShow "sub-therapy-radio" |> buildShow ]
-    , day "Tuesday" [ getShow "techno-tuesday"    |> buildShow ]
-    , day "Friday"  [ getShow "wobblehead-radio"  |> buildShow ]
-    , day "Also,"   [ getShow "specials"          |> buildShow ]
+    [ day "Monday"  [ "sub-therapy-radio" |> getShow |> buildShow ]
+    , day "Tuesday" [ "techno-tuesday"    |> getShow |> buildShow ]
+    , day "Friday"  [ "wobblehead-radio"  |> getShow |> buildShow ]
+    , day "Sunday"  [ "necronome-radio"   |> getShow |> buildShow ]
+    , day "Also,"   [ "specials"          |> getShow |> buildShow ]
     ]
 
 
