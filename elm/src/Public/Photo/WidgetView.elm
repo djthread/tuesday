@@ -61,7 +61,7 @@ actualPhotos photos =
               , src thumb.url
               , alt ph.caption
               , attribute "data-jslghtbx" ph.full_url
-              , attribute "data-jslghtbx-group" "one"
+              -- , attribute "data-jslghtbx-group" "one"
               , attribute "data-jslghtbx-caption"
                   ( ph.caption
                     ++ " <span>[<a href=\"" ++ ph.link

@@ -31,7 +31,7 @@ routeCmd route rdShows rdEvents rdEpisodes =
         HomeRoute ->
           ( None, "" )
         ShowsRoute ->
-          ( Shows, "Shows" )
+          ( Shows, "Shows : " )
         ShowRoute slug ->
           ( Shows, showBit slug )
         EpisodesRoute page ->
