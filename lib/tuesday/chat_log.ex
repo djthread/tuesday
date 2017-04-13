@@ -33,9 +33,7 @@ defmodule Tuesday.ChatLog do
     append(@name, entry)
   end
   def append(agent, entry = %ChatEntry{}) do
-    newEntry =
-      entry
-      |> Repo.insert!
+    newEntry = entry |> Repo.insert!
 
     Agent.update agent, fn(log) ->
       [newEntry | log]

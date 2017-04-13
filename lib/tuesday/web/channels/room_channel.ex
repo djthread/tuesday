@@ -69,12 +69,15 @@ defmodule Tuesday.Web.RoomChannel do
   end
 
   def handle_in("new:msg", %{"body" => body, "nick" => nick}, socket) do
-    if String.length(body) > 0 and String.length(nick) > 0 do
+    nick_ = String.trim(nick)
+    body_ = String.trim(body)
+
+    if String.length(body_) > 0 and String.length(nick_) > 0 do
       process socket,
         %ChatEntry{
           msg: "new:msg",
-          nick: nick,
-          body: body
+          nick: nick_,
+          body: body_
         }
     end
 
@@ -82,19 +85,9 @@ defmodule Tuesday.Web.RoomChannel do
   end
 
   defp process(socket, entry = %ChatEntry{}) do
+    newEntry = entry |> ChatLog.append
 
-      # [event, data] = ["new:msg", %{
-      #   user:  user,
-      #   body:  body,
-      #   stamp: DateTime.now_utc |> DateTime.Format.rfc3339
-      # }]
-      #
-      # require Logger
-      # Logger.warn inspect(entry)
-
-      newEntry = ChatLog.append entry
-
-      broadcast!(socket, newEntry.msg, entryToMap(newEntry))
+    broadcast!(socket, newEntry.msg, entryToMap(newEntry))
   end
 
   defp entryToMap(entry = %ChatEntry{}) do
