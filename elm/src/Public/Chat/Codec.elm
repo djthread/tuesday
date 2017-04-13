@@ -10,5 +10,5 @@ newMsgDecoder =
   map3
     Line
     (at ["stamp"] date)
-    (at ["user"] string)
+    (at ["nick"] string)
     (at ["body"] string)

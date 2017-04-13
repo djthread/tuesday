@@ -30,13 +30,13 @@ idapp.ports.playEpisode.subscribe((messageFromElm) => {
 });
 
 
-idapp.ports.getChatName.subscribe((messageFromElm) => {
-  var chatname = localStorage.getItem("chatname");
-  idapp.ports.gotChatName.send(chatname || "");
+idapp.ports.getChatNick.subscribe((messageFromElm) => {
+  var chatnick = localStorage.getItem("chatnick");
+  idapp.ports.gotChatNick.send(chatnick || "");
 });
 
-idapp.ports.setChatName.subscribe((chatname) => {
-  localStorage.setItem("chatname", chatname || "");
+idapp.ports.setChatNick.subscribe((chatnick) => {
+  localStorage.setItem("chatnick", chatnick || "");
 });
 
 idapp.ports.setTitle.subscribe((title) => {

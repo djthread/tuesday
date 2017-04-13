@@ -5,20 +5,20 @@ import Date exposing (Date)
 
 type alias Line =
   { stamp : Date
-  , user  : String
+  , nick  : String
   , body  : String
   }
 
 type alias Model =
-  { name  : String
+  { nick  : String
   , msg   : String
   , lines : Maybe (List Line)
   }
 
 type Msg
   = ReceiveNewMsg JE.Value
-  | InputUser String
+  | InputNick String
   | InputMsg String
   | OnKeyPress Int
-  | GotChatName String
+  | GotChatNick String
   | NoOp

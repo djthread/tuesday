@@ -105,11 +105,11 @@ update msg model =
       { model | player = { track = Nothing } }
       ! []
 
-    PhoenixMsg msg ->
+    PhoenixMsg msg_ ->
       let
+        msg = Debug.log "PhoenixMsg" msg_
         ( newSocket, cmd ) =
-          StateUtil.handlePhoenixMsg msg
-            model.idSocket
+          StateUtil.handlePhoenixMsg msg model.idSocket
       in
         { model | idSocket = newSocket }
         ! [ cmd ]

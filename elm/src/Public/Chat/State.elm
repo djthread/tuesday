@@ -14,18 +14,18 @@ import Phoenix.Push
 
 init : ( Model, Cmd Types.Msg )
 init =
-  ( { name  = ""
+  ( { nick  = ""
     , msg   = ""
     , lines = Nothing
     }
-  , Port.getChatName "fo srs"
+  , Port.getChatNick "fo srs"
   )
 
 
 update : Msg -> Model -> IDSocket
       -> ( Model, Cmd Types.Msg, IDSocket )
 update msg model idSocket =
-  case msg of
+  case Debug.log "ChatMsg" msg of
     ReceiveNewMsg raw ->
       case decodeValue newMsgDecoder raw of
         Ok line ->
@@ -45,8 +45,8 @@ update msg model idSocket =
         Err error ->
           ( model, Cmd.none, idSocket )
 
-    InputUser name ->
-      ( { model | name = name }
+    InputNick nick ->
+      ( { model | nick = nick }
       , Cmd.none
       , idSocket
       )
@@ -65,8 +65,8 @@ update msg model idSocket =
         _ ->
           ( model, Cmd.none, idSocket )
 
-    GotChatName name ->
-      ( { model | name = name }
+    GotChatNick nick ->
+      ( { model | nick = nick }
       , Cmd.none
       , idSocket
       )
@@ -77,7 +77,7 @@ update msg model idSocket =
 
 subscriptions : Types.Model -> Sub Msg
 subscriptions model =
-  Port.gotChatName GotChatName
+  Port.gotChatNick GotChatNick
 
 
 pushChatMessage : Model -> IDSocket
@@ -86,17 +86,17 @@ pushChatMessage model idSocket =
   let
     payload =
       JE.object
-        [ ( "user", JE.string model.name )
+        [ ( "nick", JE.string model.nick )
         , ( "body", JE.string model.msg )
         ]
     configurator =
       (\p -> p |> Phoenix.Push.withPayload payload)
     ( newSocket, cmd ) =
       pushMessage "new:msg" "rooms:lobby" configurator idSocket
-    setChatName =
-      Port.setChatName model.name
+    setChatNick =
+      Port.setChatNick model.nick
   in
     ( { model | msg = "" }
-    , Cmd.batch [cmd, setChatName]
+    , Cmd.batch [cmd, setChatNick]
     , newSocket
     )

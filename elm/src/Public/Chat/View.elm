@@ -14,7 +14,7 @@ root : Model -> Html Chat.Types.Msg
 root model =
   let
     cantSay =
-      case model.chat.name of
+      case model.chat.nick of
         "" -> True
         _  -> False
     lines =
@@ -32,11 +32,11 @@ root model =
           ]
       , div [ class "inputs" ]
           [ input
-              [ class "name"
+              [ class "nick"
               , type_ "text"
               , placeholder "name"
-              , value model.chat.name
-              , onInput InputUser
+              , value model.chat.nick
+              , onInput InputNick
               ]
               []
           , input
@@ -94,6 +94,6 @@ buildLine line =
   in
     div [ class "line"]
       [ span [ class "stamp" ] [ text stamp ]
-      , span [ class "user" ] [ text line.user ]
+      , span [ class "nick" ] [ text line.nick ]
       , span [ class "content" ] [ text line.body ]
       ]

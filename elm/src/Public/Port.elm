@@ -10,9 +10,9 @@ port playEpisode : String -> Cmd msg
 
 port init : String -> Cmd msg
 
-port getChatName : String -> Cmd msg
-port gotChatName : (String -> msg) -> Sub msg
-port setChatName : String -> Cmd msg
+port getChatNick : String -> Cmd msg
+port gotChatNick : (String -> msg) -> Sub msg
+port setChatNick : String -> Cmd msg
 
 -- port loadPhotos : String -> Cmd msg
 port activateLightbox : String -> Cmd msg
