@@ -26,7 +26,7 @@ defmodule Tuesday.Mixfile do
     [ mod: {Tuesday.Application, []},
       applications: [ :phoenix, :phoenix_html, :cowboy, :logger, :gettext,
                       :phoenix_ecto, :phoenix_pubsub, :postgrex, :httpoison,
-                      :sh, :cors_plug, :scrivener_ecto
+                      :sh, :cors_plug, :scrivener_ecto, :calendar
                     ]
     ]
   end
