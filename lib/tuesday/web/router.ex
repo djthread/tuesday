@@ -20,7 +20,7 @@ defmodule Tuesday.Web.Router do
     # resources "/episodes", EpisodeController, except: [:new, :edit]
   end
 
-  scope "/api", Tuesday do
+  scope "/api", Tuesday.Web do
     pipe_through :api
 
     get "/myip", AjaxController, :myip

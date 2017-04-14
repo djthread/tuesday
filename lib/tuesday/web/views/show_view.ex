@@ -33,7 +33,7 @@ defmodule Tuesday.Web.ShowView do
     |> fn(map) ->  # add episodes, if provided
       case show.episodes do
         eps when is_list(eps) ->
-          Map.put(map, :episodes, EpisodeView.list(show))
+          Map.put(map, :episodes, EpisodeView.list(eps))
         _ ->
           map
       end
