@@ -3,7 +3,7 @@ defmodule Tuesday.Web.AdminView do
   # import Tuesday.Util, only: [bytes_by_slug_and_filename: 1]
   import Calendar.Date.Format, only: [iso8601: 1]
 
-  def render("show.json", %{episode: episode, show: show}) do
+  def render("show.json", %{episode: episode, show: _show}) do
     %{id:          episode.id,
       number:      episode.number,
       title:       episode.title,

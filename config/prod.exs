@@ -32,7 +32,8 @@ config :tuesday, :podcast_paths, %{
   "techno-tuesday"    => "/opt/owncloud_data/thread/files/techtues-episodes",
   "specials"          => "/opt/owncloud_data/thread/files/specials-episodes",
   "wobblehead-radio"  => "/opt/owncloud_data/larry/files/wobblehead-radio-episodes",
-  "sub-therapy-radio" => "/opt/owncloud_data/calico/files/sub-therapy-radio-episodes"
+  "sub-therapy-radio" => "/opt/owncloud_data/calico/files/sub-therapy-radio-episodes",
+  "necronome-radio"   => "/opt/owncloud_data/tim/files/necronome-radio-episodes"
 }
 
 # ## SSL Support

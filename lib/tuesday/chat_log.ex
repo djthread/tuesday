@@ -7,13 +7,13 @@ defmodule Tuesday.ChatLog do
   alias Tuesday.{Repo, ChatEntry}
 
   @name __MODULE__
-  @buffer 100
+  # @buffer 100
 
   @doc "Start a new chat log"
   def start_link(opts \\ []) do
     opts = Keyword.put_new(opts, :name, @name)
 
-    Agent.start_link(fn -> load_log end, opts)
+    Agent.start_link(fn -> load_log() end, opts)
   end
 
   @doc "Get `num` of the last lines in the log"

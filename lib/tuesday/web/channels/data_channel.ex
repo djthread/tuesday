@@ -80,7 +80,7 @@ defmodule Tuesday.Web.DataChannel do
     |> fn
         show = %Show{episodes: [ep | _]} ->
           render(EpisodeView, "show.json", episode: ep, show: show)
-        show = %Show{} ->
+        %Show{} ->
           %{}
     end.()
     |> fn(ep) ->

@@ -48,7 +48,7 @@ defmodule Tuesday.Web.ShowView do
     end.()
   end
 
-  def render("show_detail.json", params = %{show: show}) do
+  def render("show_detail.json", %{show: show}) do
     %{short_info: show.short_info || "",
       full_info:  show.full_info || ""
     }
