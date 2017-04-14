@@ -5,7 +5,7 @@ export VERSION=$(mix run --no-start -e 'IO.puts Mix.Project.config[:version]')
 export MIX_ENV=prod
 export PORT=4090
 export LC_ALL=en_US.UTF-8
-export PATH=/usr/bin
+export PATH=/usr/local/bin:/usr/bin:/bin
 
 echo "=> BUILDING TUESDAY [$VERSION]"
 

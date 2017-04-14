@@ -26,7 +26,7 @@ defmodule Tuesday.Mixfile do
     [ mod: {Tuesday.Application, []},
       applications: [ :phoenix, :phoenix_html, :cowboy, :logger, :gettext,
                       :phoenix_ecto, :phoenix_pubsub, :postgrex, :httpoison,
-                      :calecto, :sh, :cors_plug
+                      :sh, :cors_plug, :scrivener_ecto
                     ]
     ]
   end
@@ -49,15 +49,16 @@ defmodule Tuesday.Mixfile do
       {:gettext,             "~> 0.11"},
       {:cowboy,              "~> 1.0"},
       {:httpoison,           "~> 0.11.0"},
-      {:calecto,             "~> 0.16.0"},
+      # {:calecto,             "~> 0.16.0"},
+      {:calendar,            "~> 0.16.1"},
       {:sh,                  "~> 1.1.2"},
       # {:hackney, "~> 1.6.0", [optional: false, hex: :hackney]},
       # {:floki,               "~> 0.0"},
       # {:exfswatch,           "~> 0.2.0"},
       # {:exrm,                "~> 1.0.0"},
       {:distillery,          "~> 0.9"},
-      {:cors_plug,           "~> 1.1"},
-      {:wallaby,             "~> 0.16.1"}
+      {:cors_plug,           "~> 1.1"}
+      # {:wallaby,             "~> 0.16.1"}
 # <<<<<<< dfb6bd034e25e6b5f5f354d2e75c99d1461c1271
 #       {:phoenix_pubsub,      "~> 1.0"},
 #       {:phoenix_ecto,        "~> 3.0"},
@@ -101,6 +102,7 @@ defmodule Tuesday.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-     "ecto.reset": ["ecto.drop", "ecto.setup"]]
+     "ecto.reset": ["ecto.drop", "ecto.setup"]
+    ]
   end
 end

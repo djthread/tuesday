@@ -19,7 +19,9 @@ defmodule Tuesday.Web do
   def model do
     quote do
       use Ecto.Schema
-      use Calecto.Schema, usec: true
+
+      # use Calecto.Schema, usec: true
+      @timestamps_opts [type: :utc_datetime, usec: true]
 
       import Ecto
       import Ecto.Changeset
@@ -55,6 +57,8 @@ defmodule Tuesday.Web do
       import Tuesday.Web.Router.Helpers
       import Tuesday.Web.ErrorHelpers
       import Tuesday.Web.Gettext
+
+      alias Calendar.DateTime
     end
   end
 
