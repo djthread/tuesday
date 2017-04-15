@@ -3,7 +3,7 @@ defmodule Tuesday.Web.AdminChannel do
   import Phoenix.View, only: [render: 3]
   alias Tuesday.MP3
   alias Tuesday.Web.Util
-  alias Tuesday.Web.ShowView
+  alias Tuesday.Web.{ShowView, EventView, EpisodeView}
   require Logger
 
   def join("admin", %{"name" => name, "pass" => pass}, socket) do
@@ -161,18 +161,18 @@ defmodule Tuesday.Web.AdminChannel do
 
   defp handle_save_result({:ok, episode = %Tuesday.Episode{}}, show, socket) do
     do_handle_save_result(
-      Tuesday.EpisodeView, "show.json", :ok, socket, episode: episode, show: show)
+      EpisodeView, "show.json", :ok, socket, episode: episode, show: show)
   end
 
   defp handle_save_result({:ok, event = %Tuesday.Event{}}, _show, socket) do
     do_handle_save_result(
-      Tuesday.EventView, "show.json", :ok, socket, event: event)
+      EventView, "show.json", :ok, socket, event: event)
   end
 
   defp handle_save_result({:ok, show = %Tuesday.Show{}}, _show, socket) do
     show = show |> Show.preload_episodes_and_events
     do_handle_save_result(
-      Tuesday.ShowView, "show.json", :ok, socket, show: show)
+      ShowView, "show.json", :ok, socket, show: show)
   end
 
   defp handle_save_result({:error, changeset}, _show, socket) do

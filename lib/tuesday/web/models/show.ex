@@ -81,7 +81,8 @@ defmodule Tuesday.Show do
   #   import Ecto.Query
   #   user = Tuesday.User |> where(name: ^user_name) |> Tuesday.Repo.one
   #
-  #   Repo.insert!(%Tuesday.Show{name: "Techno Tuesday", slug: "techno-tuesday"})
+  #   %Tuesday.Show{name: "Techno Tuesday", slug: "techno-tuesday"})
+  #   |> Repo.insert!
   #   |> put_assoc
   #   # changeset(%Tuesday.Show{}, params)
   #   # |> put_assoc(:users, [user])
