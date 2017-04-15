@@ -8,7 +8,7 @@ defmodule Tuesday.Mixfile do
     git_sha = String.slice(result, 0, 7)
 
     [ app: :tuesday,
-      version: "0.0.1-#{git_sha}",
+      version: "0.1.0-#{git_sha}",
       elixir: "~> 1.0",
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
@@ -56,7 +56,7 @@ defmodule Tuesday.Mixfile do
       # {:floki,               "~> 0.0"},
       # {:exfswatch,           "~> 0.2.0"},
       # {:exrm,                "~> 1.0.0"},
-      {:distillery,          "~> 0.9"},
+      {:distillery,          "~> 1.0"},
       {:cors_plug,           "~> 1.1"}
       # {:wallaby,             "~> 0.16.1"}
 # <<<<<<< dfb6bd034e25e6b5f5f354d2e75c99d1461c1271
@@ -102,7 +102,8 @@ defmodule Tuesday.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-     "ecto.reset": ["ecto.drop", "ecto.setup"]
+     "ecto.reset": ["ecto.drop", "ecto.setup"],
+     "deploy":     ["tuesday.deploy"]
     ]
   end
 end

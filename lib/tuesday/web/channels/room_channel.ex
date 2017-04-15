@@ -18,7 +18,7 @@ defmodule Tuesday.Web.RoomChannel do
   def join(@lobbyroom, message, socket) do
     Process.flag(:trap_exit, true)
 
-    StatWorker.user_joined_lobby()
+    # StatWorker.user_joined_lobby()
 
     # :timer.send_interval(5000, :ping)
 
@@ -52,15 +52,15 @@ defmodule Tuesday.Web.RoomChannel do
     {:noreply, socket}
   end
 
-  def handle_info(:after_stat_join, socket) do
-    push socket, "update", StatWorker.state
-
-    {:noreply, socket}
-  end
+  # def handle_info(:after_stat_join, socket) do
+  #   push socket, "update", StatWorker.state
+  #
+  #   {:noreply, socket}
+  # end
 
   def terminate(reason, socket) do
     if socket.topic == @lobbyroom do
-      StatWorker.user_left_lobby()
+      # StatWorker.user_left_lobby()
     end
 
     Logger.debug "> leave #{inspect reason} (#{socket.topic})"

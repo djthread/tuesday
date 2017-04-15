@@ -8,8 +8,8 @@ defmodule Tuesday.Application do
       supervisor(Tuesday.Web.Endpoint, []),
       supervisor(Tuesday.Repo, []),
       supervisor(Tuesday.ChatLog, []),
-      supervisor(Tuesday.InstagramWorker, []),
-      supervisor(Tuesday.StatWorker, []),
+      worker(Tuesday.InstagramWorker, []),
+      # supervisor(Tuesday.StatWorker, []),
       # supervisor(Tuesday.PhotoWorker, []),
       # supervisor(Tuesday.PiwigoWorker, [])
     ]

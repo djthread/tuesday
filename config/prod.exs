@@ -15,6 +15,8 @@ config :tuesday, Tuesday.Web.Endpoint,
   http: [port: System.get_env("PORT") || 4090],
   url: [host: "impulsedetroit.net", port: 80],
   check_origin: false,
+  # watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
+  #   cd: Path.expand("../assets", __DIR__)]],
   # [
   #   "https://impulsedetroit.net",
   #   "https://backstage.impulsedetroit.net",
@@ -65,7 +67,7 @@ config :tuesday, :podcast_paths, %{
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start the server for all endpoints:
 #
-#     config :phoenix, :serve_endpoints, true
+config :phoenix, :serve_endpoints, true
 #
 # Alternatively, you can configure exactly which server to
 # start per endpoint:
