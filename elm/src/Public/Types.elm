@@ -1,7 +1,6 @@
 module Types exposing (..)
 
 import Json.Encode as JE
-import Phoenix.Socket
 import Html exposing (Html)
 import Navigation exposing (Location)
 import Chat.Types
@@ -20,7 +19,6 @@ type Msg
   | EnableVideo
   | ClosePlayer
   | PlayEpisode String Data.Types.Episode
-  | PhoenixMsg (Phoenix.Socket.Msg Msg)
   | SocketInitialized
   | NoOp
 
@@ -35,7 +33,6 @@ type alias Model =
   { route    : Routing.Route
   , section  : NavSection
   , loading  : Int
-  , idSocket : IDSocket
   , chat     : Chat.Types.Model
   , data     : Data.Types.Model
   , photo    : Photo.Types.Model
@@ -56,14 +53,18 @@ type alias Track =
 type alias VideoModel =
   Bool
 
-type alias IDSocket =
-  Phoenix.Socket.Socket Msg
-
 type alias Crumbs =
   List Crumb
 
 type alias Crumb =
   ( String,  String )
 
+
 noPayload : JE.Value
 noPayload = JE.string ""
+
+
+wsUrl : String
+wsUrl =
+  -- "wss://impulsedetroit.net/socket/websocket"
+  "ws://localhost:4091/socket/websocket"

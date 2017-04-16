@@ -3,6 +3,7 @@ module State exposing (init, update, subscriptions)
 import Routing exposing (parseLocation, Route, Route(..))
 import Types exposing (..)
 import Data.Types
+import Chat.Types
 import Photo.Types
 import Navigation exposing (Location)
 import Dom.Scroll
@@ -10,9 +11,10 @@ import Port
 import Chat.State
 import Data.State
 import Photo.State
-import Phoenix.Socket
-import Phoenix.Channel
-import Phoenix.Push
+import Phoenix
+import Phoenix.Channel as Channel
+import Phoenix.Socket as Socket
+import Phoenix.Push as Push
 import StateUtil
 import Defer
 import Task
@@ -25,8 +27,6 @@ init location =
       parseLocation location
     data =
       Data.State.init
-    ( idSocket, phxCmd ) =
-      StateUtil.initSocket
     ( chatModel, chatCmd ) =
       Chat.State.init
     ( section, routeCmd ) =
@@ -36,7 +36,6 @@ init location =
       { route    = route
       , section  = section
       , loading  = 0
-      , idSocket = idSocket
       , chat     = chatModel
       , data     = data
       , photo    = Photo.State.init
@@ -46,8 +45,7 @@ init location =
       }
     cmd =
       Cmd.batch
-        [ phxCmd
-        , chatCmd
+        [ chatCmd
         , routeCmd
         ]
   in
@@ -81,7 +79,7 @@ update msg model =
           Defer.update (Defer.AddCmd cmd) model.defer
       in
         { model | video = True, defer = deferModel }
-        ! [ Cmd.map DeferMsg deferCmd ]
+          ! [ Cmd.map DeferMsg deferCmd ]
 
     PlayEpisode url episode ->
       let
@@ -103,30 +101,24 @@ update msg model =
 
     ClosePlayer ->
       { model | player = { track = Nothing } }
-      ! []
+        ! []
 
-    PhoenixMsg msg_ ->
-      let
-        msg = Debug.log "PhoenixMsg" msg_
-        ( newSocket, cmd ) =
-          StateUtil.handlePhoenixMsg msg model.idSocket
-      in
-        { model | idSocket = newSocket }
-        ! [ cmd ]
+    -- PhoenixMsg msg_ ->
+    --   let
+    --     msg = Debug.log "PhoenixMsg" msg_
+    --     ( newSocket, cmd ) =
+    --       StateUtil.handlePhoenixMsg msg model.idSocket
+    --   in
+    --     { model | idSocket = newSocket }
+    --     ! [ cmd ]
 
     SocketInitialized ->
       let
         _ = Debug.log "SocketInitialized" "Yeah!"
-        ( dataModel, dataCmd, newSocket ) =
-          Data.State.update
-            Data.Types.SocketInitialized
-            model.data
-            model.idSocket
+        ( dataModel, dataCmd ) =
+          Data.State.update Data.Types.SocketInitialized model.data
         model2 =
-          { model
-          | data = dataModel
-          , idSocket = newSocket
-          }
+          { model | data = dataModel }
         ( model3, cmd ) =
           initPage model2
       in
@@ -138,25 +130,23 @@ update msg model =
           Defer.update deferMsg model.defer
       in
         { model | defer = deferModel }
-        ! [ Cmd.map DeferMsg deferCmd ]
+          ! [ Cmd.map DeferMsg deferCmd ]
 
     ChatMsg chatMsg ->
       let
-        ( chatModel, chatCmd, newSocket ) =
+        ( chatModel, chatCmd ) =
           Chat.State.update chatMsg model.chat
-            model.idSocket
       in
-        { model | chat = chatModel, idSocket = newSocket }
-        ! [ chatCmd ]
+        { model | chat = chatModel }
+          ! [ chatCmd ]
 
     DataMsg dataMsg ->
       let
-        ( dataModel, dataCmd, newSocket ) =
+        ( dataModel, dataCmd ) =
           Data.State.update dataMsg model.data
-            model.idSocket
       in
-        { model | data = dataModel, idSocket = newSocket }
-        ! [ dataCmd ]
+        { model | data = dataModel }
+          ! [ dataCmd ]
 
     PhotoMsg photoMsg ->
       photoUpdate photoMsg model
@@ -169,14 +159,22 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
   let
-    chatSub =
-      Chat.State.subscriptions model
+    socket =
+      Socket.init wsUrl
+    lobbyChannel =
+      Channel.init "rooms:lobby"
+        |> Channel.on "new:msg" (\m -> ChatMsg (Chat.Types.ReceiveNewMsg m))
+    dataChannel =
+      Channel.init "data"
+        |> Channel.on "shows" (\m -> DataMsg (Data.Types.ReceiveShows m))
+        |> Channel.onJoin (\jv -> SocketInitialized)
+    igChannel =
+      Channel.init "instagram"
   in
     Sub.batch
-      [ Phoenix.Socket.listen
-          model.idSocket
-          PhoenixMsg
-      , Sub.map ChatMsg chatSub
+      [ Phoenix.connect socket [lobbyChannel, dataChannel, igChannel]
+      , Chat.State.subscriptions model
+          |> Sub.map ChatMsg
       , Defer.subscriptions model.defer
           |> Sub.map DeferMsg
       ]
@@ -190,11 +188,13 @@ initPage model =
       doInitPage model
     ( section, routeCmd ) =
       StateUtil.routeCmd
-        model1.route model1.data.shows
-        model1.data.events model1.data.episodes
+        model1.route
+        model1.data.shows
+        model1.data.events
+        model1.data.episodes
   in
     { model1 | section = section }
-    ! [cmd1, routeCmd]
+      ! [cmd1, routeCmd]
 
 
 doInitPage : Model -> ( Model, Cmd Msg )
@@ -273,22 +273,17 @@ updateMap model list =
 dataUpdate : Data.Types.Msg -> Model -> ( Model, Cmd Msg )
 dataUpdate msg model =
   let
-    ( dataModel, cmd, idSocket ) =
-      Data.State.update msg model.data model.idSocket
+    ( dataModel, cmd ) =
+      Data.State.update msg model.data
   in
-    { model | data = dataModel, idSocket = idSocket }
-    ! [ cmd ]
+    { model | data = dataModel }
+      ! [ cmd ]
 
 photoUpdate : Photo.Types.Msg -> Model -> ( Model, Cmd Msg )
 photoUpdate msg model =
   let
-    ( photoModel, cmd, idSocket, newDefer ) =
-      Photo.State.update msg model.photo model.idSocket
-        model.defer
+    ( photoModel, cmd, newDefer ) =
+      Photo.State.update msg model.photo model.defer
   in
-    { model
-    | photo    = photoModel
-    , idSocket = idSocket
-    , defer    = newDefer
-    }
+    { model | photo = photoModel , defer = newDefer }
       ! [ cmd ]

@@ -1,6 +1,6 @@
 module Photo.State exposing (init, update, subscriptions)
 
-import Types exposing (IDSocket, Msg(DeferMsg))
+import Types exposing (Msg(DeferMsg))
 import TypeUtil exposing (RemoteData(..))
 import Photo.Types exposing (..)
 import Photo.Codec exposing (lastFourDecoder, restListDecoder)
@@ -14,23 +14,22 @@ init : Model
 init =
   NotAsked
 
-update : Photo.Types.Msg -> Photo.Types.Model -> IDSocket
+update : Photo.Types.Msg -> Photo.Types.Model
       -> Defer.Model
       -> ( Photo.Types.Model
          , Cmd Types.Msg
-         , IDSocket
          , Defer.Model
          )
-update msg model socket defer =
+update msg model defer =
   case msg of
     FetchLastFour ->
-      fetch model socket defer "last_four" ReceiveLastFour
+      fetch model defer "last_four" ReceiveLastFour
 
     ShowNextFour ->
       case model of
         Loaded model_ ->
           if (List.length model_.list) == 4 then
-            fetch model socket defer "rest" ReceiveRest
+            fetch model defer "rest" ReceiveRest
           else
             let
               last_page =
@@ -44,11 +43,10 @@ update msg model socket defer =
             in
               ( Loaded { model_ | page = page }
               , Cmd.none
-              , socket
               , defer
               )
         _ ->
-          ( model, Cmd.none, socket, defer )
+          ( model, Cmd.none, defer )
 
     ReceiveLastFour raw ->
       case decodeValue lastFourDecoder raw of
@@ -65,13 +63,12 @@ update msg model socket defer =
                 , page  = 1
                 }
             , Cmd.map Types.DeferMsg deferCmd
-            , socket
             , newDefer
             )
 
         Err error ->
           let _ = Debug.log "ReceiveLastFour Error" error
-          in ( model, Cmd.none, socket, defer )
+          in ( model, Cmd.none, defer )
 
     ReceiveRest raw ->
       case decodeValue restListDecoder raw of
@@ -94,14 +91,14 @@ update msg model socket defer =
             cmd =
               Cmd.map Types.DeferMsg deferCmd
           in
-            ( newModel, cmd, socket, newDefer )
+            ( newModel, cmd, newDefer )
 
         Err error ->
           let _ = Debug.log "ReceiveRest" error
-          in ( model, Cmd.none, socket, defer )
+          in ( model, Cmd.none, defer )
 
     NoOp ->
-      ( model, Cmd.none, socket, defer )
+      ( model, Cmd.none, defer )
 
 
 
@@ -110,18 +107,17 @@ subscriptions model =
   Sub.none
 
 
-fetch : Photo.Types.Model -> IDSocket
+fetch : Photo.Types.Model
      -> Defer.Model -> String
      -> (JE.Value -> Photo.Types.Msg)
      -> ( Photo.Types.Model
         , Cmd Types.Msg
-        , IDSocket
         , Defer.Model
         )
-fetch model socket defer messageStr photoMsg =
+fetch model defer messageStr photoMsg =
   let
-    ( cmd, newSocket ) =
-      pushMsg messageStr "instagram" socket
+    cmd =
+      pushMsg messageStr "instagram"
         (\a -> Types.PhotoMsg <| photoMsg a)
   in
-    ( model, cmd, newSocket, defer )
+    ( model, cmd, defer )

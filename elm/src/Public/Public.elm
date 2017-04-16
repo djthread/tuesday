@@ -1,17 +1,11 @@
 module Public exposing (main)
 
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
 import RouteUrl exposing (UrlChange)
 import Navigation
--- import Html.Events
-import State exposing (..)
-import Types exposing (..)
-import View exposing (root)
+import State
+import View
+import Types exposing (Model, Msg(OnLocationChange))
 
-
--- MAIN
 
 main : Program Never Model Msg
 main =

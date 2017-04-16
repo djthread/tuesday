@@ -5,16 +5,12 @@ import TypeUtil exposing (RemoteData(..))
 import Chat.Types
 import Data.Types exposing (doShowThingOr)
 import Json.Encode as JE
-import Phoenix.Socket
-import Phoenix.Channel
-import Phoenix.Push
+import Phoenix
+import Phoenix.Channel as Channel
+import Phoenix.Socket as Socket
+import Phoenix.Push as Push
 import Routing exposing (Route, Route(..))
 import Port
-
-wsUrl : String
-wsUrl =
-  -- "wss://impulsedetroit.net/socket/websocket"
-  "ws://localhost:4091/socket/websocket"
 
 
 routeCmd : Route -> RemoteData Data.Types.Shows
@@ -101,89 +97,68 @@ doneLoading model =
   in
     { model | loading = newCount }
 
-initSocket : ( (Phoenix.Socket.Socket Types.Msg), Cmd Types.Msg )
-initSocket =
-  let
-    initSocket =
-      wsUrl
-        |> Phoenix.Socket.init
-        -- |> Phoenix.Socket.withDebug
-        |> Phoenix.Socket.on "new:msg" "rooms:lobby"
-            (\m -> ChatMsg (Chat.Types.ReceiveNewMsg m))
-        |> Phoenix.Socket.on "shows" "data"
-            (\m -> DataMsg (Data.Types.ReceiveShows m))
-    channel =
-      Phoenix.Channel.init "rooms:lobby"
-    ( phxSocket, phxCmd ) =
-      Phoenix.Socket.join channel initSocket
-    onJoin =
-      always SocketInitialized
-    channel2 =
-      Phoenix.Channel.init "data"
-        |> Phoenix.Channel.onJoin onJoin
-    ( phxSocket2, phxCmd2 ) =
-      Phoenix.Socket.join channel2 phxSocket
-    channel3 =
-      Phoenix.Channel.init "instagram"
-    ( phxSocket3, phxCmd3 ) =
-      Phoenix.Socket.join channel3 phxSocket2
-    cmd =
-      Cmd.batch
-        [ Cmd.map PhoenixMsg phxCmd
-        , Cmd.map PhoenixMsg phxCmd2
-        , Cmd.map PhoenixMsg phxCmd3
-        ]
-  in
-    ( phxSocket3, cmd )
+-- initSocket : ( (Phoenix.Socket.Socket Types.Msg), Cmd Types.Msg )
+-- initSocket =
+--   let
+--     initSocket =
+--       wsUrl
+--         |> Phoenix.Socket.init
+--         -- |> Phoenix.Socket.withDebug
+--         |> Phoenix.Socket.on "new:msg" "rooms:lobby"
+--             (\m -> ChatMsg (Chat.Types.ReceiveNewMsg m))
+--         |> Phoenix.Socket.on "shows" "data"
+--             (\m -> DataMsg (Data.Types.ReceiveShows m))
+--     channel =
+--       Phoenix.Channel.init "rooms:lobby"
+--     ( phxSocket, phxCmd ) =
+--       Phoenix.Socket.join channel initSocket
+--     onJoin =
+--       always SocketInitialized
+--     channel2 =
+--       Phoenix.Channel.init "data"
+--         |> Phoenix.Channel.onJoin onJoin
+--     ( phxSocket2, phxCmd2 ) =
+--       Phoenix.Socket.join channel2 phxSocket
+--     channel3 =
+--       Phoenix.Channel.init "instagram"
+--     ( phxSocket3, phxCmd3 ) =
+--       Phoenix.Socket.join channel3 phxSocket2
+--     cmd =
+--       Cmd.batch
+--         [ Cmd.map PhoenixMsg phxCmd
+--         , Cmd.map PhoenixMsg phxCmd2
+--         , Cmd.map PhoenixMsg phxCmd3
+--         ]
+--   in
+--     ( phxSocket3, cmd )
 
 
-
-handlePhoenixMsg : (Phoenix.Socket.Msg Types.Msg) -> IDSocket
-                -> ( IDSocket, Cmd Types.Msg )
-handlePhoenixMsg msg idSocket =
-  let
-    ( newSocket, phxCmd ) =
-      Phoenix.Socket.update msg idSocket
-  in
-    ( newSocket, Cmd.map PhoenixMsg phxCmd )
-
-
-
-pushMsg : String -> String -> IDSocket
+pushMsg : String -> String
            -> (JE.Value -> Msg)
-           -> ( Cmd Types.Msg, IDSocket )
-pushMsg message channel idSocket msg =
+           -> Cmd Types.Msg
+pushMsg message channel msg =
   pushMsgWithConfigurator
-    message channel idSocket msg (\a -> a)
-
+    message channel msg (\a -> a)
 
 
 pushMsgWithConfigurator : String -> String
-  -> IDSocket -> (JE.Value -> Types.Msg)
-  -> ( Phoenix.Push.Push Types.Msg
-      -> Phoenix.Push.Push Types.Msg )
-  -> ( Cmd Types.Msg, IDSocket )
+  -> (JE.Value -> Types.Msg)
+  -> ( Push.Push Types.Msg
+      -> Push.Push Types.Msg )
+  -> Cmd Types.Msg
 pushMsgWithConfigurator
-  message channel idSocket retMsg configurator =
+  message channel retMsg configurator =
   let
     configurator2 =
-      (\p -> p |> Phoenix.Push.onOk retMsg |> configurator)
-    ( newSocket, cmd ) =
-      pushMessage message channel configurator2 idSocket
+      (\p -> p |> Push.onOk retMsg |> configurator)
   in
-    ( cmd, newSocket )
-
+    pushMessage message channel configurator2
 
 
 pushMessage : String -> String
-           -> (Phoenix.Push.Push Msg -> Phoenix.Push.Push Msg)
-           -> IDSocket
-           -> ( IDSocket, Cmd Types.Msg )
-pushMessage message channel configurator idSocket =
-  let
-    push =
-      configurator (Phoenix.Push.init message channel)
-    ( newSocket, phxCmd ) =
-      Phoenix.Socket.push push idSocket
-  in
-    ( newSocket, Cmd.map PhoenixMsg phxCmd )
+           -> (Push.Push Msg -> Push.Push Msg)
+           -> Cmd Types.Msg
+pushMessage message channel configurator =
+  Push.init channel message
+    |> configurator
+    |> Phoenix.push wsUrl
