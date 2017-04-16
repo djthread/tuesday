@@ -19,8 +19,10 @@ root model =
         _  -> False
     lines =
       case model.chat.lines of
-        Just lines -> buildMessages lines
-        Nothing -> [ text "" ]
+        Just lines ->
+          buildMessages lines
+        Nothing ->
+          [ text "" ]
   in
     div [ class "chat" ]
       [ div [ class "messages-outer" ]

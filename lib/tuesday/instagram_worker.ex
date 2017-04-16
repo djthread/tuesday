@@ -47,10 +47,7 @@ defmodule Tuesday.InstagramWorker do
   end
 
   defp parse(body) do
-    Poison.decode!(body)
-    |> Map.get("items")
-    |> Enum.map(fn item ->
-
+    mapper = fn item ->
       imgs = item["images"]
       created =
         item["created_time"]
@@ -61,10 +58,10 @@ defmodule Tuesday.InstagramWorker do
       full_url =
         imgs["standard_resolution"]["url"]
         |> fn s ->
-          ~r{/s640x640/[a-z][a-z]\d\.\d\d/}
-          |> Regex.replace(s, "/")
-        end.()
-        |> fn s ->
+        ~r{/s640x640/[a-z][a-z]\d\.\d\d/}
+        |> Regex.replace(s, "/")
+      end.()
+      |> fn s ->
           ~r{/((?:s|e)\d\d)/c[\d\.]+/}
           |> Regex.replace(s, "/\\g{1}/")
         end.()
@@ -79,7 +76,11 @@ defmodule Tuesday.InstagramWorker do
           height: imgs["thumbnail"]["height"]
         }
       }
-    end)
+    end
+
+    Poison.decode!(body)
+    |> Map.get("items")
+    |> Enum.map(mapper)
     |> Enum.sort(fn a, b -> a.created > b.created end)
   end
 

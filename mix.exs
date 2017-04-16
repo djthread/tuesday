@@ -2,10 +2,11 @@ defmodule Tuesday.Mixfile do
   use Mix.Project
 
   def project do
-    {result, _exit_code} = System.cmd("git", ["rev-parse", "HEAD"])
-
-    # truncate the commit SHA to 7 chars
-    git_sha = String.slice(result, 0, 7)
+    git_sha = # truncate the commit SHA to 7 chars
+      "git"
+      |> System.cmd(["rev-parse", "HEAD"])
+      |> elem(0)
+      |> String.slice(0, 7)
 
     [ app: :tuesday,
       version: "0.1.0-#{git_sha}",
