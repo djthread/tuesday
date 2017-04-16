@@ -17,8 +17,7 @@ defmodule Tuesday.Web.EventView do
 
   def list(events) do
     Enum.map(events, fn(ev) ->
-      Tuesday.Web.EventView
-      |> render("show.json", event: ev)
+      render("show.json", event: ev)
     end)
   end
 end

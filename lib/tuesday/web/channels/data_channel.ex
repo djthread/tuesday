@@ -42,7 +42,7 @@ defmodule Tuesday.Web.DataChannel do
   #       limit:    5,
   #       preload:  [:show]
   #
-  #   events = 
+  #   events =
   #     Repo.all from ev in Event,
   #       where:    ev.happens_on > ago(2, "day"),
   #       order_by: ev.happens_on,
@@ -218,7 +218,7 @@ defmodule Tuesday.Web.DataChannel do
   do
     Logger.info "got ep: " <> inspect(ep)
 
-    episode = 
+    episode =
       with          show <- Show |> where(id: ^show_id) |> Repo.one,
                changeset <- %Episode{}
                             |> Episode.changeset(ep)

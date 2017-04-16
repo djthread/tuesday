@@ -8,16 +8,22 @@ import Types exposing (..)
 import Data.Types
 import TypeUtil exposing (Pager)
 import Date exposing (Date)
-import Date.Format
-
+-- import Date.Format
+import Date.Extra.Config.Config_en_us
+import Date.Extra.Format as Format exposing (formatOffset)
 
 formatDate : Date -> String
 formatDate date =
-  Date.Format.format "%A, %B %d" date
+  let
+    config = Date.Extra.Config.Config_en_us.config
+  in
+    formatOffset config -300 "%A, %B %d" date
+    -- Date.Format.format "%A, %B %d" date
 
 
 wait : ( Crumbs, List (Html Msg) )
 wait = ( [], [ waiting ] )
+
 
 waiting : Html Msg
 waiting =
@@ -101,7 +107,7 @@ breadcrumber items =
         inner =
           if String.length(url) > 0 then
             a [ href url ] [ text words ]
-          else 
+          else
             span [] [ text words ]
       in
         li [ class "breadcrumb-item" ] [ inner ]
