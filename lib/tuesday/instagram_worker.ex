@@ -7,7 +7,7 @@ defmodule Tuesday.InstagramWorker do
   require Logger
 
   @config    Application.get_env :tuesday, :instagram
-  @media_url Keyword.get(@config, :media)
+  @media_url Keyword.get(@config, :media_url)
   @name      __MODULE__
 
   def photos,  do: GenServer.call(@name, :photos)
@@ -33,17 +33,17 @@ defmodule Tuesday.InstagramWorker do
   end
 
   def do_refresh(old_mapset) do
-    File.read!("test/fixtures/instagram-media.json")
-    |> parse
-    # case HTTPoison.get(@media_url) do
-    #   {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-    #     new_mapset = body |> parse
-    #     broadcast_photos(new_mapset)
-    #     new_mapset
-    #   res ->
-    #     Logger.error "Instagram media call failed: #{inspect res}"
-    #     old_mapset
-    # end
+    # File.read!("test/fixtures/instagram-media.json")
+    # |> parse
+    case HTTPoison.get(@media_url) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        new_mapset = body |> parse
+        # broadcast_photos(new_mapset)
+        new_mapset
+      res ->
+        Logger.error "Instagram media call failed: #{inspect res}"
+        old_mapset
+    end
   end
 
   defp parse(body) do
