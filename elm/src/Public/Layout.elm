@@ -127,7 +127,8 @@ player model =
             case Data.Types.findShowFromRDList model.data.shows ep.show_id of
               Just show ->
                 let
-                  line = ep.title ++ " - " ++ show.name ++ " " ++ toString ep.number
+                  line = ep.title ++ " - " ++ show.name
+                         ++ " " ++ toString ep.number
                   url = Routing.episodeUrl show ep
                 in
                   ( "block", track.src, line, url )
@@ -149,7 +150,7 @@ player model =
           [ --attribute "ref" "audio"
             id "theaudio"
           -- , attribute "controls" "true"
-          -- , attribute "autoplay" "true"
+          , attribute "autoplay" "true"
           , attribute "preload" "auto"
           -- , attribute "data-setup" "{}"
           ]

@@ -1,7 +1,11 @@
 module Page.Home.View exposing (root)
 
-import Html exposing (Html, Attribute, div, h2, a, p, i, text, footer, video, source, br, node, section, button, form, input)
-import Html.Attributes exposing (class, style, href, id, controls, preload, poster, src, type_, value, attribute)
+import Html exposing (Html, Attribute, div, h2, a, p, i, text,
+                        footer, video, source, br, node, section,
+                        button, form, input)
+import Html.Attributes exposing (class, style, href, id,
+                        controls, preload, poster, src, type_,
+                        value, attribute)
 import Types exposing (..)
 import Chat.View
 import Data.EventsEpisodesColumnsView
@@ -12,7 +16,7 @@ import Routing
 
 feedsrc : String
 feedsrc =
-  "rtmp://impulsedetroit.net/live/techno" 
+  "rtmp://impulsedetroit.net/live/techno"
 
 infotext : String
 infotext =

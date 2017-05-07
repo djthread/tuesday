@@ -9,7 +9,8 @@ idapp.ports.activateVideo.subscribe((messageFromElm) => {
     videojs.options.flash.swf = '/swf/video-js.swf';
     videojs(document.getElementById('thevideo'), {
       'fluid': true,
-      'aspectRatio': '16:9'
+      'aspectRatio': '16:9',
+      'autoplay': true
     });
   });
 });
