@@ -33,16 +33,20 @@ defmodule Tuesday.InstagramWorker do
   end
 
   def do_refresh(old_mapset) do
-    # File.read!("test/fixtures/instagram-media.json")
-    # |> parse
-    case HTTPoison.get(@media_url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        new_mapset = body |> parse
-        # broadcast_photos(new_mapset)
-        new_mapset
-      res ->
-        Logger.error "Instagram media call failed: #{inspect res}"
-        old_mapset
+    if ! @media_url do
+      Logger.info "InstagramWorker: Loading from fixture"
+      File.read!("test/fixtures/instagram-media.json")
+      |> parse
+    else
+      case HTTPoison.get(@media_url) do
+        {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+          new_mapset = body |> parse
+          # broadcast_photos(new_mapset)
+          new_mapset
+        res ->
+          Logger.error "Instagram media call failed: #{inspect res}"
+          old_mapset
+      end
     end
   end
 

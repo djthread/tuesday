@@ -204,6 +204,15 @@ doInitPage model =
       updateMap model
         [ dataUpdate Data.Types.FetchNewStuff
         , photoUpdate Photo.Types.FetchLastFour
+        , update EnableVideo
+        , (\m ->
+             let
+               toBottom = Dom.Scroll.toBottom "chat-messages"
+             in
+               ( model
+               , Task.attempt (\_ -> Types.NoOp) toBottom
+               )
+          )
         ]
 
     EpisodesRoute page ->

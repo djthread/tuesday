@@ -194,7 +194,7 @@ div.chat {
         width: 100%;
         overflow: auto;
         padding-right: 20px;
-        padding: 0 1em;
+        padding: 0 1em 0.5em 1em;
         border: 2px solid #333;
         background-color: rgba(0,0,0,0.33);
 
@@ -286,6 +286,7 @@ li.tab-item a:hover {
     background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.1));
 
     .showname {
+        font-size: 120%;
         font-weight: bold;
         margin: 0;
     }

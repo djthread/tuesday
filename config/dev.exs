@@ -43,6 +43,9 @@ config :phoenix, :stacktrace_depth, 20
 #   hostname: "localhost",
 #   pool_size: 10
 
+config :tuesday, :instagram,
+  media_url: false
+
 config :tuesday, :podcast_paths, %{
   "wobblehead-radio" => "/Users/thread/Desktop/impulse/thread-episodes",
   "techno-tuesday"   => "/Users/thread/Desktop/impulse/thread-episodes"

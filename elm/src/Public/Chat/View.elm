@@ -23,6 +23,11 @@ root model =
           buildMessages lines
         Nothing ->
           [ text "" ]
+    padding =
+      []
+      -- [ p [] []
+      -- , p [] []
+      -- ]
   in
     div [ class "chat" ]
       [ div [ class "messages-outer" ]
@@ -30,7 +35,7 @@ root model =
               [ class "messages"
               , id "chat-messages"
               ]
-              lines
+              (lines ++ padding)
           ]
       , div [ class "inputs" ]
           [ input
