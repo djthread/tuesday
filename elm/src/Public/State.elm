@@ -204,12 +204,11 @@ doInitPage model =
       updateMap model
         [ dataUpdate Data.Types.FetchNewStuff
         , photoUpdate Photo.Types.FetchLastFour
-        , update EnableVideo
         , (\m ->
              let
                toBottom = Dom.Scroll.toBottom "chat-messages"
              in
-               ( { model | video = False } -- undo from EnableVideo
+               ( { model | video = False }
                , Task.attempt (\_ -> Types.NoOp) toBottom
                )
           )
@@ -276,7 +275,7 @@ updateMap model list =
         let ( m2, c2 ) = updateFn m1
         in  m2 ! [c1, c2]
   in
-    List.foldr func ( model, Cmd.none ) list
+    List.foldl func ( model, Cmd.none ) list
 
 
 dataUpdate : Data.Types.Msg -> Model -> ( Model, Cmd Msg )
