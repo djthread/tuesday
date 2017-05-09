@@ -147,12 +147,11 @@ player model =
           , a [ href url ] [ text thetitle ]
           ]
       , audio
-          [ --attribute "ref" "audio"
-            id "theaudio"
+          [ id "theaudio"
+          -- , attribute "ref" "audio"
           -- , attribute "controls" "true"
           -- , attribute "autoplay" "true"
           , attribute "preload" "auto"
-          -- , attribute "data-setup" "{}"
           ]
           [ source
               [ src thesrc

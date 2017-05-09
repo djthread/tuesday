@@ -27,8 +27,7 @@ idapp.ports.playEpisode.subscribe((messageFromElm) => {
 
   $("audio").audioPlayer();
 
-  // redoing the audio finder is key!
-  $("audio")[0].play();
+  $(".audioplayer-playpause").trigger("click");
 });
 
 
