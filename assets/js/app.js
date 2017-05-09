@@ -25,9 +25,10 @@ idapp.ports.playEpisode.subscribe((messageFromElm) => {
     $(".dock").append(theaudio);
   }
 
-  theaudio = $("audio");
-  console.log(theaudio);
-  theaudio.audioPlayer();
+  $("audio").audioPlayer();
+
+  // redoing the audio finder is key!
+  $("audio")[0].play();
 });
 
 
