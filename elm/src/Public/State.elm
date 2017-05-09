@@ -209,7 +209,7 @@ doInitPage model =
              let
                toBottom = Dom.Scroll.toBottom "chat-messages"
              in
-               ( model
+               ( { model | video = False } -- undo from EnableVideo
                , Task.attempt (\_ -> Types.NoOp) toBottom
                )
           )

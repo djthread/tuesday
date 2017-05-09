@@ -150,7 +150,7 @@ player model =
           [ --attribute "ref" "audio"
             id "theaudio"
           -- , attribute "controls" "true"
-          , attribute "autoplay" "true"
+          -- , attribute "autoplay" "true"
           , attribute "preload" "auto"
           -- , attribute "data-setup" "{}"
           ]

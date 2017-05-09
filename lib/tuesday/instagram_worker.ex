@@ -40,11 +40,12 @@ defmodule Tuesday.InstagramWorker do
     else
       case HTTPoison.get(@media_url) do
         {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+          Logger.info "InstagramWorker: Got photo data!"
           new_mapset = body |> parse
           # broadcast_photos(new_mapset)
           new_mapset
         res ->
-          Logger.error "Instagram media call failed: #{inspect res}"
+          Logger.error "InstagramWorker: media call failed: #{inspect res}"
           old_mapset
       end
     end
