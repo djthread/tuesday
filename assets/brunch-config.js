@@ -53,7 +53,7 @@ exports.config = {
   plugins: {
     elmBrunch: {
       elmFolder: "../elm",
-      mainModules: ["src/Public/Public.elm"],
+      mainModules: ["src/Public/Main.elm"],
       outputFolder: "../assets/vendor",
       outputFile: "elm.js",
       executablePath: "../assets/node_modules/elm/binwrappers"
