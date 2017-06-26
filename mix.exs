@@ -51,7 +51,7 @@ defmodule Tuesday.Mixfile do
       {:cowboy,              "~> 1.0"},
       {:httpoison,           "~> 0.12.0"},
       # {:calecto,             "~> 0.16.0"},
-      {:calendar,            "~> 0.17.0"},
+      {:calendar,            "~> 0.17.2"},
       {:sh,                  "~> 1.1.2"},
       # {:hackney, "~> 1.6.0", [optional: false, hex: :hackney]},
       # {:floki,               "~> 0.0"},
