@@ -3,7 +3,8 @@ defmodule Tuesday.Auth do
   import Tuesday.Web.Util, only: [get_now: 0]
 
   @expire_minutes 60
-  @secret Application.get_env(:tuesday, Tuesday.Web.Endpoint)
+  @secret :tuesday
+          |> Application.get_env(Tuesday.Web.Endpoint)
           |> Keyword.get(:auth_secret)
 
   # def authenticate({user, pass}) do
@@ -14,8 +15,8 @@ defmodule Tuesday.Auth do
     user_id_s = user_id |> to_string
     now_s     = now     |> to_string
     content   = user_id_s <> now_s <> secret
-    hash      = hash(content) |> String.slice(0..10)
-
+    hash      = content |> hash |> String.slice(0..10)
+    
     user_id_s <> "," <> now_s <> "," <> hash
   end
 
@@ -40,15 +41,14 @@ defmodule Tuesday.Auth do
   Hash a string, with salt.
   """
   def hash(str) when is_binary(str) do
-    :crypto.hash(:sha256, str <> @secret)
+    :sha256
+    |> :crypto.hash(str <> @secret)
     |> Base.encode64
   end
 
   def stamp_expired?(stamp, now) do
     minutes_old = (now - stamp) / 60
-    cond do
-      minutes_old > @expire_minutes -> true
-      true                          -> false
-    end
+
+    minutes_old > @expire_minutes
   end
 end

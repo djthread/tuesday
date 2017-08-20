@@ -8,7 +8,8 @@ defmodule Mix.Tasks.GenKey do
   @doc "Create key file"
   def run(_) do
     binary =
-      JOSE.JWS.generate_key(%{"alg" => "HS512"})
+      %{"alg" => "HS512"}
+      |> JOSE.JWS.generate_key
       |> :erlang.term_to_binary
 
     File.write!(@keyfile, binary)
