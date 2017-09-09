@@ -146,8 +146,14 @@ defmodule Tuesday.Web.AdminChannel do
       ]
 
     case ret do
-      {"", 0} -> {:reply, {:ok, %{status: :ok}}, socket}
-      _       -> {:reply, {:ok, %{status: :error}}, socket}
+      {"", 0} ->
+        {:reply, {:ok, %{status: :ok}}, socket}
+      {msg, code} ->
+        Logger.error fn ->
+          "Error restarting nginx with status #{code}: #{msg}"
+        end
+
+        {:reply, {:ok, %{status: :error}}, socket}
     end
   end
 
