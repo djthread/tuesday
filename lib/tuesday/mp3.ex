@@ -101,7 +101,7 @@ defmodule Tuesday.MP3 do
   end
 
   defp parse(meta = %MP3{}, ["ID3 " <> id3v | tail]) do
-    parse(%{meta | id3v: String.rstrip(id3v, ?:)}, tail)
+    parse(%{meta | id3v: String.trim_trailing(id3v, ":")}, tail)
   end
 
   defp parse(meta = %MP3{}, ["title: " <> title | tail]) do

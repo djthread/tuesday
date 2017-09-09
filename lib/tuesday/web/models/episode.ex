@@ -9,7 +9,7 @@ defmodule Tuesday.Episode do
   schema "episodes" do
     field :number, :integer
     field :title, :string
-    field :record_date, Ecto.Date
+    field :record_date, :date
     field :filename, :string
     field :description, :string
 

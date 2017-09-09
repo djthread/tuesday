@@ -8,7 +8,7 @@ defmodule Tuesday.Event do
   schema "events" do
     field :title, :string
     field :info_json, :string
-    field :happens_on, Ecto.Date
+    field :happens_on, :date
     field :description, :string
 
     belongs_to :user, Tuesday.User
