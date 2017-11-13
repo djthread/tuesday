@@ -35,7 +35,7 @@ defmodule Tuesday.Web.Router do
 
     post "/poke", PokeController, :poke
 
-    post "/auth", AdminController, :auth
+    post "/login", AdminController, :login
   end
 
   scope "/api", Tuesday do

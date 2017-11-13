@@ -24,7 +24,7 @@ defmodule Tuesday.Web.AdminController do
     |> json(ret)
   end
 
-  def auth(conn, %{"name" => name, "pass" => pass}) do
+  def login(conn, %{"name" => name, "pass" => pass}) do
     case User.auth(name, pass) do
       {:ok, user} ->
         conn
