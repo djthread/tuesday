@@ -10,7 +10,7 @@ import Types exposing (..)
 import Chat.View
 import Data.EventsEpisodesColumnsView
 import ViewUtil exposing (fa)
--- import Photo.WidgetView
+import Photo.WidgetView
 import Routing
 
 
@@ -64,8 +64,7 @@ build model =
           ]
       ]
   ]
---   removed 2018-02-11 because instagram are buttholes
---   ++ Photo.WidgetView.root model.photo
+  ++ Photo.WidgetView.root model.photo
   ++ Data.EventsEpisodesColumnsView.root model.data model.player ""
       (Routing.eventsUrl 1)
       (Routing.episodesUrl 1)
