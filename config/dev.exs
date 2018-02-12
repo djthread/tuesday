@@ -11,8 +11,14 @@ config :tuesday, Tuesday.Web.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
-    cd: Path.expand("../assets", __DIR__)]],
+  watchers: [
+    node: [
+      "node_modules/brunch/bin/brunch",
+      "watch",
+      "--stdin",
+      cd: Path.expand("../assets", __DIR__)
+    ]
+  ],
   auth_secret: "U(*(LO&F$YDC>PUD$#&*(YD$#@"
 
 # Watch static and templates for browser reloading.
@@ -43,12 +49,11 @@ config :phoenix, :stacktrace_depth, 20
 #   hostname: "localhost",
 #   pool_size: 10
 
-config :tuesday, :instagram,
-  media_url: false
+config :tuesday, :instagram, media_url: false
 
 config :tuesday, :podcast_paths, %{
   "wobblehead-radio" => "/Users/thread/Desktop/impulse/thread-episodes",
-  "techno-tuesday"   => "/Users/thread/Desktop/impulse/thread-episodes"
+  "techno-tuesday" => "/Users/thread/Desktop/impulse/thread-episodes"
 }
 
 config :tuesday, :photo_watch_dirs, [

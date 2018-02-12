@@ -9,34 +9,35 @@ defmodule Tuesday.Web.Util do
     :tuesday
     |> Application.get_env(:podcast_paths)
     |> Map.get(slug)
-    |> fn(path) ->
-      case filename do
-        nil  -> path
-        file -> [path, file] |> Path.join
-      end
-    end.()
+    |> (fn path ->
+          case filename do
+            nil -> path
+            file -> [path, file] |> Path.join()
+          end
+        end).()
+
     # case slug do
     #   "techno-tuesday" -> "/srv/http/threadbox/dnbcast"
     # end
   end
 
   def get_now do
-    DateTime.utc_now |> DateTime.to_unix
+    DateTime.utc_now() |> DateTime.to_unix()
     # DateTime.now_utc |> DateTime.Format.unix
   end
 
   @doc "Hash a string, with salt."
   def hash(str) when is_binary(str) do
     :crypto.hash(:sha256, str <> @secret)
-    |> Base.encode64
+    |> Base.encode64()
   end
 
   def fake_socket(topic) do
     %Phoenix.Socket{
       # pid:       self,
       # router:    Tuesday.Router,
-      topic:     topic,
-      assigns:   [],
+      topic: topic,
+      assigns: [],
       transport: Phoenix.Transports.WebSocket
     }
   end
@@ -44,7 +45,7 @@ defmodule Tuesday.Web.Util do
   def update_podcast_feed(show) do
     Tuesday.ShowView
     |> Phoenix.View.render("feed.xml", show: show)
-    |> IO.inspect
+    |> IO.inspect()
   end
 
   # def bytes_by_slug_and_filename(episode) do

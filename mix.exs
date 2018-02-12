@@ -58,7 +58,9 @@ defmodule Tuesday.Mixfile do
       # {:exfswatch,           "~> 0.2.0"},
       # {:exrm,                "~> 1.0.0"},
       {:distillery,          "~> 1.0"},
-      {:cors_plug,           "~> 1.1"}
+      {:cors_plug,           "~> 1.1"},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
+
       # {:wallaby,             "~> 0.16.1"}
 # <<<<<<< dfb6bd034e25e6b5f5f354d2e75c99d1461c1271
 #       {:phoenix_pubsub,      "~> 1.0"},
