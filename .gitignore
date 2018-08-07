@@ -29,5 +29,6 @@ erl_crash.dump
 
 /elm/elm-stuff
 /elm/priv
-assets/vendor/elm.js
-.elixir_ls
+/assets/vendor/elm.js
+/.elixir_ls
+/.vscode

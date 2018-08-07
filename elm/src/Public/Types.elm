@@ -66,5 +66,5 @@ noPayload = JE.string ""
 
 wsUrl : String
 wsUrl =
-  "wss://impulsedetroit.net/socket/websocket"
-  -- "ws://localhost:4091/socket/websocket"
+  -- "wss://impulsedetroit.net/socket/websocket"
+  "ws://localhost:4091/socket/websocket"

@@ -6,15 +6,15 @@ defmodule Tuesday.Web.Util do
   @doc "Get the dir of episode mp3s, given a slug"
   def podcast_path_by_slug(slug, filename \\ nil) do
     # "/srv/http/impulse/impulse-app/download/" <> slug
-    :tuesday
-    |> Application.get_env(:podcast_paths)
-    |> Map.get(slug)
-    |> (fn path ->
-          case filename do
-            nil -> path
-            file -> [path, file] |> Path.join()
-          end
-        end).()
+    path =
+      :tuesday
+      |> Application.get_env(:podcast_paths)
+      |> Map.get(slug)
+
+    case filename do
+      nil -> path
+      file -> Path.join(path, file)
+    end
 
     # case slug do
     #   "techno-tuesday" -> "/srv/http/threadbox/dnbcast"
