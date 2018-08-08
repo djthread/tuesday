@@ -89,9 +89,9 @@ exports.config = {
       //   // "node_modules/video.js/dist/video.min.js",
       //   // "node_modules/foundation/stylus/foundation.js"
       // ],
-      "swf": [
-        "node_modules/video.js/dist/video-js.swf"
-      ],
+      // "swf": [
+      //   "node_modules/video.js/dist/video-js.swf"
+      // ],
       "ttf": [
         "ttf/desonanz.ttf"
       ],
