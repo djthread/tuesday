@@ -50,6 +50,7 @@ RUN mix do deps.get, deps.compile, compile
 RUN if [ ! "$SKIP_PHOENIX" = "true" ]; then \
   cd ${PHOENIX_SUBDIR}/assets && \
   yarn install && \
+  ./node_modules/brunch/bin/brunch b -p && \
   yarn deploy && \
   cd .. && \
   mix phx.digest; \
@@ -80,5 +81,8 @@ ENV REPLACE_OS_VARS=true \
 WORKDIR /opt/app
 
 COPY --from=builder /opt/built .
+
+EXPOSE 4090
+VOLUME /aux/nextcloud_data
 
 CMD trap 'exit' INT; /opt/app/bin/${APP_NAME} foreground

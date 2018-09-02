@@ -50,12 +50,12 @@ release :tuesday do
   set applications: [
     :runtime_tools
   ]
-  set config_providers: [
-    # {Mix.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/config.exs"]}
-    {Toml.Provider, [path: "${RELEASE_ROOT_DIR}/etc/tuesday.toml"]}
-  ]
-  set overlays: [
-    {:copy, "rel/config/tuesday.toml", "etc/tuesday.toml"}
-  ]
+  # set config_providers: [
+  #   # {Mix.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/config.exs"]}
+  #   {Toml.Provider, [path: "${RELEASE_ROOT_DIR}/etc/tuesday.toml"]}
+  # ]
+  # set overlays: [
+  #   {:copy, "rel/config/tuesday.toml", "etc/tuesday.toml"}
+  # ]
 end
 
