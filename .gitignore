@@ -2,7 +2,6 @@
 /_build
 /db
 /deps
-/rel
 /*.ez
 .DS_Store
 

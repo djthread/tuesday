@@ -2,16 +2,9 @@ defmodule Tuesday.Mixfile do
   use Mix.Project
 
   def project do
-    # truncate the commit SHA to 7 chars
-    git_sha =
-      "git"
-      |> System.cmd(["rev-parse", "HEAD"])
-      |> elem(0)
-      |> String.slice(0, 7)
-
     [
       app: :tuesday,
-      version: "0.1.0-#{git_sha}",
+      version: "0.1.1",
       elixir: "~> 1.0",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -72,7 +65,7 @@ defmodule Tuesday.Mixfile do
       # {:floki,               "~> 0.0"},
       # {:exfswatch,           "~> 0.2.0"},
       # {:exrm,                "~> 1.0.0"},
-      {:distillery, "~> 1.0"},
+      {:distillery, "~> 2.0"},
       {:cors_plug, "~> 1.1"},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:ex_config, git: "https://github.com/djthread/ex_config.git"}
