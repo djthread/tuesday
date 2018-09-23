@@ -6,6 +6,9 @@ defmodule Tuesday.Web.AdminChannel do
   alias Tuesday.Web.{ShowView, EventView, EpisodeView, ChangesetView}
   require Logger
 
+  @ssh_user "tuesday"
+  @ssh_host "172.17.0.1"
+
   def join("admin", %{"name" => name, "pass" => pass}, socket) do
     user =
       User
@@ -138,12 +141,20 @@ defmodule Tuesday.Web.AdminChannel do
 
   @doc "Start Facebook stream"
   def handle_in("stream_start", params, socket) do
-    ret =
-      System.cmd "/usr/bin/sudo", [
-        "/usr/local/bin/nginx_rtmp_starter",
-        "--url=" <> to_string(params["url"]),
-        "--ip=" <> to_string(params["ip"])
-      ]
+    args = [
+      "#{@ssh_user}@#{@ssh_host}",
+      "-p",
+      "2222",
+      "-o",
+      "UserKnownHostsFile=/dev/null",
+      "-o",
+      "StrictHostKeyChecking=no",
+      "/usr/local/bin/nginx_rtmp_starter",
+      "--url=#{to_string(params["url"])}",
+      "--ip=#{to_string(params["ip"])}"
+    ]
+
+    ret = System.cmd("ssh", args)
 
     case ret do
       {"", 0} ->

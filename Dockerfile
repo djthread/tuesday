@@ -51,7 +51,6 @@ RUN if [ ! "$SKIP_PHOENIX" = "true" ]; then \
   cd ${PHOENIX_SUBDIR}/assets && \
   yarn install && \
   ./node_modules/brunch/bin/brunch b -p && \
-  yarn deploy && \
   cd .. && \
   mix phx.digest; \
 fi
@@ -73,6 +72,7 @@ ARG APP_NAME
 RUN apk update && \
     apk add --no-cache \
       bash \
+      openssh-client \
       openssl-dev
 
 ENV REPLACE_OS_VARS=true \
@@ -82,7 +82,9 @@ WORKDIR /opt/app
 
 COPY --from=builder /opt/built .
 
-EXPOSE 4090
+COPY assets/keys/tuesday /root/.ssh/id_rsa
+
+EXPOSE 4100
 VOLUME /aux/nextcloud_data
 
 CMD trap 'exit' INT; /opt/app/bin/${APP_NAME} foreground
