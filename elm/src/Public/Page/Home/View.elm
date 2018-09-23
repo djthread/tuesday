@@ -14,10 +14,6 @@ import Photo.WidgetView
 import Routing
 
 
-feedsrc : String
-feedsrc =
-  "rtmp://impulsedetroit.net/live/techno"
-
 infotext : String
 infotext =
   "Impulse Detroit is a ring of recurring DJ events around the city. "
@@ -90,5 +86,7 @@ thevideo model =
             , preload "auto"
             , poster "/images/poster.jpg"
             ]
-            [ source [src feedsrc, type_ "rtmp/flv"] [] ]
+            []
+            -- [ source [type_ "application/x-mpegURL"] [] ]
+            -- [ source [src feedsrc, type_ "rtmp/flv"] [] ]
         ]
