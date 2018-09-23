@@ -11,10 +11,10 @@
     "video.js": "^7.2.2"
   },
   "devDependencies": {
-    "clean-css-brunch": "^1.7.2",
+    "clean-css-brunch": "^1.8.0",
     "copycat-brunch": "^1.1.0",
     "elm": "^0.18.0",
-    "sass-brunch": "^2.10.2",
-    "node-sass": "^4.9.2"
+    "node-sass": "^4.9.3",
+    "sass-brunch": "^2.10.7"
   }
 }
