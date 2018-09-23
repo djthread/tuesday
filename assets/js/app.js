@@ -2,7 +2,7 @@ const elmDiv  = document.getElementById('elm-main')
      , idapp  = Elm.Public.embed(elmDiv)
      , vjsUrl = "//unpkg.com/video.js/dist/video.js"
      , vjsHttp = "//unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"
-     , streamUrl = "http://impulsedetroit.net:9077/hls/techno.m3u8";
+     , streamUrl = "https://impulsedetroit.net:9077/hls/techno.m3u8";
     //  , vjsUrl = "//vjs.zencdn.net/5.8.8/video.min.js";
 
 let theaudio;

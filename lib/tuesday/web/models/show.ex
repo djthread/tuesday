@@ -52,7 +52,7 @@ defmodule Tuesday.Show do
     shows
     |> Repo.preload(episodes: from(ep in Episode,
         where:    ep.record_date > ago(1, "month"),
-        order_by: [desc: ep.number],
+        order_by: [desc: ep.number]
        ))
     |> Repo.preload(events: from(ev in Event,
         where:    ev.happens_on > ago(2, "day")
