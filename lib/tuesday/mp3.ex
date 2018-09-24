@@ -56,7 +56,7 @@ defmodule Tuesday.MP3 do
           "-G",
           fix(show.genre) || "",
           "-Y",
-          elem(Date.to_erl(ep.record_date), 0),
+          to_string(elem(Date.to_erl(ep.record_date), 0)),
           "--recording-date",
           Date.to_iso8601(ep.record_date),
           "--remove-all-comments",
