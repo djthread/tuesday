@@ -21,8 +21,9 @@ ARG PHOENIX_SUBDIR=.
 ENV SKIP_PHOENIX=${SKIP_PHOENIX} \
     APP_NAME=${APP_NAME} \
     APP_VSN=${APP_VSN} \
-    MIX_ENV=${MIX_ENV} \
-    SASS_BINARY_DIR=https://github.com/sass/node-sass/releases/download
+    MIX_ENV=${MIX_ENV}
+    # SASS_BINARY_DIR=https://github.com/sass/node-sass/releases/download
+    # 22:40:37 - warn: Loading of sass-brunch failed due to ENOENT: no such file or directory, scandir 'https://github.com/sass/node-sass/releases/download'
 
 # By convention, /opt is typically used for applications
 WORKDIR /opt/app
@@ -72,6 +73,7 @@ ARG APP_NAME
 RUN apk update && \
     apk add --no-cache \
       bash \
+      py-eyed3 \
       openssh-client \
       openssl-dev
 
