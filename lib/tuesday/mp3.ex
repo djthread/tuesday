@@ -4,10 +4,22 @@ defmodule Tuesday.MP3 do
   alias Tuesday.Episode
   alias Tuesday.Web.Util
 
-  defstruct filename: nil, size_mb: nil,      time: nil, codec: nil, kbps: nil,
-            hz: nil,       stereo: nil,       id3v: nil, title: nil, artist: nil,
-            album: nil,    album_artist: nil, date: nil, track: nil,
-            genre: nil,    recording_date: nil
+  defstruct filename: nil,
+            size_mb: nil,
+            time: nil,
+            codec: nil,
+            kbps: nil,
+            hz: nil,
+            stereo: nil,
+            id3v: nil,
+            title: nil,
+            artist: nil,
+            album: nil,
+            album_artist: nil,
+            date: nil,
+            track: nil,
+            genre: nil,
+            recording_date: nil
 
   def get_meta(full_filename) do
     [filename] = Regex.run(~r/[^\/]+$/, full_filename)
@@ -19,6 +31,7 @@ defmodule Tuesday.MP3 do
           |> String.split("\n")
 
         parse(%MP3{filename: filename}, lines)
+
       _ ->
         %{msg: filename <> " could not be found."}
     end
@@ -27,75 +40,85 @@ defmodule Tuesday.MP3 do
   def write_tags_if_file_exists(ep = %Episode{}, show = %Show{}) do
     require Logger
 
-    full_filename =
-      show.slug
-      |> Util.podcast_path_by_slug(ep.filename)
+    full_filename = Util.podcast_path_by_slug(show.slug, ep.filename)
 
-    case full_filename |> File.exists? do
+    case full_filename |> File.exists?() do
       true ->
-
-        ["--no-color", "--to-v2.4",
-          "-a", fix(ep.title) || "",
-          "-A", fix(show.podcast_name) || "",
-          "-t", "#{fix(ep.number)}. #{fix(show.name)} [#{fix(ep.record_date)}]",
-          "-G", fix(show.genre) || "",
-          "-Y", ep.record_date
-                |> fix
-                |> Ecto.Date.cast!
-                |> Calendar.Strftime.strftime("%Y")
-                |> elem(1),
-          "--recording-date", ep.record_date |> fix |> Ecto.Date.to_iso8601,
+        args = [
+          "--no-color",
+          "--to-v2.4",
+          "-a",
+          fix(ep.title) || "",
+          "-A",
+          fix(show.podcast_name) || "",
+          "-t",
+          "#{fix(ep.number)}. #{fix(show.name)} [#{fix(ep.record_date)}]",
+          "-G",
+          fix(show.genre) || "",
+          "-Y",
+          elem(Date.to_erl(ep.record_date), 0),
+          "--recording-date",
+          Date.to_iso8601(ep.record_date),
           "--remove-all-comments",
-          "--add-comment", fix(ep.description) || "",
-          full_filename]
-        |> inspect
-        |> Logger.info
+          "--add-comment",
+          fix(ep.description) || "",
+          full_filename
+        ]
 
-        Sh.eyeD3("--no-color", "--to-v2.4",
-          "-a", fix(ep.title) || "",
-          "-A", fix(show.podcast_name) || "",
-          "-t", "#{fix(ep.number)}. #{fix(show.name)} [#{fix(ep.record_date)}]",
-          "-G", fix(show.genre) || "",
-          "-Y", ep.record_date
-                |> fix
-                |> Ecto.Date.cast!
-                |> Calendar.Strftime.strftime("%Y")
-                |> elem(1),
-          "--recording-date", ep.record_date |> fix |> Ecto.Date.to_iso8601,
-          "--remove-all-comments",
-          "--add-comment", fix(ep.description) || "",
-          full_filename)
-        |> Logger.info
+        Logger.info("eyeD3 cmd: #{inspect(args)}")
+
+        apply(Sh, :eyeD3, args)
+
+        # Sh.eyeD3("--no-color", "--to-v2.4",
+        #   "-a", fix(ep.title) || "",
+        #   "-A", fix(show.podcast_name) || "",
+        #   "-t", "#{fix(ep.number)}. #{fix(show.name)} [#{fix(ep.record_date)}]",
+        #   "-G", fix(show.genre) || "",
+        #   "-Y", ep.record_date
+        #         |> fix
+        #         |> Ecto.Date.cast!
+        #         |> Calendar.Strftime.strftime("%Y")
+        #         |> elem(1),
+        #   "--recording-date", ep.record_date |> fix |> Date.to_iso8601,
+        #   "--remove-all-comments",
+        #   "--add-comment", fix(ep.description) || "",
+        #   full_filename)
+        # |> Logger.info
 
         true
 
       _ ->
         false
-
     end
   end
 
   # Normalize a string for eyeD3
   defp fix(str) when is_binary(str) do
-    str
-    |> String.replace(~r/[^\x00-\x7F]+/, "")  # strip non-ascii characters
+    # strip non-ascii characters
+    String.replace(str, ~r/[^\x00-\x7F]+/, "")
   end
+
   defp fix(something_else), do: something_else
 
-  defp parse([
-    "-------------------------------------------------------------------------------"
-    | tail], meta = %MP3{})
-  do
+  defp parse(
+         [
+           "-------------------------------------------------------------------------------"
+           | tail
+         ],
+         meta = %MP3{}
+       ) do
     parse(tail, meta)
   end
 
-  defp parse(meta = %MP3{}, [line = "Time: " <> _the_rest | tail])
-  do
+  defp parse(meta = %MP3{}, [line = "Time: " <> _the_rest | tail]) do
     rx = ~r/^Time: ([\d:]+)\t(.*?)\t\[ (\d+) kb.s @ (\d+) Hz - (.*) \]$/
+
     case Regex.run(rx, line) do
       [_, time, codec, kbps, hz, stereo] ->
         %{meta | time: time, codec: codec, kbps: kbps, hz: hz, stereo: stereo}
-      _ -> meta
+
+      _ ->
+        meta
     end
     |> parse(tail)
   end
@@ -130,10 +153,13 @@ defmodule Tuesday.MP3 do
 
   defp parse(meta = %MP3{}, [line = "track: " <> _the_rest | tail]) do
     rx = ~r/^track: (.*?)\t\tgenre: (.*?) \(id /
+
     case Regex.run(rx, line) do
       [_, track, genre] ->
         %{meta | track: track, genre: genre}
-      _ -> meta
+
+      _ ->
+        meta
     end
     |> parse(tail)
   end
@@ -141,10 +167,11 @@ defmodule Tuesday.MP3 do
   defp parse(meta = %MP3{filename: fname}, [line | tail]) do
     case Regex.run(~r/#{fname}\t\[ ([\d\.]+) MB \]/, line) do
       [_, size_mb] -> %{meta | size_mb: size_mb}
-      _            -> meta
+      _ -> meta
     end
     |> parse(tail)
   end
+
   defp parse(meta = %MP3{}, []), do: meta
 
   # def parse(file_name) do
