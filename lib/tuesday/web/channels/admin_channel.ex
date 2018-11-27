@@ -7,7 +7,7 @@ defmodule Tuesday.Web.AdminChannel do
   require Logger
 
   @ssh_user "tuesday"
-  @ssh_host "172.17.0.1"
+  @ssh_host "impulsedetroit.net"
 
   def join("admin", %{"name" => name, "pass" => pass}, socket) do
     user =
@@ -149,6 +149,7 @@ defmodule Tuesday.Web.AdminChannel do
       "UserKnownHostsFile=/dev/null",
       "-o",
       "StrictHostKeyChecking=no",
+      "/usr/bin/sudo",
       "/usr/local/bin/nginx_rtmp_starter",
       "--url=#{to_string(params["url"])}",
       "--ip=#{to_string(params["ip"])}"

@@ -1,5 +1,5 @@
 #!/bin/sh
-source /usr/share/nvm/init-nvm.sh
+# source /usr/share/nvm/init-nvm.sh
 
 mix run --no-start -e 'IO.puts Mix.Project.config[:version]'
 

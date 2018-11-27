@@ -1,1 +1,1 @@
-alias Tuesday.{Repo, Show, Episode, Event}
+alias Tuesday.{Repo, Show, Episode, Event, User}

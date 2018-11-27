@@ -29,7 +29,8 @@ buildShowList shows =
   in
     [ day "Monday"  [ "sub-therapy-radio" |> getShow |> buildShow ]
     , day "Tuesday" [ "techno-tuesday"    |> getShow |> buildShow ]
-    , day "Friday"  [ "wobblehead-radio"  |> getShow |> buildShow ]
+    , day "Friday"  [ "wobblehead-radio"  |> getShow |> buildShow,
+                      "all-day-junglist"  |> getShow |> buildShow ]
     , day "Sunday"  [ "necronome-radio"   |> getShow |> buildShow ]
     , day "Also,"   [ "specials"          |> getShow |> buildShow ]
     ]

@@ -31,11 +31,12 @@ config :tuesday, Tuesday.Web.Endpoint,
 config :logger, level: :info
 
 config :tuesday, :podcast_paths, %{
-  "techno-tuesday"    => "/aux/nextcloud_data/data/thread/files/techtues-episodes",
-  "specials"          => "/aux/nextcloud_data/data/thread/files/specials-episodes",
-  "wobblehead-radio"  => "/aux/nextcloud_data/data/larry/files/wobblehead-radio-episodes",
-  "sub-therapy-radio" => "/aux/nextcloud_data/data/calico/files/sub-therapy-radio-episodes",
-  "necronome-radio"   => "/aux/nextcloud_data/data/tim/files/necronome-radio-episodes"
+  "techno-tuesday"    => "/nextcloud_data/data/thread/files/techtues-episodes",
+  "specials"          => "/nextcloud_data/data/thread/files/specials-episodes",
+  "wobblehead-radio"  => "/nextcloud_data/data/larry/files/wobblehead-radio-episodes",
+  "sub-therapy-radio" => "/nextcloud_data/data/calico/files/sub-therapy-radio-episodes",
+  "necronome-radio"   => "/nextcloud_data/data/tim/files/necronome-radio-episodes",
+  "all-day-junglist"   => "/nextcloud_data/data/mark/files/all-day-junglist-episodes"
 }
 
 # ## SSL Support

@@ -87,6 +87,6 @@ COPY --from=builder /opt/built .
 COPY assets/keys/tuesday /root/.ssh/id_rsa
 
 EXPOSE 4100
-VOLUME /aux/nextcloud_data
+VOLUME /nextcloud_data
 
 CMD trap 'exit' INT; /opt/app/bin/${APP_NAME} foreground
