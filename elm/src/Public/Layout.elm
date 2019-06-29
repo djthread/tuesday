@@ -109,7 +109,7 @@ footerColumn2 : List (Html Msg)
 footerColumn2 =
   [ p [] [ text "Special thanks to" ]
   , ul []
-      [ li [] [ a [ href "http://www.urbanbeanco.com/" ] [ text "Urban Bean Co." ] ]
+      [ li [] [ a [ href "https://www.thehighdivedetroit.com/" ] [ text "The High Dive" ] ]
       , li [] [ a [ href "https://rocketfiber.com/" ] [ text "Rocket Fiber" ] ]
       ]
   ]
