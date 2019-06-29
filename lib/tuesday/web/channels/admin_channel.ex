@@ -150,15 +150,16 @@ defmodule Tuesday.Web.AdminChannel do
       "-o",
       "StrictHostKeyChecking=no",
       "/usr/bin/sudo",
+      "--",
       "/usr/local/bin/nginx_rtmp_starter",
-      "--url=#{to_string(params["url"])}",
-      "--ip=#{to_string(params["ip"])}"
+      ~s/"--url=#{to_string(params["url"])}"/,
+      ~s/"--ip=#{to_string(params["ip"])}"/
     ]
 
     ret = System.cmd("ssh", args)
 
     case ret do
-      {"", 0} ->
+      {_, 0} ->
         {:reply, {:ok, %{status: :ok}}, socket}
       {msg, code} ->
         Logger.error fn ->
